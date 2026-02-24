@@ -38,7 +38,7 @@ fn main() {
 
     // include_str! constants
     for (stem, _) in &themes {
-        let const_name = stem.to_uppercase();
+        let const_name = stem.replace('-', "_").to_uppercase();
         writeln!(
             code,
             "const {const_name}_TOML: &str = include_str!(concat!(env!(\"CARGO_MANIFEST_DIR\"), \"/src/builtins/{stem}.toml\"));"
@@ -50,7 +50,8 @@ fn main() {
     writeln!(code, "const GENERATED_BUILTIN_NAMES: &[(&str, &str)] = &[").expect("write to String");
     for (stem, display) in &themes {
         let id = stem.replace('_', "-");
-        writeln!(code, "    (\"{id}\", \"{display}\"),").expect("write to String");
+        let escaped = display.replace('\\', "\\\\").replace('"', "\\\"");
+        writeln!(code, "    (\"{id}\", \"{escaped}\"),").expect("write to String");
     }
     writeln!(code, "];").expect("write to String");
 
@@ -59,7 +60,7 @@ fn main() {
     writeln!(code, "fn generated_load_toml(id: &str) -> Option<&'static str> {{\n    match id {{").expect("write to String");
     for (stem, _) in &themes {
         let id = stem.replace('_', "-");
-        let const_name = stem.to_uppercase();
+        let const_name = stem.replace('-', "_").to_uppercase();
         writeln!(code, "        \"{id}\" => Some({const_name}_TOML),").expect("write to String");
     }
     writeln!(code, "        _ => None,").expect("write to String");

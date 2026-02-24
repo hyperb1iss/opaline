@@ -104,16 +104,13 @@ fn circular_reference_detected() {
 }
 
 #[test]
-fn unresolvable_token_falls_back() {
+fn unresolvable_token_returns_error() {
     let mut tf = minimal_theme_file();
     tf.tokens
         .insert("missing".to_string(), "nonexistent".to_string());
 
-    let resolved = opaline::resolver::resolve(&tf).expect("resolves with fallback");
-    assert_eq!(
-        resolved.tokens.get("missing"),
-        Some(&OpalineColor::FALLBACK)
-    );
+    let err = opaline::resolver::resolve(&tf).expect_err("should fail");
+    assert!(matches!(err, OpalineError::UnresolvedToken { .. }));
 }
 
 #[test]
@@ -167,15 +164,13 @@ fn gradient_resolves_stops() {
 }
 
 #[test]
-fn gradient_with_unresolvable_stops_dropped() {
+fn gradient_with_unresolvable_stops_returns_error() {
     let mut tf = minimal_theme_file();
     tf.gradients.insert(
         "broken".to_string(),
         vec!["nonexistent1".to_string(), "nonexistent2".to_string()],
     );
 
-    let resolved = opaline::resolver::resolve(&tf).expect("resolves");
-    // Gradient stops that can't be resolved are filtered out
-    // An empty gradient is dropped entirely
-    assert!(!resolved.gradients.contains_key("broken"));
+    let err = opaline::resolver::resolve(&tf).expect_err("should fail");
+    assert!(matches!(err, OpalineError::UnresolvedToken { .. }));
 }

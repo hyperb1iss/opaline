@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 use crate::color::OpalineColor;
 use crate::error::OpalineError;
@@ -8,7 +8,7 @@ use crate::schema::{StyleDef, ThemeFile};
 use crate::style::OpalineStyle;
 
 /// Resolved theme data produced by the resolution pipeline.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ResolvedTheme {
     pub palette: HashMap<String, OpalineColor>,
     pub tokens: HashMap<String, OpalineColor>,
@@ -27,9 +27,9 @@ pub struct ResolvedTheme {
 pub fn resolve(theme_file: &ThemeFile) -> Result<ResolvedTheme, OpalineError> {
     let palette = resolve_palette(&theme_file.palette)?;
     let tokens = resolve_tokens(&theme_file.tokens, &palette)?;
-    let styles = resolve_styles(&theme_file.styles, &palette, &tokens);
+    let styles = resolve_styles(&theme_file.styles, &palette, &tokens)?;
     #[cfg(feature = "gradients")]
-    let gradients = resolve_gradients(&theme_file.gradients, &palette, &tokens);
+    let gradients = resolve_gradients(&theme_file.gradients, &palette, &tokens)?;
 
     Ok(ResolvedTheme {
         palette,
@@ -67,7 +67,7 @@ fn resolve_tokens(
 
     for name in raw.keys() {
         if !resolved.contains_key(name) {
-            let mut chain = HashSet::new();
+            let mut chain = Vec::new();
             resolve_token(name, raw, palette, &mut resolved, &mut chain)?;
         }
     }
@@ -80,26 +80,29 @@ fn resolve_token(
     raw: &HashMap<String, String>,
     palette: &HashMap<String, OpalineColor>,
     resolved: &mut HashMap<String, OpalineColor>,
-    chain: &mut HashSet<String>,
+    chain: &mut Vec<String>,
 ) -> Result<OpalineColor, OpalineError> {
     // Already resolved in a previous pass
     if let Some(&color) = resolved.get(name) {
         return Ok(color);
     }
 
-    // Cycle detection
-    if !chain.insert(name.to_string()) {
+    // Cycle detection — Vec preserves traversal order for readable error messages
+    if chain.contains(&name.to_string()) {
+        chain.push(name.to_string()); // close the cycle in the output
         return Err(OpalineError::CircularReference {
             token: name.to_string(),
-            chain: chain.iter().cloned().collect(),
+            chain: chain.clone(),
         });
     }
+    chain.push(name.to_string());
 
     let Some(value) = raw.get(name) else {
-        // Token not defined — use fallback
-        let color = OpalineColor::FALLBACK;
-        resolved.insert(name.to_string(), color);
-        return Ok(color);
+        // Token references a name not defined anywhere
+        return Err(OpalineError::UnresolvedToken {
+            token: name.to_string(),
+            reference: name.to_string(),
+        });
     };
 
     let color = if value.starts_with('#') {
@@ -115,8 +118,11 @@ fn resolve_token(
         // Token-to-token reference — recurse
         resolve_token(value, raw, palette, resolved, chain)?
     } else {
-        // Unresolvable — silent fallback
-        OpalineColor::FALLBACK
+        // Unresolvable reference — report error so theme authors get feedback
+        return Err(OpalineError::UnresolvedToken {
+            token: name.to_string(),
+            reference: value.clone(),
+        });
     };
 
     resolved.insert(name.to_string(), color);
@@ -144,18 +150,30 @@ fn resolve_styles(
     raw: &HashMap<String, StyleDef>,
     palette: &HashMap<String, OpalineColor>,
     tokens: &HashMap<String, OpalineColor>,
-) -> HashMap<String, OpalineStyle> {
+) -> Result<HashMap<String, OpalineStyle>, OpalineError> {
     let mut styles = HashMap::with_capacity(raw.len());
 
     for (name, def) in raw {
         let fg = def
             .fg
             .as_ref()
-            .and_then(|r| resolve_color_ref(r, palette, tokens));
+            .map(|r| {
+                resolve_color_ref(r, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+                    token: format!("{name}.fg"),
+                    reference: r.clone(),
+                })
+            })
+            .transpose()?;
         let bg = def
             .bg
             .as_ref()
-            .and_then(|r| resolve_color_ref(r, palette, tokens));
+            .map(|r| {
+                resolve_color_ref(r, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+                    token: format!("{name}.bg"),
+                    reference: r.clone(),
+                })
+            })
+            .transpose()?;
 
         styles.insert(
             name.clone(),
@@ -170,7 +188,7 @@ fn resolve_styles(
         );
     }
 
-    styles
+    Ok(styles)
 }
 
 /// Pass 4: Resolve gradient stop names into color vectors.
@@ -179,19 +197,24 @@ fn resolve_gradients(
     raw: &HashMap<String, Vec<String>>,
     palette: &HashMap<String, OpalineColor>,
     tokens: &HashMap<String, OpalineColor>,
-) -> HashMap<String, Gradient> {
+) -> Result<HashMap<String, Gradient>, OpalineError> {
     let mut gradients = HashMap::with_capacity(raw.len());
 
     for (name, stops) in raw {
-        let colors: Vec<OpalineColor> = stops
-            .iter()
-            .filter_map(|s| resolve_color_ref(s, palette, tokens))
-            .collect();
+        let mut colors = Vec::with_capacity(stops.len());
+        for (i, stop) in stops.iter().enumerate() {
+            let color =
+                resolve_color_ref(stop, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+                    token: format!("{name}[{i}]"),
+                    reference: stop.clone(),
+                })?;
+            colors.push(color);
+        }
 
         if !colors.is_empty() {
             gradients.insert(name.clone(), Gradient::new(colors));
         }
     }
 
-    gradients
+    Ok(gradients)
 }

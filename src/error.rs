@@ -37,4 +37,7 @@ pub enum OpalineError {
 
     #[error("theme not found: {name}")]
     ThemeNotFound { name: String },
+
+    #[error("gradient must have at least one color stop")]
+    EmptyGradient,
 }

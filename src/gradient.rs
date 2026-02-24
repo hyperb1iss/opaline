@@ -1,4 +1,5 @@
 use crate::color::OpalineColor;
+use crate::error::OpalineError;
 
 /// A multi-stop color gradient for smooth transitions.
 ///
@@ -15,10 +16,18 @@ impl Gradient {
     ///
     /// # Panics
     ///
-    /// Panics if `stops` is empty.
+    /// Panics if `stops` is empty. For a fallible alternative, use [`try_new`](Self::try_new).
     pub fn new(stops: Vec<OpalineColor>) -> Self {
         assert!(!stops.is_empty(), "gradient must have at least one stop");
         Self { stops }
+    }
+
+    /// Create a gradient from a list of color stops, returning an error if empty.
+    pub fn try_new(stops: Vec<OpalineColor>) -> Result<Self, OpalineError> {
+        if stops.is_empty() {
+            return Err(OpalineError::EmptyGradient);
+        }
+        Ok(Self { stops })
     }
 
     /// Sample the gradient at position `t` (clamped to `[0.0, 1.0]`).

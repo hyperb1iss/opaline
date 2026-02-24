@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::Deserialize;
 
 /// Top-level structure of a `.toml` theme file.
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, serde::Serialize)]
 pub struct ThemeFile {
     pub meta: ThemeMeta,
 
@@ -56,7 +56,7 @@ pub enum ThemeVariant {
 /// Color references (`fg`, `bg`) are resolved against the token and palette maps
 /// during theme loading.
 #[allow(clippy::struct_excessive_bools)]
-#[derive(Debug, Clone, Default, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize, serde::Serialize)]
 pub struct StyleDef {
     pub fg: Option<String>,
     pub bg: Option<String>,

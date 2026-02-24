@@ -2,7 +2,7 @@ use std::fmt;
 use std::str::FromStr;
 
 /// Error returned when parsing a hex color string fails.
-#[derive(Debug, Clone, thiserror::Error)]
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum ColorParseError {
     #[error("invalid hex color length {0} (expected 7, e.g. #rrggbb)")]
     InvalidLength(usize),
