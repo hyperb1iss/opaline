@@ -68,8 +68,8 @@ pub use gradient::Gradient;
 // Ratatui adapter
 #[cfg(feature = "ratatui")]
 pub use adapters::ratatui::ThemeRatatuiExt;
-#[cfg(feature = "ratatui")]
-pub use adapters::ratatui::{gradient_line, gradient_spans};
+#[cfg(all(feature = "ratatui", feature = "gradients"))]
+pub use adapters::ratatui::{gradient_bar, gradient_line, gradient_spans, gradient_text_line};
 
 // CLI adapter
 #[cfg(feature = "cli")]

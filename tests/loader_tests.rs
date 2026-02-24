@@ -51,11 +51,8 @@ fn loaded_theme_resolves_styles() {
         style,
         OpalineStyle {
             fg: Some(OpalineColor::new(255, 0, 0)),
-            bg: None,
             bold: true,
-            italic: false,
-            underline: false,
-            dim: false,
+            ..OpalineStyle::new()
         }
     );
 }

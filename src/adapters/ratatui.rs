@@ -1,6 +1,16 @@
-use ratatui_core::style::{Color, Modifier, Style};
+//! Deep ratatui integration — `OpalineColor` and `OpalineStyle` become
+//! first-class ratatui citizens.
+//!
+//! All 9 ratatui modifiers are supported. `OpalineStyle` implements `Styled`,
+//! granting the full `Stylize` fluent API (`.bold()`, `.fg()`, etc.).
+//! `ThemeRatatuiExt` provides one-call `Span`, `Line`, and `Text` builders.
+
+use std::borrow::Cow;
+
+use ratatui_core::style::{Color, Modifier, Style, Styled};
 #[cfg(feature = "gradients")]
 use ratatui_core::text::Span;
+use ratatui_core::text::{Line, Text};
 
 use crate::color::OpalineColor;
 #[cfg(feature = "gradients")]
@@ -8,7 +18,9 @@ use crate::gradient::Gradient;
 use crate::style::OpalineStyle;
 use crate::theme::Theme;
 
-// ── Color conversion ─────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Color conversion
+// ═══════════════════════════════════════════════════════════════════════════════
 
 impl From<OpalineColor> for Color {
     fn from(c: OpalineColor) -> Self {
@@ -22,7 +34,16 @@ impl From<&OpalineColor> for Color {
     }
 }
 
-// ── Style conversion ─────────────────────────────────────────────────────
+/// An `OpalineColor` can be used directly as a foreground `Style`.
+impl From<OpalineColor> for Style {
+    fn from(c: OpalineColor) -> Self {
+        Style::default().fg(Color::Rgb(c.r, c.g, c.b))
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Style conversion
+// ═══════════════════════════════════════════════════════════════════════════════
 
 impl From<OpalineStyle> for Style {
     fn from(s: OpalineStyle) -> Self {
@@ -35,20 +56,7 @@ impl From<OpalineStyle> for Style {
             style = style.bg(Color::Rgb(bg.r, bg.g, bg.b));
         }
 
-        let mut modifiers = Modifier::empty();
-        if s.bold {
-            modifiers |= Modifier::BOLD;
-        }
-        if s.italic {
-            modifiers |= Modifier::ITALIC;
-        }
-        if s.underline {
-            modifiers |= Modifier::UNDERLINED;
-        }
-        if s.dim {
-            modifiers |= Modifier::DIM;
-        }
-
+        let modifiers = Modifier::from_bits_truncate(s.modifier_bits());
         if !modifiers.is_empty() {
             style = style.add_modifier(modifiers);
         }
@@ -63,9 +71,30 @@ impl From<&OpalineStyle> for Style {
     }
 }
 
-// ── Theme extension trait ────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Styled — unlocks the full Stylize fluent API on OpalineStyle
+// ═══════════════════════════════════════════════════════════════════════════════
 
-/// Convenience methods on `Theme` for direct `ratatui` type access.
+impl Styled for OpalineStyle {
+    type Item = Style;
+
+    fn style(&self) -> Style {
+        Style::from(self)
+    }
+
+    fn set_style<S: Into<Style>>(self, style: S) -> Style {
+        Style::from(self).patch(style)
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ThemeRatatuiExt — zero-friction theme → ratatui bridge
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/// Convenience methods on `Theme` for direct ratatui type access.
+///
+/// One-call methods for `Color`, `Style`, `Span`, `Line`, and `Text` —
+/// no intermediate types, no manual wrapping.
 pub trait ThemeRatatuiExt {
     /// Get a ratatui `Color` for a token name.
     fn ratatui_color(&self, token: &str) -> Color;
@@ -73,9 +102,22 @@ pub trait ThemeRatatuiExt {
     /// Get a ratatui `Style` for a named style.
     fn ratatui_style(&self, name: &str) -> Style;
 
+    /// Create a styled `Span` from a token name and content.
+    fn ratatui_span<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> ratatui_core::text::Span<'a>;
+
+    /// Create a styled `Line` from a token name and content.
+    fn ratatui_line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a>;
+
+    /// Create a styled `Text` from a token name and content.
+    fn ratatui_text<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Text<'a>;
+
     /// Sample a named gradient at position `t` and return a ratatui `Color`.
     #[cfg(feature = "gradients")]
     fn ratatui_gradient(&self, name: &str, t: f32) -> Color;
+
+    /// Create a `Line` with per-character gradient coloring.
+    #[cfg(feature = "gradients")]
+    fn gradient_styled_line(&self, gradient_name: &str, content: &str) -> Line<'static>;
 }
 
 impl ThemeRatatuiExt for Theme {
@@ -87,13 +129,36 @@ impl ThemeRatatuiExt for Theme {
         self.style(name).into()
     }
 
+    fn ratatui_span<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> ratatui_core::text::Span<'a> {
+        ratatui_core::text::Span::styled(content, self.ratatui_style(style_name))
+    }
+
+    fn ratatui_line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a> {
+        Line::styled(content, self.ratatui_style(style_name))
+    }
+
+    fn ratatui_text<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Text<'a> {
+        Text::styled(content, self.ratatui_style(style_name))
+    }
+
     #[cfg(feature = "gradients")]
     fn ratatui_gradient(&self, name: &str, t: f32) -> Color {
         self.gradient(name, t).into()
     }
+
+    #[cfg(feature = "gradients")]
+    fn gradient_styled_line(&self, gradient_name: &str, content: &str) -> Line<'static> {
+        if let Some(gradient) = self.get_gradient(gradient_name) {
+            Line::from(gradient_spans(content, gradient))
+        } else {
+            Line::raw(content.to_string())
+        }
+    }
 }
 
-// ── Gradient helpers ─────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// Gradient helpers
+// ═══════════════════════════════════════════════════════════════════════════════
 
 /// Render a string with per-character gradient coloring, producing a `Vec<Span>`.
 #[cfg(feature = "gradients")]
@@ -133,4 +198,16 @@ pub fn gradient_line(width: usize, ch: char, gradient: &Gradient) -> Vec<Span<'s
             )
         })
         .collect()
+}
+
+/// Render text with per-character gradient coloring, returning a `Line`.
+#[cfg(feature = "gradients")]
+pub fn gradient_text_line(text: &str, gradient: &Gradient) -> Line<'static> {
+    Line::from(gradient_spans(text, gradient))
+}
+
+/// Render a repeated character bar with gradient coloring, returning a `Line`.
+#[cfg(feature = "gradients")]
+pub fn gradient_bar(width: usize, ch: char, gradient: &Gradient) -> Line<'static> {
+    Line::from(gradient_line(width, ch, gradient))
 }

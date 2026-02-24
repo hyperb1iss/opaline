@@ -37,6 +37,7 @@ colored = { version = "3", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1"
+serde_json = "1.0.149"
 
 [profile.release]
 lto = true

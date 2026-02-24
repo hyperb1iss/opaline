@@ -86,9 +86,19 @@ pub struct StyleDef {
     #[serde(default)]
     pub bold: bool,
     #[serde(default)]
+    pub dim: bool,
+    #[serde(default)]
     pub italic: bool,
     #[serde(default)]
     pub underline: bool,
     #[serde(default)]
-    pub dim: bool,
+    pub slow_blink: bool,
+    #[serde(default)]
+    pub rapid_blink: bool,
+    #[serde(default)]
+    pub reversed: bool,
+    #[serde(default)]
+    pub hidden: bool,
+    #[serde(default)]
+    pub crossed_out: bool,
 }

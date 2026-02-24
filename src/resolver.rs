@@ -181,9 +181,14 @@ fn resolve_styles(
                 fg,
                 bg,
                 bold: def.bold,
+                dim: def.dim,
                 italic: def.italic,
                 underline: def.underline,
-                dim: def.dim,
+                slow_blink: def.slow_blink,
+                rapid_blink: def.rapid_blink,
+                reversed: def.reversed,
+                hidden: def.hidden,
+                crossed_out: def.crossed_out,
             },
         );
     }

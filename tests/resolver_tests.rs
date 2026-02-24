@@ -139,9 +139,7 @@ fn style_resolves_fg_bg() {
             fg: Some(OpalineColor::new(128, 255, 234)),
             bg: Some(OpalineColor::new(30, 30, 40)),
             bold: true,
-            italic: false,
-            underline: false,
-            dim: false,
+            ..OpalineStyle::new()
         }
     );
 }

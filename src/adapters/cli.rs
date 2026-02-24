@@ -47,14 +47,26 @@ impl<S: AsRef<str>> ColoredExt for S {
         if style.bold {
             result = result.bold();
         }
+        if style.dim {
+            result = result.dimmed();
+        }
         if style.italic {
             result = result.italic();
         }
         if style.underline {
             result = result.underline();
         }
-        if style.dim {
-            result = result.dimmed();
+        if style.slow_blink || style.rapid_blink {
+            result = result.blink();
+        }
+        if style.reversed {
+            result = result.reversed();
+        }
+        if style.hidden {
+            result = result.hidden();
+        }
+        if style.crossed_out {
+            result = result.strikethrough();
         }
 
         result
