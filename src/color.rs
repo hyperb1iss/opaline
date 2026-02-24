@@ -30,6 +30,16 @@ impl OpalineColor {
         b: 128,
     };
 
+    /// Pure black.
+    pub const BLACK: Self = Self { r: 0, g: 0, b: 0 };
+
+    /// Pure white.
+    pub const WHITE: Self = Self {
+        r: 255,
+        g: 255,
+        b: 255,
+    };
+
     /// Create a color from RGB components.
     pub const fn new(r: u8, g: u8, b: u8) -> Self {
         Self { r, g, b }
@@ -78,6 +88,36 @@ impl OpalineColor {
             g: mix(self.g, other.g),
             b: mix(self.b, other.b),
         }
+    }
+
+    /// Darken by mixing toward black. `amount` 0.0 = unchanged, 1.0 = pure black.
+    #[must_use]
+    pub fn darken(self, amount: f32) -> Self {
+        self.lerp(Self::BLACK, amount)
+    }
+
+    /// Lighten by mixing toward white. `amount` 0.0 = unchanged, 1.0 = pure white.
+    #[must_use]
+    pub fn lighten(self, amount: f32) -> Self {
+        self.lerp(Self::WHITE, amount)
+    }
+
+    /// Desaturate by mixing toward the luminance-equivalent gray.
+    /// `amount` 0.0 = unchanged, 1.0 = fully desaturated.
+    #[must_use]
+    #[allow(
+        clippy::cast_sign_loss,
+        clippy::cast_possible_truncation,
+        clippy::as_conversions
+    )]
+    pub fn desaturate(self, amount: f32) -> Self {
+        let lum = f32::from(self.r)
+            .mul_add(
+                0.299,
+                f32::from(self.g).mul_add(0.587, f32::from(self.b) * 0.114),
+            )
+            .round() as u8;
+        self.lerp(Self::new(lum, lum, lum), amount)
     }
 }
 

@@ -149,6 +149,33 @@ impl Theme {
     pub fn is_light(&self) -> bool {
         self.meta.variant == ThemeVariant::Light
     }
+
+    // ── Token injection ───────────────────────────────────────────────
+
+    /// Register a token only if the theme doesn't already define it.
+    ///
+    /// Use this for app-level derived tokens — TOML-defined values take
+    /// priority so theme authors can override derivations.
+    pub fn register_default_token(&mut self, name: impl Into<String>, color: OpalineColor) {
+        let key = name.into();
+        self.tokens.entry(key).or_insert(color);
+    }
+
+    /// Register a token, overwriting any existing value.
+    pub fn register_token(&mut self, name: impl Into<String>, color: OpalineColor) {
+        self.tokens.insert(name.into(), color);
+    }
+
+    /// Register a style only if the theme doesn't already define it.
+    pub fn register_default_style(&mut self, name: impl Into<String>, style: OpalineStyle) {
+        let key = name.into();
+        self.styles.entry(key).or_insert(style);
+    }
+
+    /// Register a style, overwriting any existing value.
+    pub fn register_style(&mut self, name: impl Into<String>, style: OpalineStyle) {
+        self.styles.insert(name.into(), style);
+    }
 }
 
 // ── Builder ─────────────────────────────────────────────────────────
@@ -310,15 +337,130 @@ mod global {
         *ACTIVE_THEME.write() = Arc::new(theme);
     }
 
-    /// Load a builtin theme by name and set it as the active global theme.
+    /// Load a theme by name and set it as the active global theme.
+    ///
+    /// Searches builtins first, then discovery paths (if the `discovery`
+    /// feature is enabled).
     #[cfg(feature = "builtin-themes")]
     pub fn load_theme_by_name(name: &str) -> Result<(), OpalineError> {
-        let theme =
-            crate::builtins::load_by_name(name).ok_or_else(|| OpalineError::ThemeNotFound {
-                name: name.to_string(),
-            })?;
-        set_theme(theme);
-        Ok(())
+        // Check builtins first
+        if let Some(theme) = crate::builtins::load_by_name(name) {
+            set_theme(theme);
+            return Ok(());
+        }
+
+        // Search discovery paths
+        #[cfg(feature = "discovery")]
+        {
+            for dir in crate::discovery::theme_dirs() {
+                let path = dir.join(format!("{name}.toml"));
+                if path.exists() {
+                    let theme = crate::loader::load_from_file(&path)?;
+                    set_theme(theme);
+                    return Ok(());
+                }
+            }
+        }
+
+        Err(OpalineError::ThemeNotFound {
+            name: name.to_string(),
+        })
+    }
+
+    /// Load a theme by name, run an app-level derivation callback, then
+    /// set as the active global theme.
+    ///
+    /// The callback receives a mutable reference to the loaded theme,
+    /// allowing apps to register derived tokens before it becomes active.
+    #[cfg(feature = "builtin-themes")]
+    pub fn load_theme_by_name_with<F>(name: &str, derive: F) -> Result<(), OpalineError>
+    where
+        F: FnOnce(&mut Theme),
+    {
+        // Check builtins first
+        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+            derive(&mut theme);
+            set_theme(theme);
+            return Ok(());
+        }
+
+        // Search discovery paths
+        #[cfg(feature = "discovery")]
+        {
+            for dir in crate::discovery::theme_dirs() {
+                let path = dir.join(format!("{name}.toml"));
+                if path.exists() {
+                    let mut theme = crate::loader::load_from_file(&path)?;
+                    derive(&mut theme);
+                    set_theme(theme);
+                    return Ok(());
+                }
+            }
+        }
+
+        Err(OpalineError::ThemeNotFound {
+            name: name.to_string(),
+        })
+    }
+
+    /// Load a theme by name, searching app-specific discovery paths too.
+    ///
+    /// Like [`load_theme_by_name`] but also searches
+    /// `~/.config/<app_name>/themes/`.
+    #[cfg(all(feature = "builtin-themes", feature = "discovery"))]
+    pub fn load_theme_by_name_for_app(name: &str, app_name: &str) -> Result<(), OpalineError> {
+        // Check builtins first
+        if let Some(theme) = crate::builtins::load_by_name(name) {
+            set_theme(theme);
+            return Ok(());
+        }
+
+        // Search app-specific discovery paths
+        for dir in crate::discovery::app_theme_dirs(app_name) {
+            let path = dir.join(format!("{name}.toml"));
+            if path.exists() {
+                let theme = crate::loader::load_from_file(&path)?;
+                set_theme(theme);
+                return Ok(());
+            }
+        }
+
+        Err(OpalineError::ThemeNotFound {
+            name: name.to_string(),
+        })
+    }
+
+    /// Like [`load_theme_by_name_for_app`] but with an app-level derivation callback.
+    #[cfg(all(feature = "builtin-themes", feature = "discovery"))]
+    pub fn load_theme_by_name_for_app_with<F>(
+        name: &str,
+        app_name: &str,
+        derive: F,
+    ) -> Result<(), OpalineError>
+    where
+        F: FnOnce(&mut Theme),
+    {
+        // Check builtins first
+        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+            derive(&mut theme);
+            set_theme(theme);
+            return Ok(());
+        }
+
+        // Search app-specific discovery paths
+        for dir in crate::discovery::app_theme_dirs(app_name) {
+            let path = dir.join(format!("{name}.toml"));
+            if path.exists() {
+                let mut theme = crate::loader::load_from_file(&path)?;
+                derive(&mut theme);
+                set_theme(theme);
+                return Ok(());
+            }
+        }
+
+        Err(OpalineError::ThemeNotFound {
+            name: name.to_string(),
+        })
     }
 
     /// Load a theme from a file and set it as the active global theme.
@@ -334,3 +476,20 @@ pub use global::{current, load_theme, set_theme};
 
 #[cfg(all(feature = "global-state", feature = "builtin-themes"))]
 pub use global::load_theme_by_name;
+
+#[cfg(all(
+    feature = "global-state",
+    feature = "builtin-themes",
+    feature = "discovery"
+))]
+pub use global::load_theme_by_name_for_app;
+
+#[cfg(all(feature = "global-state", feature = "builtin-themes"))]
+pub use global::load_theme_by_name_with;
+
+#[cfg(all(
+    feature = "global-state",
+    feature = "builtin-themes",
+    feature = "discovery"
+))]
+pub use global::load_theme_by_name_for_app_with;

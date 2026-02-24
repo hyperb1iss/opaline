@@ -76,10 +76,16 @@ pub use adapters::cli::gradient_string;
 pub use adapters::cli::{ColoredExt, ThemeCliExt};
 
 // Global state
-#[cfg(all(feature = "global-state", feature = "builtin-themes"))]
-pub use theme::load_theme_by_name;
 #[cfg(feature = "global-state")]
 pub use theme::{current, load_theme, set_theme};
+#[cfg(all(feature = "global-state", feature = "builtin-themes"))]
+pub use theme::{load_theme_by_name, load_theme_by_name_with};
+#[cfg(all(
+    feature = "global-state",
+    feature = "builtin-themes",
+    feature = "discovery"
+))]
+pub use theme::{load_theme_by_name_for_app, load_theme_by_name_for_app_with};
 
 // Builtins
 #[cfg(feature = "builtin-themes")]
