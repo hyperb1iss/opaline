@@ -8,7 +8,7 @@ description = "A token-based theme engine for Ratatui TUI applications"
 readme = "README.md"
 homepage = "https://github.com/hyperb1iss/opaline"
 repository = "https://github.com/hyperb1iss/opaline"
-license = "MIT OR Apache-2.0"
+license = "MIT"
 keywords = ["ratatui", "theme", "tui", "terminal", "color"]
 categories = ["command-line-interface", "config"]
 

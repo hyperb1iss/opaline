@@ -85,7 +85,7 @@ export default defineConfig({
     socialLinks: [{ icon: 'github', link: 'https://github.com/hyperb1iss/opaline' }],
 
     footer: {
-      message: 'Released under the MIT OR Apache-2.0 License.',
+      message: 'Released under the MIT License.',
       copyright: 'Copyright \u00a9 2025 Stefanie Jane',
     },
 

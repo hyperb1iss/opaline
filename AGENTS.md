@@ -79,7 +79,7 @@ Kanagawa Wave, Everforest Dark, Everforest Light
 ## Conventions
 
 - Edition 2024, MSRV 1.85
-- MIT OR Apache-2.0 (Ratatui ecosystem standard)
+- MIT license
 - `unsafe_code = "forbid"`, `clippy::pedantic` deny
 - Tests in `tests/` directory, not inline `#[cfg(test)]`
 - `thiserror` for error types

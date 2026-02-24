@@ -23,7 +23,7 @@
     <img src="https://img.shields.io/badge/Themes-20_Built--in-ff6ac1?style=for-the-badge&logo=palette&logoColor=white" alt="20 Themes">
   </a>
   <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/License-MIT%2FApache--2.0-50fa7b?style=for-the-badge&logo=apache&logoColor=white" alt="License">
+    <img src="https://img.shields.io/badge/License-MIT-50fa7b?style=for-the-badge&logoColor=white" alt="License">
   </a>
 </p>
 
@@ -293,7 +293,7 @@ Contributions welcome! Adding a new builtin theme is as easy as dropping a `.tom
 
 ## ⚖️ License
 
-Distributed under the MIT OR Apache-2.0 License. See `LICENSE-MIT` and `LICENSE-APACHE` for details.
+Distributed under the MIT License. See `LICENSE` for details.
 
 ---
 

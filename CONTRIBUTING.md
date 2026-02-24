@@ -64,4 +64,4 @@ Key rules: `unsafe_code = "forbid"`, `clippy::pedantic` deny, `unwrap_used = "de
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT OR Apache-2.0 License.
+By contributing, you agree that your contributions will be licensed under the MIT License.
