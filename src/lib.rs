@@ -51,6 +51,9 @@ pub mod builtins;
 #[cfg(feature = "discovery")]
 pub mod discovery;
 
+#[cfg(feature = "widgets")]
+pub mod widgets;
+
 // ── Re-exports ───────────────────────────────────────────────────────────
 
 // Core types — always available
@@ -94,3 +97,7 @@ pub use builtins::{ThemeInfo, list_available_themes, load_by_name};
 // Discovery
 #[cfg(feature = "discovery")]
 pub use discovery::{app_theme_dirs, theme_dirs};
+
+// Widgets
+#[cfg(feature = "widgets")]
+pub use widgets::{ThemeSelector, ThemeSelectorAction, ThemeSelectorState};
