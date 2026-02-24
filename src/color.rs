@@ -64,14 +64,15 @@ impl OpalineColor {
 
     /// Linearly interpolate between `self` and `other` by factor `t` (clamped to `[0.0, 1.0]`).
     #[must_use]
-    #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation, clippy::as_conversions)]
+    #[allow(
+        clippy::cast_sign_loss,
+        clippy::cast_possible_truncation,
+        clippy::as_conversions
+    )]
     pub fn lerp(self, other: Self, t: f32) -> Self {
         let t = t.clamp(0.0, 1.0);
-        let mix = |a: u8, b: u8| -> u8 {
-            f32::from(a)
-                .mul_add(1.0 - t, f32::from(b) * t)
-                .round() as u8
-        };
+        let mix =
+            |a: u8, b: u8| -> u8 { f32::from(a).mul_add(1.0 - t, f32::from(b) * t).round() as u8 };
         Self {
             r: mix(self.r, other.r),
             g: mix(self.g, other.g),

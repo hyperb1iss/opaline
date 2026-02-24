@@ -208,11 +208,12 @@ fn resolve_gradients(
     for (name, stops) in raw {
         let mut colors = Vec::with_capacity(stops.len());
         for (i, stop) in stops.iter().enumerate() {
-            let color =
-                resolve_color_ref(stop, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+            let color = resolve_color_ref(stop, palette, tokens).ok_or_else(|| {
+                OpalineError::UnresolvedToken {
                     token: format!("{name}[{i}]"),
                     reference: stop.clone(),
-                })?;
+                }
+            })?;
             colors.push(color);
         }
 

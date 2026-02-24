@@ -1,6 +1,6 @@
+use opaline::OpalineColor;
 use opaline::builtins;
 use opaline::schema::ThemeVariant;
-use opaline::OpalineColor;
 use pretty_assertions::assert_eq;
 
 // ── SilkCircuit Neon (default) ───────────────────────────────────────────
@@ -164,7 +164,13 @@ fn all_builtins_have_required_styles() {
     }
 }
 
-const REQUIRED_GRADIENTS: &[&str] = &["primary", "warm", "success_gradient", "error_gradient", "aurora"];
+const REQUIRED_GRADIENTS: &[&str] = &[
+    "primary",
+    "warm",
+    "success_gradient",
+    "error_gradient",
+    "aurora",
+];
 
 #[test]
 fn all_builtins_have_required_gradients() {
@@ -209,10 +215,7 @@ fn dark_themes_marked_correctly() {
     ];
     for id in &dark_ids {
         let theme = builtins::load_by_name(id).expect("loads");
-        assert!(
-            theme.is_dark(),
-            "theme '{id}' should be ThemeVariant::Dark"
-        );
+        assert!(theme.is_dark(), "theme '{id}' should be ThemeVariant::Dark");
     }
 }
 

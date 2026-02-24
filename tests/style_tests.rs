@@ -51,11 +51,7 @@ fn bg_constructor() {
 fn builder_chain_basic() {
     let fg = OpalineColor::new(225, 53, 255);
     let bg = OpalineColor::new(18, 18, 24);
-    let s = OpalineStyle::new()
-        .with_fg(fg)
-        .with_bg(bg)
-        .bold()
-        .italic();
+    let s = OpalineStyle::new().with_fg(fg).with_bg(bg).bold().italic();
 
     assert_eq!(s.fg, Some(fg));
     assert_eq!(s.bg, Some(bg));
@@ -120,8 +116,7 @@ fn builder_each_modifier_independent() {
 
 #[test]
 fn merge_other_takes_precedence_for_colors() {
-    let base = OpalineStyle::fg(OpalineColor::new(255, 0, 0))
-        .with_bg(OpalineColor::new(0, 0, 0));
+    let base = OpalineStyle::fg(OpalineColor::new(255, 0, 0)).with_bg(OpalineColor::new(0, 0, 0));
     let overlay = OpalineStyle::fg(OpalineColor::new(0, 255, 0));
 
     let merged = base.merge(&overlay);

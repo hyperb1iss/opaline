@@ -129,8 +129,7 @@ fn style_to_ratatui_single_modifier_each() {
         );
         // Should only have that one modifier
         assert_eq!(
-            rs.add_modifier,
-            expected_modifier,
+            rs.add_modifier, expected_modifier,
             "only {expected_modifier:?} should be set"
         );
     }

@@ -85,10 +85,7 @@ impl Theme {
 
     /// Look up a style by name, returning `Default` if missing.
     pub fn style(&self, name: &str) -> OpalineStyle {
-        self.styles
-            .get(name)
-            .cloned()
-            .unwrap_or_default()
+        self.styles.get(name).cloned().unwrap_or_default()
     }
 
     /// Strict style lookup — returns `None` if the style doesn't exist.
@@ -316,8 +313,8 @@ mod global {
     /// Load a builtin theme by name and set it as the active global theme.
     #[cfg(feature = "builtin-themes")]
     pub fn load_theme_by_name(name: &str) -> Result<(), OpalineError> {
-        let theme = crate::builtins::load_by_name(name)
-            .ok_or_else(|| OpalineError::ThemeNotFound {
+        let theme =
+            crate::builtins::load_by_name(name).ok_or_else(|| OpalineError::ThemeNotFound {
                 name: name.to_string(),
             })?;
         set_theme(theme);

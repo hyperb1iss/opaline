@@ -110,11 +110,7 @@ pub fn list_available_themes() -> Vec<ThemeInfo> {
                                 display_name: theme.meta.name.clone(),
                                 variant: theme.meta.variant,
                                 author: theme.meta.author.clone().unwrap_or_default(),
-                                description: theme
-                                    .meta
-                                    .description
-                                    .clone()
-                                    .unwrap_or_default(),
+                                description: theme.meta.description.clone().unwrap_or_default(),
                                 builtin: false,
                                 path: Some(path),
                             });

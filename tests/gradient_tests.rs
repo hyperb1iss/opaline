@@ -103,10 +103,7 @@ fn len_and_is_empty() {
 
 #[test]
 fn stops_accessor() {
-    let colors = vec![
-        OpalineColor::new(255, 0, 0),
-        OpalineColor::new(0, 255, 0),
-    ];
+    let colors = vec![OpalineColor::new(255, 0, 0), OpalineColor::new(0, 255, 0)];
     let g = Gradient::new(colors.clone());
     assert_eq!(g.stops(), &colors);
 }

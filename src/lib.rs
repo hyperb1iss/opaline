@@ -37,9 +37,9 @@ pub mod style;
 #[cfg(feature = "gradients")]
 pub mod gradient;
 
-pub mod schema;
-pub mod resolver;
 pub mod loader;
+pub mod resolver;
+pub mod schema;
 pub mod theme;
 
 pub mod adapters;
@@ -71,20 +71,20 @@ pub use adapters::ratatui::ThemeRatatuiExt;
 pub use adapters::ratatui::{gradient_bar, gradient_line, gradient_spans, gradient_text_line};
 
 // CLI adapter
-#[cfg(feature = "cli")]
-pub use adapters::cli::{ColoredExt, ThemeCliExt};
 #[cfg(all(feature = "cli", feature = "gradients"))]
 pub use adapters::cli::gradient_string;
+#[cfg(feature = "cli")]
+pub use adapters::cli::{ColoredExt, ThemeCliExt};
 
 // Global state
-#[cfg(feature = "global-state")]
-pub use theme::{current, load_theme, set_theme};
 #[cfg(all(feature = "global-state", feature = "builtin-themes"))]
 pub use theme::load_theme_by_name;
+#[cfg(feature = "global-state")]
+pub use theme::{current, load_theme, set_theme};
 
 // Builtins
 #[cfg(feature = "builtin-themes")]
-pub use builtins::{list_available_themes, load_by_name, ThemeInfo};
+pub use builtins::{ThemeInfo, list_available_themes, load_by_name};
 
 // Discovery
 #[cfg(feature = "discovery")]

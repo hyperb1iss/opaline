@@ -33,10 +33,7 @@ fn load_minimal_theme_from_string() {
 #[test]
 fn loaded_theme_resolves_tokens() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
-    assert_eq!(
-        theme.color("accent.primary"),
-        OpalineColor::new(255, 0, 0)
-    );
+    assert_eq!(theme.color("accent.primary"), OpalineColor::new(255, 0, 0));
     assert_eq!(
         theme.color("accent.secondary"),
         OpalineColor::new(0, 0, 255)
@@ -47,23 +44,14 @@ fn loaded_theme_resolves_tokens() {
 fn loaded_theme_resolves_styles() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
     let style = theme.style("keyword");
-    assert_eq!(
-        style,
-        OpalineStyle::fg(OpalineColor::new(255, 0, 0)).bold()
-    );
+    assert_eq!(style, OpalineStyle::fg(OpalineColor::new(255, 0, 0)).bold());
 }
 
 #[test]
 fn loaded_theme_resolves_gradients() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
-    assert_eq!(
-        theme.gradient("primary", 0.0),
-        OpalineColor::new(255, 0, 0)
-    );
-    assert_eq!(
-        theme.gradient("primary", 1.0),
-        OpalineColor::new(0, 0, 255)
-    );
+    assert_eq!(theme.gradient("primary", 0.0), OpalineColor::new(255, 0, 0));
+    assert_eq!(theme.gradient("primary", 1.0), OpalineColor::new(0, 0, 255));
 }
 
 #[test]
@@ -81,10 +69,7 @@ fn missing_style_returns_default() {
 #[test]
 fn missing_gradient_returns_fallback() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
-    assert_eq!(
-        theme.gradient("nonexistent", 0.5),
-        OpalineColor::FALLBACK
-    );
+    assert_eq!(theme.gradient("nonexistent", 0.5), OpalineColor::FALLBACK);
 }
 
 #[test]

@@ -34,7 +34,12 @@ impl Gradient {
     ///
     /// With a single stop, always returns that stop. With multiple stops,
     /// linearly interpolates between the appropriate segment.
-    #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation, clippy::cast_precision_loss, clippy::as_conversions)]
+    #[allow(
+        clippy::cast_sign_loss,
+        clippy::cast_possible_truncation,
+        clippy::cast_precision_loss,
+        clippy::as_conversions
+    )]
     pub fn at(&self, t: f32) -> OpalineColor {
         let t = t.clamp(0.0, 1.0);
 
@@ -58,9 +63,7 @@ impl Gradient {
         match n {
             0 => vec![],
             1 => vec![self.at(0.5)],
-            _ => (0..n)
-                .map(|i| self.at(i as f32 / (n - 1) as f32))
-                .collect(),
+            _ => (0..n).map(|i| self.at(i as f32 / (n - 1) as f32)).collect(),
         }
     }
 

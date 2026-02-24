@@ -103,7 +103,11 @@ pub trait ThemeRatatuiExt {
     fn ratatui_style(&self, name: &str) -> Style;
 
     /// Create a styled `Span` from a token name and content.
-    fn ratatui_span<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> ratatui_core::text::Span<'a>;
+    fn ratatui_span<'a>(
+        &self,
+        style_name: &str,
+        content: impl Into<Cow<'a, str>>,
+    ) -> ratatui_core::text::Span<'a>;
 
     /// Create a styled `Line` from a token name and content.
     fn ratatui_line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a>;
@@ -129,7 +133,11 @@ impl ThemeRatatuiExt for Theme {
         self.style(name).into()
     }
 
-    fn ratatui_span<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> ratatui_core::text::Span<'a> {
+    fn ratatui_span<'a>(
+        &self,
+        style_name: &str,
+        content: impl Into<Cow<'a, str>>,
+    ) -> ratatui_core::text::Span<'a> {
         ratatui_core::text::Span::styled(content, self.ratatui_style(style_name))
     }
 

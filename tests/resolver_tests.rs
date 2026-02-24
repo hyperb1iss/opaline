@@ -29,8 +29,7 @@ fn empty_theme_resolves() {
 #[test]
 fn palette_resolves_hex() {
     let mut tf = minimal_theme_file();
-    tf.palette
-        .insert("red".to_string(), "#ff0000".to_string());
+    tf.palette.insert("red".to_string(), "#ff0000".to_string());
 
     let resolved = opaline::resolver::resolve(&tf).expect("resolves");
     assert_eq!(
@@ -145,12 +144,12 @@ fn style_resolves_fg_bg() {
 #[test]
 fn gradient_resolves_stops() {
     let mut tf = minimal_theme_file();
-    tf.palette
-        .insert("red".to_string(), "#ff0000".to_string());
-    tf.palette
-        .insert("blue".to_string(), "#0000ff".to_string());
-    tf.gradients
-        .insert("test".to_string(), vec!["red".to_string(), "blue".to_string()]);
+    tf.palette.insert("red".to_string(), "#ff0000".to_string());
+    tf.palette.insert("blue".to_string(), "#0000ff".to_string());
+    tf.gradients.insert(
+        "test".to_string(),
+        vec!["red".to_string(), "blue".to_string()],
+    );
 
     let resolved = opaline::resolver::resolve(&tf).expect("resolves");
     let grad = resolved.gradients.get("test").expect("gradient exists");

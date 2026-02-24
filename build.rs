@@ -46,7 +46,11 @@ fn main() {
     }
 
     // Static name registry: &[(&str, &str)] — (kebab-id, display-name)
-    writeln!(code, "\n/// Auto-generated list of (kebab-id, display-name) for all builtin themes.").expect("write to String");
+    writeln!(
+        code,
+        "\n/// Auto-generated list of (kebab-id, display-name) for all builtin themes."
+    )
+    .expect("write to String");
     writeln!(code, "const GENERATED_BUILTIN_NAMES: &[(&str, &str)] = &[").expect("write to String");
     for (stem, display) in &themes {
         let id = stem.replace('_', "-");
@@ -57,7 +61,11 @@ fn main() {
 
     // load_toml match
     writeln!(code, "\n/// Auto-generated TOML lookup by kebab-case ID.").expect("write to String");
-    writeln!(code, "fn generated_load_toml(id: &str) -> Option<&'static str> {{\n    match id {{").expect("write to String");
+    writeln!(
+        code,
+        "fn generated_load_toml(id: &str) -> Option<&'static str> {{\n    match id {{"
+    )
+    .expect("write to String");
     for (stem, _) in &themes {
         let id = stem.replace('_', "-");
         let const_name = stem.replace('-', "_").to_uppercase();

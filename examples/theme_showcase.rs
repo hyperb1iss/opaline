@@ -12,14 +12,13 @@ use std::time::Duration;
 
 use crossterm::event::{self, Event, KeyCode, KeyEventKind};
 use opaline::{
-    gradient_bar, list_available_themes, load_by_name, Theme, ThemeInfo,
-    ThemeRatatuiExt,
+    Theme, ThemeInfo, ThemeRatatuiExt, gradient_bar, list_available_themes, load_by_name,
 };
+use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Layout, Rect};
 use ratatui::style::Style;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, List, ListItem, ListState, Paragraph};
-use ratatui::Frame;
 
 // ── App State ────────────────────────────────────────────────────────────────
 
@@ -175,10 +174,7 @@ fn render_header(frame: &mut Frame, app: &App, area: Rect) {
     let title = app
         .theme
         .gradient_styled_line("aurora", "\u{2726} Opaline Theme Showcase");
-    frame.render_widget(
-        Paragraph::new(title).alignment(Alignment::Center),
-        inner,
-    );
+    frame.render_widget(Paragraph::new(title).alignment(Alignment::Center), inner);
 }
 
 fn render_theme_list(frame: &mut Frame, app: &mut App, area: Rect) {
@@ -196,10 +192,7 @@ fn render_theme_list(frame: &mut Frame, app: &mut App, area: Rect) {
                 "\u{25cb}"
             };
             ListItem::new(Line::from(vec![
-                Span::styled(
-                    format!(" {marker} "),
-                    app.theme.ratatui_style("muted"),
-                ),
+                Span::styled(format!(" {marker} "), app.theme.ratatui_style("muted")),
                 Span::styled(
                     info.display_name.clone(),
                     Style::default().fg(app.theme.ratatui_color("text.secondary")),
@@ -211,10 +204,7 @@ fn render_theme_list(frame: &mut Frame, app: &mut App, area: Rect) {
     let list = List::new(items)
         .block(
             Block::bordered()
-                .title(Line::styled(
-                    " Themes ",
-                    app.theme.ratatui_style("keyword"),
-                ))
+                .title(Line::styled(" Themes ", app.theme.ratatui_style("keyword")))
                 .style(base)
                 .border_style(border_style),
         )
@@ -236,11 +226,8 @@ fn render_styles(frame: &mut Frame, app: &App, area: Rect) {
     let inner = block.inner(area);
     frame.render_widget(block, area);
 
-    let [styles_area, tokens_area] = Layout::vertical([
-        Constraint::Min(16),
-        Constraint::Fill(1),
-    ])
-    .areas(inner);
+    let [styles_area, tokens_area] =
+        Layout::vertical([Constraint::Min(16), Constraint::Fill(1)]).areas(inner);
 
     render_style_samples(frame, app, styles_area);
     render_token_swatches(frame, app, tokens_area);
@@ -273,10 +260,7 @@ fn render_style_samples(frame: &mut Frame, app: &App, area: Rect) {
         .map(|(name, sample)| {
             Line::from(vec![
                 Span::styled(format!(" {name:<16} "), label_style),
-                Span::styled(
-                    (*sample).to_string(),
-                    app.theme.ratatui_style(name),
-                ),
+                Span::styled((*sample).to_string(), app.theme.ratatui_style(name)),
             ])
         })
         .collect();
@@ -330,11 +314,8 @@ fn render_gradients(frame: &mut Frame, app: &App, area: Rect) {
     let inner = block.inner(area);
     frame.render_widget(block, area);
 
-    let [bars_area, meta_area] = Layout::vertical([
-        Constraint::Fill(1),
-        Constraint::Length(5),
-    ])
-    .areas(inner);
+    let [bars_area, meta_area] =
+        Layout::vertical([Constraint::Fill(1), Constraint::Length(5)]).areas(inner);
 
     render_gradient_bars(frame, app, bars_area);
     render_theme_meta(frame, app, meta_area);
@@ -392,10 +373,7 @@ fn render_theme_meta(frame: &mut Frame, app: &App, area: Rect) {
             Span::styled("  Variant ", label_style),
             Span::styled(variant_str, app.theme.ratatui_style("info_style")),
         ]),
-        Line::styled(
-            format!("  {desc}"),
-            app.theme.ratatui_style("muted"),
-        ),
+        Line::styled(format!("  {desc}"), app.theme.ratatui_style("muted")),
     ];
 
     frame.render_widget(Paragraph::new(lines), area);
