@@ -6,7 +6,7 @@ use crate::color::OpalineColor;
 /// colors (not token names) and can be converted to `ratatui::style::Style`
 /// via the adapter.
 #[allow(clippy::struct_excessive_bools)]
-#[derive(Clone, Debug, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct OpalineStyle {
     pub fg: Option<OpalineColor>,
     pub bg: Option<OpalineColor>,

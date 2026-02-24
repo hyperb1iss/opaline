@@ -24,8 +24,12 @@ pub struct Theme {
 }
 
 impl Theme {
-    /// Construct a `Theme` from resolved data. Called by the loader.
-    pub(crate) fn from_resolved(meta: ThemeMeta, resolved: ResolvedTheme) -> Self {
+    /// Construct a `Theme` from pre-resolved data.
+    ///
+    /// For most use cases, prefer [`load_from_str`](crate::loader::load_from_str)
+    /// or [`load_from_file`](crate::loader::load_from_file). Use this when you
+    /// have already run the resolution pipeline yourself.
+    pub fn from_resolved(meta: ThemeMeta, resolved: ResolvedTheme) -> Self {
         Self {
             meta,
             palette: resolved.palette,
@@ -34,6 +38,13 @@ impl Theme {
             #[cfg(feature = "gradients")]
             gradients: resolved.gradients,
         }
+    }
+
+    /// Start building a theme programmatically.
+    ///
+    /// See [`ThemeBuilder`] for the full builder API.
+    pub fn builder(name: impl Into<String>) -> ThemeBuilder {
+        ThemeBuilder::new(name)
     }
 
     // ── Color access ─────────────────────────────────────────────────────
@@ -116,6 +127,106 @@ impl Theme {
     /// Whether this is a light theme.
     pub fn is_light(&self) -> bool {
         self.meta.variant == ThemeVariant::Light
+    }
+}
+
+// ── Builder ─────────────────────────────────────────────────────────
+
+/// Programmatic theme construction without TOML.
+///
+/// ```rust
+/// use opaline::{Theme, OpalineColor, OpalineStyle};
+///
+/// let theme = Theme::builder("My Theme")
+///     .token("accent.primary", OpalineColor::new(225, 53, 255))
+///     .token("bg.base", OpalineColor::new(18, 18, 24))
+///     .style("keyword", OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold())
+///     .build();
+///
+/// assert_eq!(theme.meta.name, "My Theme");
+/// ```
+pub struct ThemeBuilder {
+    meta: ThemeMeta,
+    palette: HashMap<String, OpalineColor>,
+    tokens: HashMap<String, OpalineColor>,
+    styles: HashMap<String, OpalineStyle>,
+    #[cfg(feature = "gradients")]
+    gradients: HashMap<String, Gradient>,
+}
+
+impl ThemeBuilder {
+    fn new(name: impl Into<String>) -> Self {
+        Self {
+            meta: ThemeMeta::new(name),
+            palette: HashMap::new(),
+            tokens: HashMap::new(),
+            styles: HashMap::new(),
+            #[cfg(feature = "gradients")]
+            gradients: HashMap::new(),
+        }
+    }
+
+    /// Set the theme author.
+    #[must_use]
+    pub fn author(mut self, author: impl Into<String>) -> Self {
+        self.meta.author = Some(author.into());
+        self
+    }
+
+    /// Set the theme variant (dark/light).
+    #[must_use]
+    pub fn variant(mut self, variant: ThemeVariant) -> Self {
+        self.meta.variant = variant;
+        self
+    }
+
+    /// Set the theme description.
+    #[must_use]
+    pub fn description(mut self, desc: impl Into<String>) -> Self {
+        self.meta.description = Some(desc.into());
+        self
+    }
+
+    /// Add a palette color.
+    #[must_use]
+    pub fn palette(mut self, name: impl Into<String>, color: OpalineColor) -> Self {
+        self.palette.insert(name.into(), color);
+        self
+    }
+
+    /// Add a semantic token.
+    #[must_use]
+    pub fn token(mut self, name: impl Into<String>, color: OpalineColor) -> Self {
+        self.tokens.insert(name.into(), color);
+        self
+    }
+
+    /// Add a composed style.
+    #[must_use]
+    pub fn style(mut self, name: impl Into<String>, style: OpalineStyle) -> Self {
+        self.styles.insert(name.into(), style);
+        self
+    }
+
+    /// Add a gradient.
+    #[cfg(feature = "gradients")]
+    #[must_use]
+    pub fn gradient(mut self, name: impl Into<String>, gradient: Gradient) -> Self {
+        self.gradients.insert(name.into(), gradient);
+        self
+    }
+
+    /// Build the theme.
+    #[must_use]
+    pub fn build(self) -> Theme {
+        Theme {
+            meta: self.meta,
+            palette: self.palette,
+            tokens: self.tokens,
+            styles: self.styles,
+            #[cfg(feature = "gradients")]
+            gradients: self.gradients,
+        }
     }
 }
 

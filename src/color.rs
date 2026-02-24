@@ -99,3 +99,41 @@ impl FromStr for OpalineColor {
         Self::from_hex(s)
     }
 }
+
+// ── From conversions ────────────────────────────────────────────────────
+
+impl From<(u8, u8, u8)> for OpalineColor {
+    fn from((r, g, b): (u8, u8, u8)) -> Self {
+        Self { r, g, b }
+    }
+}
+
+impl From<OpalineColor> for (u8, u8, u8) {
+    fn from(c: OpalineColor) -> Self {
+        (c.r, c.g, c.b)
+    }
+}
+
+impl From<[u8; 3]> for OpalineColor {
+    fn from([r, g, b]: [u8; 3]) -> Self {
+        Self { r, g, b }
+    }
+}
+
+impl From<OpalineColor> for [u8; 3] {
+    fn from(c: OpalineColor) -> Self {
+        [c.r, c.g, c.b]
+    }
+}
+
+/// Construct from packed `0xRRGGBB` (upper 8 bits ignored).
+#[allow(clippy::cast_possible_truncation, clippy::as_conversions)]
+impl From<u32> for OpalineColor {
+    fn from(packed: u32) -> Self {
+        Self {
+            r: ((packed >> 16) & 0xFF) as u8,
+            g: ((packed >> 8) & 0xFF) as u8,
+            b: (packed & 0xFF) as u8,
+        }
+    }
+}

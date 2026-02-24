@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::fmt;
 
 use serde::Deserialize;
 
@@ -42,6 +43,19 @@ pub struct ThemeMeta {
     pub description: Option<String>,
 }
 
+impl ThemeMeta {
+    /// Create metadata with just a name — everything else defaults.
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
+            name: name.into(),
+            author: None,
+            variant: ThemeVariant::default(),
+            version: None,
+            description: None,
+        }
+    }
+}
+
 /// Whether a theme is designed for dark or light backgrounds.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, serde::Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -49,6 +63,15 @@ pub enum ThemeVariant {
     #[default]
     Dark,
     Light,
+}
+
+impl fmt::Display for ThemeVariant {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Dark => write!(f, "Dark"),
+            Self::Light => write!(f, "Light"),
+        }
+    }
 }
 
 /// Style definition as it appears in a TOML `[styles]` section.

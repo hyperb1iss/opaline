@@ -62,6 +62,16 @@ pub struct ThemeInfo {
     pub path: Option<std::path::PathBuf>,
 }
 
+impl std::fmt::Display for ThemeInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} ({})", self.display_name, self.variant)?;
+        if !self.author.is_empty() {
+            write!(f, " by {}", self.author)?;
+        }
+        Ok(())
+    }
+}
+
 /// List all available themes: builtins first, then user-installed themes
 /// from discovery paths.
 pub fn list_available_themes() -> Vec<ThemeInfo> {
