@@ -2,15 +2,21 @@ use crate::loader;
 use crate::schema::ThemeVariant;
 use crate::theme::Theme;
 
-// ── Embedded TOML sources ────────────────────────────────────────────────
+// Pull in auto-generated constants, registry, and loader from build.rs
+include!(concat!(env!("OUT_DIR"), "/builtins_generated.rs"));
 
-const SILKCIRCUIT_NEON_TOML: &str = include_str!("silkcircuit_neon.toml");
+// ── Public API ───────────────────────────────────────────────────────────
 
-// ── Registry ─────────────────────────────────────────────────────────────
+/// Total number of builtin themes (auto-discovered at compile time).
+pub const BUILTIN_COUNT: usize = GENERATED_BUILTIN_COUNT;
 
 /// All known builtin theme IDs paired with their display names.
+///
+/// Auto-discovered from `src/builtins/*.toml` at compile time.
+/// IDs are kebab-case derived from filenames; display names are
+/// extracted from each theme's `[meta].name` field.
 pub fn builtin_names() -> &'static [(&'static str, &'static str)] {
-    &[("silkcircuit-neon", "SilkCircuit Neon")]
+    GENERATED_BUILTIN_NAMES
 }
 
 /// Load a builtin theme by its kebab-case ID.
@@ -18,18 +24,21 @@ pub fn builtin_names() -> &'static [(&'static str, &'static str)] {
 /// Returns `None` if the name doesn't match any builtin.
 /// Use `"default"` as an alias for `"silkcircuit-neon"`.
 pub fn load_by_name(name: &str) -> Option<Theme> {
-    match name {
-        "silkcircuit-neon" | "default" => Some(silkcircuit_neon()),
-        _ => None,
-    }
+    let name = if name == "default" {
+        "silkcircuit-neon"
+    } else {
+        name
+    };
+    let toml_str = generated_load_toml(name)?;
+    Some(
+        loader::load_from_str(toml_str, None)
+            .unwrap_or_else(|e| panic!("builtin theme '{name}' must be valid TOML: {e}")),
+    )
 }
-
-// ── Individual loaders ───────────────────────────────────────────────────
 
 /// Load the `SilkCircuit` Neon theme (the default).
 pub fn silkcircuit_neon() -> Theme {
-    loader::load_from_str(SILKCIRCUIT_NEON_TOML, None)
-        .expect("builtin silkcircuit-neon theme must be valid TOML")
+    load_by_name("silkcircuit-neon").expect("default builtin must exist")
 }
 
 // ── Theme info ───────────────────────────────────────────────────────────
@@ -58,8 +67,8 @@ pub struct ThemeInfo {
 pub fn list_available_themes() -> Vec<ThemeInfo> {
     let mut themes = Vec::new();
 
-    // Builtins
-    for &(id, _display) in builtin_names() {
+    // Builtins — auto-discovered at compile time
+    for &(id, _) in builtin_names() {
         if let Some(theme) = load_by_name(id) {
             themes.push(ThemeInfo {
                 name: id.to_string(),
@@ -73,7 +82,7 @@ pub fn list_available_themes() -> Vec<ThemeInfo> {
         }
     }
 
-    // Discovery paths (when enabled)
+    // User-installed themes from discovery paths
     #[cfg(feature = "discovery")]
     {
         for dir in crate::discovery::theme_dirs() {

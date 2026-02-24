@@ -1,0 +1,126 @@
+# One Dark — Atom's iconic dark theme
+# https://github.com/atom/atom/tree/master/packages/one-dark-syntax
+
+[meta]
+name = "One Dark"
+author = "Atom"
+variant = "dark"
+version = "1.0"
+description = "Atom's iconic dark syntax theme"
+
+[palette]
+# Backgrounds
+bg0 = "#21252b"
+bg1 = "#282c34"
+bg2 = "#2c323c"
+bg3 = "#3e4451"
+bg4 = "#4b5363"
+
+# Foregrounds
+fg = "#abb2bf"
+fg_dim = "#828997"
+fg_dark = "#5c6370"
+
+# Colors
+red = "#e06c75"
+red_dark = "#be5046"
+green = "#98c379"
+yellow = "#e5c07b"
+yellow_dark = "#d19a66"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+gutter = "#636d83"
+
+[tokens]
+"text.primary" = "fg"
+"text.secondary" = "fg_dim"
+"text.muted" = "fg_dark"
+"text.dim" = "gutter"
+
+"bg.base" = "bg0"
+"bg.panel" = "bg1"
+"bg.code" = "bg1"
+"bg.highlight" = "bg2"
+"bg.elevated" = "bg3"
+"bg.active" = "bg4"
+"bg.selection" = "bg3"
+
+"accent.primary" = "blue"
+"accent.secondary" = "cyan"
+"accent.tertiary" = "magenta"
+"accent.deep" = "blue"
+
+success = "green"
+error = "red"
+warning = "yellow"
+info = "cyan"
+
+"git.staged" = "green"
+"git.modified" = "yellow"
+"git.untracked" = "fg_dark"
+"git.deleted" = "red"
+
+"diff.added" = "green"
+"diff.removed" = "red"
+"diff.hunk" = "cyan"
+"diff.context" = "fg_dark"
+
+"border.focused" = "blue"
+"border.unfocused" = "bg4"
+
+"code.hash" = "yellow_dark"
+"code.path" = "cyan"
+"code.keyword" = "magenta"
+"code.function" = "blue"
+"code.string" = "green"
+"code.number" = "yellow_dark"
+"code.comment" = "fg_dark"
+"code.type" = "yellow"
+"code.line_number" = "gutter"
+
+"mode.active" = "blue"
+"mode.inactive" = "fg_dark"
+"mode.hover" = "cyan"
+
+"chat.user" = "cyan"
+"chat.iris" = "blue"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["blue", "cyan"]
+warm = ["yellow_dark", "yellow"]
+success_gradient = ["green", "cyan"]
+error_gradient = ["red", "red_dark"]
+aurora = ["magenta", "blue", "cyan", "green", "yellow"]

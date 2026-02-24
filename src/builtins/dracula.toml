@@ -1,0 +1,126 @@
+# Dracula — A dark theme for vampires
+# https://draculatheme.com/
+
+[meta]
+name = "Dracula"
+author = "Dracula Theme"
+variant = "dark"
+version = "1.0"
+description = "A dark theme for vampires"
+
+[palette]
+# Background shades
+background = "#282a36"
+current_line = "#44475a"
+selection = "#44475a"
+foreground = "#f8f8f2"
+
+# Core palette
+comment = "#6272a4"
+cyan = "#8be9fd"
+green = "#50fa7b"
+orange = "#ffb86c"
+pink = "#ff79c6"
+purple = "#bd93f9"
+red = "#ff5555"
+yellow = "#f1fa8c"
+
+# Extended
+bg_darker = "#1e1f29"
+bg_dark = "#21222c"
+bg_lighter = "#343746"
+fg_dim = "#a4a6b3"
+fg_muted = "#7c7f8f"
+
+[tokens]
+"text.primary" = "foreground"
+"text.secondary" = "fg_dim"
+"text.muted" = "fg_muted"
+"text.dim" = "comment"
+
+"bg.base" = "bg_darker"
+"bg.panel" = "background"
+"bg.code" = "bg_dark"
+"bg.highlight" = "current_line"
+"bg.elevated" = "selection"
+"bg.active" = "bg_lighter"
+"bg.selection" = "selection"
+
+"accent.primary" = "purple"
+"accent.secondary" = "cyan"
+"accent.tertiary" = "pink"
+"accent.deep" = "purple"
+
+success = "green"
+error = "red"
+warning = "yellow"
+info = "cyan"
+
+"git.staged" = "green"
+"git.modified" = "yellow"
+"git.untracked" = "comment"
+"git.deleted" = "red"
+
+"diff.added" = "green"
+"diff.removed" = "red"
+"diff.hunk" = "cyan"
+"diff.context" = "comment"
+
+"border.focused" = "purple"
+"border.unfocused" = "comment"
+
+"code.hash" = "orange"
+"code.path" = "cyan"
+"code.keyword" = "pink"
+"code.function" = "green"
+"code.string" = "yellow"
+"code.number" = "purple"
+"code.comment" = "comment"
+"code.type" = "cyan"
+"code.line_number" = "comment"
+
+"mode.active" = "purple"
+"mode.inactive" = "comment"
+"mode.hover" = "pink"
+
+"chat.user" = "cyan"
+"chat.iris" = "purple"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["purple", "cyan"]
+warm = ["orange", "yellow"]
+success_gradient = ["green", "cyan"]
+error_gradient = ["red", "orange"]
+aurora = ["purple", "pink", "cyan", "green", "yellow"]

@@ -1,0 +1,135 @@
+# Catppuccin Latte — Light soothing pastel theme
+# https://github.com/catppuccin/catppuccin
+
+[meta]
+name = "Catppuccin Latte"
+author = "Catppuccin"
+variant = "light"
+version = "1.0"
+description = "Soothing pastel theme for daylight lovers"
+
+[palette]
+# Base colors
+base = "#eff1f5"
+mantle = "#e6e9ef"
+crust = "#dce0e8"
+surface0 = "#ccd0da"
+surface1 = "#bcc0cc"
+surface2 = "#acb0be"
+overlay0 = "#9ca0b0"
+overlay1 = "#8c8fa1"
+overlay2 = "#7c7f93"
+
+# Text
+text = "#4c4f69"
+subtext1 = "#5c5f77"
+subtext0 = "#6c6f85"
+
+# Accent colors
+rosewater = "#dc8a78"
+flamingo = "#dd7878"
+pink = "#ea76cb"
+mauve = "#8839ef"
+red = "#d20f39"
+maroon = "#e64553"
+peach = "#fe640b"
+yellow = "#df8e1d"
+green = "#40a02b"
+teal = "#179299"
+sky = "#04a5e5"
+sapphire = "#209fb5"
+blue = "#1e66f5"
+lavender = "#7287fd"
+
+[tokens]
+"text.primary" = "text"
+"text.secondary" = "subtext1"
+"text.muted" = "subtext0"
+"text.dim" = "overlay1"
+
+"bg.base" = "base"
+"bg.panel" = "mantle"
+"bg.code" = "crust"
+"bg.highlight" = "surface0"
+"bg.elevated" = "surface1"
+"bg.active" = "surface2"
+"bg.selection" = "surface1"
+
+"accent.primary" = "mauve"
+"accent.secondary" = "sapphire"
+"accent.tertiary" = "pink"
+"accent.deep" = "lavender"
+
+success = "green"
+error = "red"
+warning = "yellow"
+info = "sky"
+
+"git.staged" = "green"
+"git.modified" = "yellow"
+"git.untracked" = "overlay1"
+"git.deleted" = "red"
+
+"diff.added" = "green"
+"diff.removed" = "red"
+"diff.hunk" = "sapphire"
+"diff.context" = "overlay1"
+
+"border.focused" = "mauve"
+"border.unfocused" = "surface2"
+
+"code.hash" = "peach"
+"code.path" = "sapphire"
+"code.keyword" = "mauve"
+"code.function" = "blue"
+"code.string" = "green"
+"code.number" = "peach"
+"code.comment" = "overlay1"
+"code.type" = "yellow"
+"code.line_number" = "overlay0"
+
+"mode.active" = "mauve"
+"mode.inactive" = "overlay1"
+"mode.hover" = "sapphire"
+
+"chat.user" = "sapphire"
+"chat.iris" = "mauve"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["mauve", "sapphire"]
+warm = ["peach", "yellow"]
+success_gradient = ["green", "teal"]
+error_gradient = ["red", "maroon"]
+aurora = ["mauve", "pink", "sapphire", "teal", "green"]

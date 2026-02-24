@@ -1,0 +1,131 @@
+# Nord — An arctic, north-bluish color palette
+# https://www.nordtheme.com/
+
+[meta]
+name = "Nord"
+author = "Arctic Ice Studio"
+variant = "dark"
+version = "1.0"
+description = "An arctic, north-bluish clean and elegant palette"
+
+[palette]
+# Polar Night (backgrounds)
+nord0 = "#2e3440"
+nord1 = "#3b4252"
+nord2 = "#434c5e"
+nord3 = "#4c566a"
+
+# Snow Storm (foregrounds)
+nord4 = "#d8dee9"
+nord5 = "#e5e9f0"
+nord6 = "#eceff4"
+
+# Frost (accents)
+nord7 = "#8fbcbb"
+nord8 = "#88c0d0"
+nord9 = "#81a1c1"
+nord10 = "#5e81ac"
+
+# Aurora (semantic)
+nord11 = "#bf616a"  # red
+nord12 = "#d08770"  # orange
+nord13 = "#ebcb8b"  # yellow
+nord14 = "#a3be8c"  # green
+nord15 = "#b48ead"  # purple
+
+# Extended
+bg_dark = "#242933"
+fg_dim = "#a5abb6"
+
+[tokens]
+"text.primary" = "nord6"
+"text.secondary" = "nord5"
+"text.muted" = "nord4"
+"text.dim" = "nord3"
+
+"bg.base" = "bg_dark"
+"bg.panel" = "nord0"
+"bg.code" = "nord0"
+"bg.highlight" = "nord1"
+"bg.elevated" = "nord2"
+"bg.active" = "nord3"
+"bg.selection" = "nord2"
+
+"accent.primary" = "nord8"
+"accent.secondary" = "nord9"
+"accent.tertiary" = "nord15"
+"accent.deep" = "nord10"
+
+success = "nord14"
+error = "nord11"
+warning = "nord13"
+info = "nord8"
+
+"git.staged" = "nord14"
+"git.modified" = "nord13"
+"git.untracked" = "nord3"
+"git.deleted" = "nord11"
+
+"diff.added" = "nord14"
+"diff.removed" = "nord11"
+"diff.hunk" = "nord8"
+"diff.context" = "nord3"
+
+"border.focused" = "nord8"
+"border.unfocused" = "nord3"
+
+"code.hash" = "nord12"
+"code.path" = "nord8"
+"code.keyword" = "nord9"
+"code.function" = "nord8"
+"code.string" = "nord14"
+"code.number" = "nord15"
+"code.comment" = "nord3"
+"code.type" = "nord7"
+"code.line_number" = "nord3"
+
+"mode.active" = "nord8"
+"mode.inactive" = "nord3"
+"mode.hover" = "nord9"
+
+"chat.user" = "nord9"
+"chat.iris" = "nord8"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["nord9", "nord8"]
+warm = ["nord12", "nord13"]
+success_gradient = ["nord14", "nord7"]
+error_gradient = ["nord11", "nord12"]
+aurora = ["nord15", "nord11", "nord12", "nord13", "nord14"]
