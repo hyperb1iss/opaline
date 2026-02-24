@@ -1,0 +1,124 @@
+# Tokyo Night Storm — A darker, stormier take on Tokyo Night
+# https://github.com/enkia/tokyo-night-vscode-theme
+
+[meta]
+name = "Tokyo Night Storm"
+author = "enkia"
+variant = "dark"
+version = "1.0"
+description = "Stormy variant with deeper blues and sharper contrast"
+
+[palette]
+bg = "#24283b"
+bg_dark = "#1f2335"
+bg_highlight = "#292e42"
+bg_visual = "#2e3c64"
+fg = "#c0caf5"
+fg_dark = "#a9b1d6"
+comment = "#565f89"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+orange = "#ff9e64"
+purple = "#9d7cd8"
+red = "#f7768e"
+teal = "#1abc9c"
+yellow = "#e0af68"
+error_red = "#db4b4b"
+git_add = "#449dab"
+git_change = "#6183bb"
+git_delete = "#914c54"
+
+[tokens]
+"text.primary" = "fg"
+"text.secondary" = "fg_dark"
+"text.muted" = "comment"
+"text.dim" = "comment"
+
+"bg.base" = "bg_dark"
+"bg.panel" = "bg"
+"bg.code" = "bg_highlight"
+"bg.highlight" = "bg_highlight"
+"bg.elevated" = "bg_visual"
+"bg.active" = "bg_visual"
+"bg.selection" = "bg_visual"
+
+"accent.primary" = "magenta"
+"accent.secondary" = "blue"
+"accent.tertiary" = "cyan"
+"accent.deep" = "purple"
+
+success = "green"
+error = "red"
+warning = "orange"
+info = "cyan"
+
+"git.staged" = "git_add"
+"git.modified" = "git_change"
+"git.untracked" = "comment"
+"git.deleted" = "git_delete"
+
+"diff.added" = "green"
+"diff.removed" = "red"
+"diff.hunk" = "blue"
+"diff.context" = "comment"
+
+"border.focused" = "blue"
+"border.unfocused" = "comment"
+
+"code.hash" = "orange"
+"code.path" = "cyan"
+"code.keyword" = "magenta"
+"code.function" = "blue"
+"code.string" = "green"
+"code.number" = "orange"
+"code.comment" = "comment"
+"code.type" = "yellow"
+"code.line_number" = "comment"
+
+"mode.active" = "blue"
+"mode.inactive" = "comment"
+"mode.hover" = "cyan"
+
+"chat.user" = "cyan"
+"chat.iris" = "magenta"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["magenta", "blue"]
+warm = ["orange", "yellow"]
+success_gradient = ["green", "teal"]
+error_gradient = ["red", "orange"]
+aurora = ["magenta", "purple", "blue", "cyan", "teal"]

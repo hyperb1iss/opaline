@@ -67,9 +67,9 @@ fn all_builtins_load() {
 }
 
 #[test]
-fn builtin_count_is_13() {
+fn builtin_count_is_20() {
     assert_eq!(builtins::builtin_names().len(), builtins::BUILTIN_COUNT);
-    assert_eq!(builtins::BUILTIN_COUNT, 13);
+    assert_eq!(builtins::BUILTIN_COUNT, 20);
 }
 
 // ── Token contract: every builtin has the required semantic tokens ────────
