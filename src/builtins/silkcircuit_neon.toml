@@ -1,0 +1,197 @@
+# SilkCircuit Neon — Electric meets elegant
+# The default theme for Opaline
+
+[meta]
+name = "SilkCircuit Neon"
+author = "hyperb1iss"
+variant = "dark"
+version = "1.0"
+description = "Electric purple and neon cyan with a dark base"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Palette — Raw color primitives
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[palette]
+# Core brand colors
+purple_500 = "#e135ff"
+cyan_400 = "#80ffea"
+coral_400 = "#ff6ac1"
+yellow_400 = "#f1fa8c"
+green_400 = "#50fa7b"
+red_400 = "#ff6363"
+
+# Extended palette
+purple_400 = "#bd93f9"
+purple_600 = "#8c1eba"
+cyan_500 = "#3cb4a0"
+magenta_400 = "#ff55ff"
+purple_300 = "#b482ff"
+pink_400 = "#ff00ff"
+pink_300 = "#ff99ff"
+
+# Backgrounds
+gray_950 = "#121218"
+gray_900 = "#181820"
+gray_850 = "#1e1e28"
+gray_800 = "#37324b"
+gray_750 = "#37324b"
+gray_700 = "#3c2d55"
+gray_600 = "#3c3c50"
+
+# Text colors
+gray_50 = "#f8f8f2"
+gray_200 = "#bcbcca"
+gray_400 = "#82879f"
+gray_500 = "#6e7daf"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Tokens — Semantic color assignments
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[tokens]
+# Text hierarchy
+"text.primary" = "gray_50"
+"text.secondary" = "gray_200"
+"text.muted" = "gray_400"
+"text.dim" = "gray_500"
+
+# Backgrounds
+"bg.base" = "gray_950"
+"bg.panel" = "gray_900"
+"bg.code" = "gray_850"
+"bg.highlight" = "gray_800"
+"bg.elevated" = "gray_750"
+"bg.active" = "gray_700"
+"bg.selection" = "gray_600"
+
+# Accent colors
+"accent.primary" = "purple_500"
+"accent.secondary" = "cyan_400"
+"accent.tertiary" = "coral_400"
+"accent.deep" = "purple_400"
+
+# Semantic colors
+success = "green_400"
+error = "red_400"
+warning = "yellow_400"
+info = "cyan_400"
+
+# Git status
+"git.staged" = "green_400"
+"git.modified" = "yellow_400"
+"git.untracked" = "gray_500"
+"git.deleted" = "red_400"
+
+# Diff
+"diff.added" = "green_400"
+"diff.removed" = "red_400"
+"diff.hunk" = "cyan_400"
+"diff.context" = "gray_500"
+
+# UI elements
+"border.focused" = "cyan_400"
+"border.unfocused" = "gray_400"
+
+# Code elements
+"code.hash" = "coral_400"
+"code.path" = "cyan_400"
+"code.keyword" = "purple_500"
+"code.function" = "cyan_400"
+"code.string" = "pink_300"
+"code.number" = "coral_400"
+"code.comment" = "gray_500"
+"code.type" = "yellow_400"
+"code.line_number" = "gray_500"
+
+# Mode tabs
+"mode.active" = "purple_500"
+"mode.inactive" = "gray_500"
+"mode.hover" = "cyan_400"
+
+# Chat
+"chat.user" = "cyan_400"
+"chat.iris" = "purple_500"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Styles — Composed styles with modifiers
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[styles]
+# Keywords and importance
+keyword = { fg = "accent.primary", bold = true }
+
+# File paths
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+
+# Commit hashes
+commit_hash = { fg = "code.hash" }
+
+# Line numbers
+line_number = { fg = "code.line_number" }
+
+# Cursor line
+cursor_line = { bg = "bg.highlight" }
+
+# Selection states
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+
+# Borders
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+
+# Status messages
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+
+# Text styles
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+
+# Inline code
+inline_code = { fg = "success", bg = "bg.code" }
+
+# Mode tabs
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+
+# Git status styles
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+
+# Diff styles
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+
+# Author and timestamp
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Gradients — Color transitions
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[gradients]
+# Primary brand gradient: Electric Purple -> Neon Cyan
+primary = ["purple_500", "cyan_400"]
+
+# Warm accent gradient: Coral -> Electric Yellow
+warm = ["coral_400", "yellow_400"]
+
+# Success gradient: Green -> Cyan
+success_gradient = ["green_400", "cyan_400"]
+
+# Error gradient: Red -> Coral
+error_gradient = ["red_400", "coral_400"]
+
+# Aurora gradient (5-stop): Purple -> Pink -> Cyan
+aurora = ["purple_500", "#f31bff", "#ff00ff", "#bf80f4", "cyan_400"]

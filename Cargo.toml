@@ -1,0 +1,115 @@
+[package]
+name = "opaline"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+authors = ["Stefanie Jane <stef@hyperbliss.tech>"]
+description = "A token-based theme engine for Ratatui TUI applications"
+readme = "README.md"
+homepage = "https://github.com/hyperb1iss/opaline"
+repository = "https://github.com/hyperb1iss/opaline"
+license = "MIT OR Apache-2.0"
+keywords = ["ratatui", "theme", "tui", "terminal", "color"]
+categories = ["command-line-interface", "config"]
+
+[lib]
+name = "opaline"
+path = "src/lib.rs"
+
+[features]
+default = ["builtin-themes", "gradients", "ratatui"]
+builtin-themes = []
+gradients = []
+global-state = ["dep:parking_lot"]
+discovery = ["dep:dirs"]
+ratatui = ["dep:ratatui-core"]
+named-colors = []
+
+[dependencies]
+thiserror = "2.0"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+ratatui-core = { version = "0.1", optional = true }
+parking_lot = { version = "0.12", optional = true }
+dirs = { version = "6", optional = true }
+
+[dev-dependencies]
+pretty_assertions = "1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = { level = "allow", priority = 1 }
+
+[lints.clippy]
+# Base groups
+all = { level = "deny", priority = 0 }
+style = { level = "warn", priority = 1 }
+perf = { level = "deny", priority = 1 }
+pedantic = { level = "deny", priority = 10 }
+
+# Documentation — relaxed
+missing_errors_doc = { level = "allow", priority = 20 }
+missing_panics_doc = { level = "allow", priority = 20 }
+missing_safety_doc = { level = "allow", priority = 20 }
+
+# Pragmatic style allowances
+module_name_repetitions = { level = "allow", priority = 21 }
+significant_drop_tightening = { level = "allow", priority = 21 }
+must_use_candidate = { level = "allow", priority = 21 }
+
+# Numeric casting — warn not deny
+cast_precision_loss = { level = "warn", priority = 22 }
+cast_possible_truncation = { level = "warn", priority = 22 }
+cast_sign_loss = { level = "warn", priority = 22 }
+as_conversions = { level = "warn", priority = 22 }
+
+# Safety-critical — hard deny
+out_of_bounds_indexing = { level = "deny", priority = 30 }
+enum_glob_use = { level = "deny", priority = 30 }
+unwrap_used = { level = "deny", priority = 30 }
+undocumented_unsafe_blocks = { level = "deny", priority = 30 }
+
+# Debug artifacts
+dbg_macro = { level = "warn", priority = 31 }
+todo = { level = "warn", priority = 31 }
+
+# Async-specific
+future_not_send = { level = "warn", priority = 32 }
+async_yields_async = { level = "warn", priority = 32 }
+
+# String/collection efficiency
+implicit_clone = { level = "warn", priority = 33 }
+inefficient_to_string = { level = "warn", priority = 33 }
+string_lit_as_bytes = { level = "warn", priority = 33 }
+
+# Complexity
+too_many_lines = { level = "warn", priority = 34 }
+cognitive_complexity = { level = "warn", priority = 34 }
+
+# Error handling
+result_large_err = { level = "warn", priority = 35 }
+
+# Modern Rust idioms
+manual_let_else = { level = "warn", priority = 36 }
+redundant_else = { level = "warn", priority = 36 }
+semicolon_if_nothing_returned = { level = "warn", priority = 36 }
+cloned_instead_of_copied = { level = "warn", priority = 36 }
+flat_map_option = { level = "warn", priority = 36 }
+from_iter_instead_of_collect = { level = "warn", priority = 36 }
+needless_pass_by_value = { level = "warn", priority = 36 }
+trivially_copy_pass_by_ref = { level = "warn", priority = 36 }
+if_not_else = { level = "warn", priority = 36 }
+match_same_arms = { level = "warn", priority = 36 }
+needless_continue = { level = "warn", priority = 36 }
+
+# Allow transitive dependency version conflicts
+multiple_crate_versions = { level = "allow", priority = 40 }
