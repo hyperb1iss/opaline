@@ -29,7 +29,7 @@ highlight_high = "#cecacd"
 "text.primary" = "text"
 "text.secondary" = "subtle"
 "text.muted" = "muted"
-"text.dim" = "highlight_high"
+"text.dim" = "muted"
 
 "bg.base" = "base"
 "bg.panel" = "surface"
@@ -60,7 +60,7 @@ info = "pine"
 "diff.context" = "muted"
 
 "border.focused" = "iris"
-"border.unfocused" = "highlight_high"
+"border.unfocused" = "muted"
 
 "code.hash" = "rose"
 "code.path" = "foam"

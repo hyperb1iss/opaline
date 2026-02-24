@@ -19,16 +19,20 @@ bg5 = "#BDC3AF"
 
 # Foreground
 fg = "#5C6A72"
-red = "#F85552"
-orange = "#F57D26"
-yellow = "#DFA000"
-green = "#8DA101"
-aqua = "#35A77C"
-blue = "#3A94C5"
-purple = "#DF69BA"
-grey0 = "#A6B0A0"
-grey1 = "#939F91"
-grey2 = "#829181"
+
+# Accent colors — darkened from upstream Everforest for cream-bg readability
+red = "#D14545"
+orange = "#C05E15"
+yellow = "#A88300"
+green = "#6B7D00"
+aqua = "#268A62"
+blue = "#2F80AE"
+purple = "#B84E95"
+
+# Grey scale — darkened for light background contrast
+grey0 = "#8B9684"
+grey1 = "#758573"
+grey2 = "#617161"
 
 [tokens]
 "text.primary" = "fg"
@@ -65,7 +69,7 @@ info = "blue"
 "diff.context" = "grey1"
 
 "border.focused" = "green"
-"border.unfocused" = "bg5"
+"border.unfocused" = "grey1"
 
 "code.hash" = "orange"
 "code.path" = "blue"
