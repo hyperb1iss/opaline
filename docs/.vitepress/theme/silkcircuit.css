@@ -1,0 +1,638 @@
+/**
+ * SilkCircuit Theme for VitePress — Opaline Edition
+ * Electric meets elegant — token-based theme engine vibes
+ * Dark: SilkCircuit Neon | Light: SilkCircuit Dawn
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPOGRAPHY — Inter + JetBrains Mono
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --font-family-base:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  --font-family-mono:
+    'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', Consolas,
+    monospace;
+
+  --vp-font-family-base: var(--font-family-base);
+  --vp-font-family-mono: var(--font-family-mono);
+
+  /* ═══════════════════════════════════════════════════════════════
+     SILKCIRCUIT NEON PALETTE (Dark Mode) — OKLCH
+     ═══════════════════════════════════════════════════════════════ */
+
+  --sc-purple: oklch(64% 0.31 328);
+  --sc-magenta: oklch(70% 0.32 328);
+  --sc-cyan: oklch(92% 0.16 180);
+  --sc-coral: oklch(72% 0.22 350);
+  --sc-yellow: oklch(95% 0.13 105);
+  --sc-green: oklch(88% 0.23 145);
+  --sc-red: oklch(68% 0.22 25);
+
+  /* Hex fallbacks */
+  --iris-purple: #e135ff;
+  --iris-purple-light: #f06eff;
+  --iris-purple-deep: #bd93f9;
+  --iris-cyan: #80ffea;
+  --iris-cyan-light: #a5ffef;
+  --iris-coral: #ff6ac1;
+  --iris-yellow: #f1fa8c;
+  --iris-green: #50fa7b;
+  --iris-red: #ff6363;
+
+  /* Backgrounds — deep purple base */
+  --sc-bg-base: oklch(10% 0.02 285);
+  --sc-bg-dark: oklch(6% 0.015 285);
+  --sc-bg-highlight: oklch(14% 0.025 285);
+  --sc-bg-elevated: oklch(17% 0.03 285);
+  --sc-bg-surface: oklch(21% 0.035 285);
+
+  --iris-bg-base: #121218;
+  --iris-bg-panel: #181820;
+  --iris-bg-elevated: #1e1e28;
+  --iris-bg-code: #1a1a24;
+  --iris-bg-highlight: #2d283c;
+
+  /* Text */
+  --sc-fg-primary: oklch(98% 0.005 110);
+  --sc-fg-muted: oklch(62% 0.035 280);
+  --sc-fg-subtle: oklch(42% 0.03 280);
+
+  --iris-text-primary: #f8f8f2;
+  --iris-text-secondary: #e0e0e0;
+  --iris-text-muted: #a0a0a0;
+  --iris-text-dim: #6a6a7a;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SILKCIRCUIT DAWN PALETTE (Light Mode) — OKLCH
+     ═══════════════════════════════════════════════════════════════ */
+
+  --dawn-purple: oklch(42% 0.28 300);
+  --dawn-magenta: oklch(40% 0.26 340);
+  --dawn-cyan: oklch(45% 0.16 200);
+  --dawn-coral: oklch(50% 0.22 350);
+  --dawn-yellow: oklch(52% 0.16 85);
+  --dawn-green: oklch(45% 0.2 145);
+  --dawn-red: oklch(50% 0.24 25);
+
+  --dawn-purple-hex: #7e2bd5;
+  --dawn-purple-light: #9e4df3;
+  --dawn-purple-deep: #5c1a9e;
+  --dawn-cyan-hex: #007f8e;
+  --dawn-cyan-light: #00666e;
+
+  --dawn-bg-dark: oklch(95% 0.01 290);
+  --dawn-bg-base: oklch(97% 0.008 290);
+  --dawn-bg-elevated: oklch(100% 0 0);
+  --dawn-bg-highlight: oklch(94% 0.015 290);
+  --dawn-bg-surface: oklch(91% 0.02 290);
+
+  --dawn-bg-base-hex: #faf8ff;
+  --dawn-bg-panel: #f1ecff;
+  --dawn-bg-elevated-hex: #efeaff;
+  --dawn-bg-code: #e1daf7;
+  --dawn-bg-highlight-hex: #d9d2f2;
+  --dawn-bg-active: #d0c8eb;
+
+  --dawn-fg-primary: oklch(18% 0.03 290);
+  --dawn-fg-muted: oklch(45% 0.04 290);
+  --dawn-fg-subtle: oklch(65% 0.03 290);
+
+  --dawn-text-primary: #2b2540;
+  --dawn-text-secondary: #3d3558;
+  --dawn-text-muted: #5a4d78;
+  --dawn-text-dim: #8b6ab8;
+
+  /* ═══════════════════════════════════════════════════════════════
+     VITEPRESS THEME OVERRIDES (Default = Dark)
+     ═══════════════════════════════════════════════════════════════ */
+
+  --vp-c-brand-1: var(--sc-purple, var(--iris-purple));
+  --vp-c-brand-2: var(--sc-magenta, var(--iris-purple-light));
+  --vp-c-brand-3: var(--iris-purple-deep);
+  --vp-c-brand-soft: oklch(64% 0.31 328 / 0.14);
+
+  --vp-c-tip-1: var(--sc-cyan, var(--iris-cyan));
+  --vp-c-tip-2: var(--iris-cyan-light);
+  --vp-c-tip-3: var(--sc-cyan, var(--iris-cyan));
+  --vp-c-tip-soft: oklch(92% 0.16 180 / 0.14);
+
+  --vp-c-warning-1: var(--sc-yellow, var(--iris-yellow));
+  --vp-c-warning-2: var(--sc-yellow, var(--iris-yellow));
+  --vp-c-warning-3: var(--sc-yellow, var(--iris-yellow));
+  --vp-c-warning-soft: oklch(95% 0.13 105 / 0.14);
+
+  --vp-c-danger-1: var(--sc-red, var(--iris-red));
+  --vp-c-danger-2: var(--sc-red, var(--iris-red));
+  --vp-c-danger-3: var(--sc-red, var(--iris-red));
+  --vp-c-danger-soft: oklch(68% 0.22 25 / 0.14);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE (SilkCircuit Dawn)
+   ═══════════════════════════════════════════════════════════════ */
+
+:root:not(.dark) {
+  --vp-c-bg: var(--dawn-bg-base, var(--dawn-bg-base-hex));
+  --vp-c-bg-alt: var(--dawn-bg-dark, var(--dawn-bg-panel));
+  --vp-c-bg-elv: var(--dawn-bg-elevated, var(--dawn-bg-elevated-hex));
+  --vp-c-bg-soft: var(--dawn-bg-highlight, var(--dawn-bg-highlight-hex));
+
+  --vp-c-text-1: var(--dawn-fg-primary, var(--dawn-text-primary));
+  --vp-c-text-2: var(--dawn-fg-muted, var(--dawn-text-secondary));
+  --vp-c-text-3: var(--dawn-fg-subtle, var(--dawn-text-muted));
+
+  --vp-c-brand-1: var(--dawn-purple, var(--dawn-purple-hex));
+  --vp-c-brand-2: var(--dawn-magenta, var(--dawn-purple-light));
+  --vp-c-brand-3: var(--dawn-purple-deep);
+  --vp-c-brand-soft: oklch(42% 0.28 300 / 0.12);
+
+  --vp-c-tip-1: var(--dawn-cyan, var(--dawn-cyan-hex));
+  --vp-c-tip-2: var(--dawn-cyan-light);
+  --vp-c-tip-3: var(--dawn-cyan, var(--dawn-cyan-hex));
+  --vp-c-tip-soft: oklch(45% 0.16 200 / 0.12);
+
+  --vp-c-warning-1: var(--dawn-yellow);
+  --vp-c-warning-soft: oklch(52% 0.16 85 / 0.12);
+
+  --vp-c-danger-1: var(--dawn-red);
+  --vp-c-danger-soft: oklch(50% 0.24 25 / 0.12);
+
+  --vp-c-divider: oklch(42% 0.28 300 / 0.15);
+  --vp-c-divider-light: oklch(42% 0.28 300 / 0.08);
+  --vp-c-gutter: var(--dawn-bg-dark, var(--dawn-bg-panel));
+
+  --vp-code-block-bg: var(--dawn-bg-code);
+  --vp-code-tab-divider: var(--dawn-purple, var(--dawn-purple-hex));
+  --vp-code-copy-code-bg: var(--dawn-bg-highlight, var(--dawn-bg-highlight-hex));
+  --vp-code-copy-code-hover-bg: var(--dawn-bg-active);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE (SilkCircuit Neon)
+   ═══════════════════════════════════════════════════════════════ */
+
+.dark {
+  --vp-c-bg: var(--sc-bg-base, var(--iris-bg-base));
+  --vp-c-bg-alt: var(--sc-bg-dark, #0d0d12);
+  --vp-c-bg-elv: var(--sc-bg-elevated, var(--iris-bg-elevated));
+  --vp-c-bg-soft: var(--sc-bg-highlight, var(--iris-bg-highlight));
+
+  --vp-c-text-1: var(--sc-fg-primary, var(--iris-text-primary));
+  --vp-c-text-2: var(--iris-text-secondary);
+  --vp-c-text-3: var(--sc-fg-muted, var(--iris-text-muted));
+
+  --vp-c-divider: oklch(64% 0.31 328 / 0.15);
+  --vp-c-divider-light: oklch(64% 0.31 328 / 0.06);
+  --vp-c-gutter: var(--sc-bg-dark, #0d0d12);
+
+  --vp-code-block-bg: var(--iris-bg-code);
+  --vp-code-tab-divider: var(--sc-purple, var(--iris-purple));
+  --vp-code-copy-code-bg: var(--sc-bg-highlight, var(--iris-bg-highlight));
+  --vp-code-copy-code-hover-bg: var(--sc-bg-surface);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════════════ */
+
+:root:not(.dark) .VPNav {
+  background: oklch(97% 0.008 290 / 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(126, 43, 213, 0.1);
+}
+
+.dark .VPNav {
+  background: oklch(10% 0.02 285 / 0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(225, 53, 255, 0.08);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════════════════════════ */
+
+.VPSidebar {
+  font-family: var(--font-family-base);
+}
+
+:root:not(.dark) .VPSidebar {
+  background: var(--dawn-bg-dark, var(--dawn-bg-panel));
+  border-right: 1px solid oklch(42% 0.28 300 / 0.12);
+}
+
+.dark .VPSidebar {
+  background: oklch(8% 0.018 285);
+  border-right: 1px solid oklch(64% 0.31 328 / 0.08);
+}
+
+.VPSidebarItem .is-active > .item .link > .text {
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CODE BLOCKS
+   ═══════════════════════════════════════════════════════════════ */
+
+.vp-doc [class*='language-'] {
+  border-radius: 10px;
+  font-family: var(--font-family-mono);
+}
+
+.vp-doc [class*='language-'] code {
+  font-family: var(--font-family-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.dark .vp-doc [class*='language-'] {
+  border: 1px solid oklch(64% 0.31 328 / 0.08);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(225, 53, 255, 0.04);
+}
+
+:root:not(.dark) .vp-doc [class*='language-'] {
+  border: 1px solid oklch(42% 0.28 300 / 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Language label */
+.vp-doc [class*='language-'] > span.lang {
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+  text-transform: lowercase;
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INLINE CODE
+   ═══════════════════════════════════════════════════════════════ */
+
+.vp-doc :not(pre) > code {
+  font-family: var(--font-family-mono);
+  font-size: 0.875em;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.dark .vp-doc :not(pre) > code {
+  background: oklch(14% 0.025 285);
+  color: var(--sc-cyan, var(--iris-cyan));
+  border: 1px solid oklch(64% 0.31 328 / 0.1);
+}
+
+:root:not(.dark) .vp-doc :not(pre) > code {
+  background: var(--dawn-bg-code);
+  color: var(--dawn-purple, var(--dawn-purple-hex));
+  border: 1px solid oklch(42% 0.28 300 / 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LINKS
+   ═══════════════════════════════════════════════════════════════ */
+
+.vp-doc a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.vp-doc a:hover {
+  border-bottom-color: var(--vp-c-brand-1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.vp-doc table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.dark .vp-doc table th {
+  background: oklch(14% 0.025 285);
+  border-bottom: 2px solid oklch(64% 0.31 328 / 0.2);
+}
+
+:root:not(.dark) .vp-doc table th {
+  background: var(--dawn-bg-highlight, var(--dawn-bg-highlight-hex));
+  border-bottom: 2px solid oklch(42% 0.28 300 / 0.2);
+}
+
+.vp-doc table th,
+.vp-doc table td {
+  padding: 10px 16px;
+  text-align: left;
+}
+
+.vp-doc table code {
+  font-size: 0.8125rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM CONTAINERS (tip, warning, danger, info)
+   ═══════════════════════════════════════════════════════════════ */
+
+.dark .custom-block.tip {
+  background: oklch(92% 0.16 180 / 0.06);
+  border-left: 4px solid var(--sc-cyan, var(--iris-cyan));
+}
+
+.dark .custom-block.warning {
+  background: oklch(95% 0.13 105 / 0.06);
+  border-left: 4px solid var(--sc-yellow, var(--iris-yellow));
+}
+
+.dark .custom-block.danger {
+  background: oklch(68% 0.22 25 / 0.06);
+  border-left: 4px solid var(--sc-red, var(--iris-red));
+}
+
+:root:not(.dark) .custom-block.tip {
+  background: oklch(45% 0.16 200 / 0.06);
+  border-left: 4px solid var(--dawn-cyan, var(--dawn-cyan-hex));
+}
+
+:root:not(.dark) .custom-block.warning {
+  background: oklch(52% 0.16 85 / 0.06);
+  border-left: 4px solid var(--dawn-yellow);
+}
+
+:root:not(.dark) .custom-block.danger {
+  background: oklch(50% 0.24 25 / 0.06);
+  border-left: 4px solid var(--dawn-red);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HOME PAGE — Hero
+   ═══════════════════════════════════════════════════════════════ */
+
+.VPHero .main .name {
+  font-family: var(--font-family-base);
+  letter-spacing: -0.02em;
+}
+
+.VPHero .main .text {
+  font-family: var(--font-family-base);
+}
+
+.VPHero .main .tagline {
+  font-family: var(--font-family-base);
+  opacity: 0.85;
+}
+
+/* Feature cards */
+.VPFeatures .VPFeature {
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.dark .VPFeatures .VPFeature {
+  background: oklch(12% 0.022 285);
+  border: 1px solid oklch(64% 0.31 328 / 0.08);
+}
+
+.dark .VPFeatures .VPFeature:hover {
+  border-color: oklch(64% 0.31 328 / 0.2);
+  box-shadow: 0 4px 20px rgba(225, 53, 255, 0.1);
+}
+
+:root:not(.dark) .VPFeatures .VPFeature {
+  background: var(--dawn-bg-elevated, var(--dawn-bg-elevated-hex));
+  border: 1px solid oklch(42% 0.28 300 / 0.08);
+}
+
+:root:not(.dark) .VPFeatures .VPFeature:hover {
+  border-color: oklch(42% 0.28 300 / 0.2);
+  box-shadow: 0 4px 20px rgba(126, 43, 213, 0.1);
+}
+
+.VPFeatures .VPFeature .icon {
+  font-size: 1.5rem;
+}
+
+.VPFeatures .VPFeature .title {
+  font-weight: 600;
+  font-family: var(--font-family-base);
+}
+
+.VPFeatures .VPFeature .details {
+  font-family: var(--font-family-base);
+  opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MERMAID DIAGRAMS
+   ═══════════════════════════════════════════════════════════════ */
+
+.mermaid-diagram {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.dark .mermaid-diagram {
+  background: oklch(8% 0.018 285);
+  border: 1px solid oklch(64% 0.31 328 / 0.08);
+}
+
+:root:not(.dark) .mermaid-diagram {
+  background: var(--dawn-bg-panel);
+  border: 1px solid oklch(42% 0.28 300 / 0.08);
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Zoom modal */
+.mermaid-zoom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mermaid-zoom-modal.active {
+  opacity: 1;
+}
+
+.dark .mermaid-zoom-modal {
+  background: rgba(18, 18, 24, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+:root:not(.dark) .mermaid-zoom-modal {
+  background: rgba(250, 248, 255, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.mermaid-zoom-modal svg {
+  max-width: 90vw;
+  max-height: 90vh;
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.3));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(64% 0.31 328 / 0.2);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(64% 0.31 328 / 0.35);
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb {
+  background: oklch(42% 0.28 300 / 0.2);
+  border-radius: 4px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: oklch(42% 0.28 300 / 0.35);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR SWATCH (for theme gallery pages)
+   ═══════════════════════════════════════════════════════════════ */
+
+.color-swatch {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 0.4em;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 1rem 0;
+}
+
+.palette-card {
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--font-family-mono);
+  font-size: 0.8125rem;
+}
+
+.dark .palette-card {
+  background: oklch(12% 0.022 285);
+  border: 1px solid oklch(64% 0.31 328 / 0.08);
+}
+
+:root:not(.dark) .palette-card {
+  background: var(--dawn-bg-panel);
+  border: 1px solid oklch(42% 0.28 300 / 0.08);
+}
+
+.palette-card .swatch {
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.palette-card .label {
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME PREVIEW CARDS (for gallery)
+   ═══════════════════════════════════════════════════════════════ */
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 1.5rem 0;
+}
+
+.theme-card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.dark .theme-card {
+  background: oklch(12% 0.022 285);
+  border: 1px solid oklch(64% 0.31 328 / 0.08);
+}
+
+.dark .theme-card:hover {
+  border-color: oklch(64% 0.31 328 / 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(225, 53, 255, 0.1);
+}
+
+:root:not(.dark) .theme-card {
+  background: white;
+  border: 1px solid oklch(42% 0.28 300 / 0.12);
+}
+
+:root:not(.dark) .theme-card:hover {
+  border-color: oklch(42% 0.28 300 / 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(126, 43, 213, 0.08);
+}
+
+.theme-card .preview {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: var(--font-family-mono);
+  font-size: 0.8125rem;
+}
+
+.theme-card .info {
+  padding: 12px 16px;
+}
+
+.theme-card .info .name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-bottom: 4px;
+}
+
+.theme-card .info .meta {
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}

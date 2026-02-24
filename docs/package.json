@@ -1,0 +1,25 @@
+{
+  "name": "opaline-docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Opaline Documentation \u2014 Token-based theme engine for Ratatui",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "lint": "prettier --check \"**/*.md\"",
+    "lint:fix": "prettier --write \"**/*.md\"",
+    "format": "pnpm lint:fix"
+  },
+  "devDependencies": {
+    "mermaid": "^11.12.2",
+    "prettier": "^3.8.0",
+    "vitepress": "^2.0.0-alpha.15"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
