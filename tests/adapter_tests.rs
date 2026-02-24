@@ -1,4 +1,4 @@
-use opaline::{Gradient, OpalineColor, OpalineStyle, ThemeRatatuiExt};
+use opaline::{Gradient, OpalineColor, OpalineStyle};
 use ratatui_core::style::{Color, Modifier, Style, Styled};
 use ratatui_core::text::{Line, Span, Text};
 
@@ -168,7 +168,7 @@ fn styled_set_style_patches() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ThemeRatatuiExt — one-call theme → ratatui bridge
+// Theme inherent methods — zero-import ratatui bridge
 // ═══════════════════════════════════════════════════════════════════════════════
 
 fn test_theme() -> opaline::Theme {
@@ -195,104 +195,104 @@ fn test_theme() -> opaline::Theme {
 }
 
 #[test]
-fn theme_ratatui_ext_color() {
+fn theme_color_into_ratatui() {
     let theme = test_theme();
-    let color = theme.ratatui_color("accent");
+    let color: Color = theme.color("accent").into();
     assert_eq!(color, Color::Rgb(225, 53, 255));
 }
 
 #[test]
-fn theme_ratatui_ext_color_fallback() {
+fn theme_color_fallback_into_ratatui() {
     let theme = test_theme();
-    let color = theme.ratatui_color("nonexistent");
+    let color: Color = theme.color("nonexistent").into();
     assert_eq!(color, Color::Rgb(128, 128, 128)); // FALLBACK
 }
 
 #[test]
-fn theme_ratatui_ext_style() {
+fn theme_style_into_ratatui() {
     let theme = test_theme();
-    let style = theme.ratatui_style("keyword");
+    let style: Style = theme.style("keyword").into();
     assert_eq!(style.fg, Some(Color::Rgb(225, 53, 255)));
     assert!(style.add_modifier.contains(Modifier::BOLD));
 }
 
 #[test]
-fn theme_ratatui_ext_style_missing_returns_default() {
+fn theme_style_missing_returns_default() {
     let theme = test_theme();
-    let style = theme.ratatui_style("nonexistent");
+    let style: Style = theme.style("nonexistent").into();
     assert_eq!(style, Style::default());
 }
 
 #[test]
-fn theme_ratatui_ext_span() {
+fn theme_span() {
     let theme = test_theme();
-    let span: Span = theme.ratatui_span("keyword", "fn");
+    let span: Span = theme.span("keyword", "fn");
     assert_eq!(span.content, "fn");
     assert_eq!(span.style.fg, Some(Color::Rgb(225, 53, 255)));
     assert!(span.style.add_modifier.contains(Modifier::BOLD));
 }
 
 #[test]
-fn theme_ratatui_ext_span_owned_string() {
+fn theme_span_owned_string() {
     let theme = test_theme();
     let content = String::from("hello");
-    let span: Span = theme.ratatui_span("comment", content);
+    let span: Span = theme.span("comment", content);
     assert_eq!(span.content, "hello");
     assert!(span.style.add_modifier.contains(Modifier::ITALIC));
 }
 
 #[test]
-fn theme_ratatui_ext_line() {
+fn theme_line() {
     let theme = test_theme();
-    let line: Line = theme.ratatui_line("keyword", "let x = 42;");
+    let line: Line = theme.line("keyword", "let x = 42;");
     // Line wraps a single span when styled
     assert_eq!(line.style.fg, Some(Color::Rgb(225, 53, 255)));
 }
 
 #[test]
-fn theme_ratatui_ext_text() {
+fn theme_text() {
     let theme = test_theme();
-    let text: Text = theme.ratatui_text("comment", "// TODO");
+    let text: Text = theme.text("comment", "// TODO");
     assert_eq!(text.style.fg, Some(Color::Rgb(100, 100, 120)));
     assert!(text.style.add_modifier.contains(Modifier::ITALIC));
 }
 
 #[test]
-fn theme_ratatui_ext_gradient() {
+fn theme_gradient_into_ratatui() {
     let theme = test_theme();
-    let color = theme.ratatui_gradient("sunset", 0.0);
+    let color: Color = theme.gradient("sunset", 0.0).into();
     assert_eq!(color, Color::Rgb(255, 0, 0));
-    let color = theme.ratatui_gradient("sunset", 1.0);
+    let color: Color = theme.gradient("sunset", 1.0).into();
     assert_eq!(color, Color::Rgb(255, 255, 0));
 }
 
 #[test]
-fn theme_ratatui_ext_gradient_missing() {
+fn theme_gradient_missing_into_ratatui() {
     let theme = test_theme();
-    let color = theme.ratatui_gradient("nonexistent", 0.5);
+    let color: Color = theme.gradient("nonexistent", 0.5).into();
     assert_eq!(color, Color::Rgb(128, 128, 128)); // FALLBACK
 }
 
 #[test]
-fn theme_gradient_styled_line_basic() {
+fn theme_gradient_text_basic() {
     let theme = test_theme();
-    let line: Line = theme.gradient_styled_line("sunset", "rainbow");
+    let line: Line = theme.gradient_text("sunset", "rainbow");
     // Each char gets its own span with gradient coloring
     assert_eq!(line.spans.len(), 7); // "rainbow" = 7 chars
 }
 
 #[test]
-fn theme_gradient_styled_line_missing_gradient() {
+fn theme_gradient_text_missing_gradient() {
     let theme = test_theme();
-    let line: Line = theme.gradient_styled_line("nonexistent", "fallback text");
+    let line: Line = theme.gradient_text("nonexistent", "fallback text");
     // Missing gradient → raw line
     assert_eq!(line.spans.len(), 1);
 }
 
 #[test]
-fn theme_gradient_styled_line_empty_string() {
+fn theme_gradient_text_empty_string() {
     let theme = test_theme();
-    let line: Line = theme.gradient_styled_line("sunset", "");
+    let line: Line = theme.gradient_text("sunset", "");
     assert!(line.spans.is_empty());
 }
 
@@ -411,10 +411,10 @@ fn builder_to_ratatui_round_trip() {
         )
         .build();
 
-    let color: Color = theme.ratatui_color("primary");
+    let color: Color = theme.color("primary").into();
     assert_eq!(color, Color::Rgb(225, 53, 255));
 
-    let style: Style = theme.ratatui_style("heading");
+    let style: Style = theme.style("heading").into();
     assert_eq!(style.fg, Some(Color::Rgb(225, 53, 255)));
     assert!(style.add_modifier.contains(Modifier::BOLD));
     assert!(style.add_modifier.contains(Modifier::UNDERLINED));
@@ -425,11 +425,11 @@ fn default_theme_ratatui_integration() {
     let theme = opaline::Theme::default();
 
     // Default theme should produce valid ratatui types
-    let _color: Color = theme.ratatui_color("accent.primary");
-    let _style: Style = theme.ratatui_style("keyword");
-    let _span: Span = theme.ratatui_span("keyword", "test");
-    let _line: Line = theme.ratatui_line("keyword", "test");
-    let _text: Text = theme.ratatui_text("keyword", "test");
+    let _color: Color = theme.color("accent.primary").into();
+    let _style: Style = theme.style("keyword").into();
+    let _span: Span = theme.span("keyword", "test");
+    let _line: Line = theme.line("keyword", "test");
+    let _text: Text = theme.text("keyword", "test");
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

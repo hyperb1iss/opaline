@@ -3,7 +3,8 @@
 //!
 //! All 9 ratatui modifiers are supported. `OpalineStyle` implements `Styled`,
 //! granting the full `Stylize` fluent API (`.bold()`, `.fg()`, etc.).
-//! `ThemeRatatuiExt` provides one-call `Span`, `Line`, and `Text` builders.
+//! Inherent methods on `Theme` provide zero-import `Span`, `Line`, and `Text`
+//! builders.
 
 use std::borrow::Cow;
 
@@ -88,74 +89,32 @@ impl Styled for OpalineStyle {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ThemeRatatuiExt — zero-friction theme → ratatui bridge
+// Theme inherent methods — zero-import ratatui bridge
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/// Convenience methods on `Theme` for direct ratatui type access.
-///
-/// One-call methods for `Color`, `Style`, `Span`, `Line`, and `Text` —
-/// no intermediate types, no manual wrapping.
-pub trait ThemeRatatuiExt {
-    /// Get a ratatui `Color` for a token name.
-    fn ratatui_color(&self, token: &str) -> Color;
-
-    /// Get a ratatui `Style` for a named style.
-    fn ratatui_style(&self, name: &str) -> Style;
-
-    /// Create a styled `Span` from a token name and content.
-    fn ratatui_span<'a>(
-        &self,
-        style_name: &str,
-        content: impl Into<Cow<'a, str>>,
-    ) -> ratatui_core::text::Span<'a>;
-
-    /// Create a styled `Line` from a token name and content.
-    fn ratatui_line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a>;
-
-    /// Create a styled `Text` from a token name and content.
-    fn ratatui_text<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Text<'a>;
-
-    /// Sample a named gradient at position `t` and return a ratatui `Color`.
-    #[cfg(feature = "gradients")]
-    fn ratatui_gradient(&self, name: &str, t: f32) -> Color;
-
-    /// Create a `Line` with per-character gradient coloring.
-    #[cfg(feature = "gradients")]
-    fn gradient_styled_line(&self, gradient_name: &str, content: &str) -> Line<'static>;
-}
-
-impl ThemeRatatuiExt for Theme {
-    fn ratatui_color(&self, token: &str) -> Color {
-        self.color(token).into()
-    }
-
-    fn ratatui_style(&self, name: &str) -> Style {
-        self.style(name).into()
-    }
-
-    fn ratatui_span<'a>(
+impl Theme {
+    /// Create a styled [`Span`](ratatui_core::text::Span) from a named style.
+    pub fn span<'a>(
         &self,
         style_name: &str,
         content: impl Into<Cow<'a, str>>,
     ) -> ratatui_core::text::Span<'a> {
-        ratatui_core::text::Span::styled(content, self.ratatui_style(style_name))
+        ratatui_core::text::Span::styled(content, Style::from(self.style(style_name)))
     }
 
-    fn ratatui_line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a> {
-        Line::styled(content, self.ratatui_style(style_name))
+    /// Create a styled [`Line`] from a named style.
+    pub fn line<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Line<'a> {
+        Line::styled(content, Style::from(self.style(style_name)))
     }
 
-    fn ratatui_text<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Text<'a> {
-        Text::styled(content, self.ratatui_style(style_name))
+    /// Create a styled [`Text`] from a named style.
+    pub fn text<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Text<'a> {
+        Text::styled(content, Style::from(self.style(style_name)))
     }
 
+    /// Create a [`Line`] with per-character gradient coloring.
     #[cfg(feature = "gradients")]
-    fn ratatui_gradient(&self, name: &str, t: f32) -> Color {
-        self.gradient(name, t).into()
-    }
-
-    #[cfg(feature = "gradients")]
-    fn gradient_styled_line(&self, gradient_name: &str, content: &str) -> Line<'static> {
+    pub fn gradient_text(&self, gradient_name: &str, content: &str) -> Line<'static> {
         if let Some(gradient) = self.get_gradient(gradient_name) {
             Line::from(gradient_spans(content, gradient))
         } else {

@@ -11,9 +11,7 @@ use std::io;
 use std::time::Duration;
 
 use crossterm::event::{self, Event, KeyCode, KeyEventKind};
-use opaline::{
-    Theme, ThemeInfo, ThemeRatatuiExt, gradient_bar, list_available_themes, load_by_name,
-};
+use opaline::{Theme, ThemeInfo, gradient_bar, list_available_themes, load_by_name};
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Layout, Rect};
 use ratatui::style::Style;
@@ -135,7 +133,7 @@ fn handle_key(app: &mut App, code: KeyCode) {
 // ── UI Layout ────────────────────────────────────────────────────────────────
 
 fn ui(frame: &mut Frame, app: &mut App) {
-    let bg = app.theme.ratatui_color("bg.base");
+    let bg: ratatui::style::Color = app.theme.color("bg.base").into();
     frame.render_widget(
         Block::default().style(Style::default().bg(bg)),
         frame.area(),
@@ -167,13 +165,13 @@ fn ui(frame: &mut Frame, app: &mut App) {
 fn render_header(frame: &mut Frame, app: &App, area: Rect) {
     let block = Block::bordered()
         .style(panel_style(app))
-        .border_style(app.theme.ratatui_style("focused_border"));
+        .border_style(app.theme.style("focused_border"));
     let inner = block.inner(area);
     frame.render_widget(block, area);
 
     let title = app
         .theme
-        .gradient_styled_line("aurora", "\u{2726} Opaline Theme Showcase");
+        .gradient_text("aurora", "\u{2726} Opaline Theme Showcase");
     frame.render_widget(Paragraph::new(title).alignment(Alignment::Center), inner);
 }
 
@@ -192,10 +190,10 @@ fn render_theme_list(frame: &mut Frame, app: &mut App, area: Rect) {
                 "\u{25cb}"
             };
             ListItem::new(Line::from(vec![
-                Span::styled(format!(" {marker} "), app.theme.ratatui_style("muted")),
+                Span::styled(format!(" {marker} "), app.theme.style("muted")),
                 Span::styled(
                     info.display_name.clone(),
-                    Style::default().fg(app.theme.ratatui_color("text.secondary")),
+                    Style::default().fg(app.theme.color("text.secondary").into()),
                 ),
             ]))
         })
@@ -204,11 +202,11 @@ fn render_theme_list(frame: &mut Frame, app: &mut App, area: Rect) {
     let list = List::new(items)
         .block(
             Block::bordered()
-                .title(Line::styled(" Themes ", app.theme.ratatui_style("keyword")))
+                .title(Line::styled(" Themes ", app.theme.style("keyword")))
                 .style(base)
                 .border_style(border_style),
         )
-        .highlight_style(app.theme.ratatui_style("active_selected"))
+        .highlight_style(app.theme.style("active_selected"))
         .highlight_symbol("\u{25b8} ");
 
     frame.render_stateful_widget(list, area, &mut app.list_state);
@@ -219,7 +217,7 @@ fn render_styles(frame: &mut Frame, app: &App, area: Rect) {
     let block = Block::bordered()
         .title(Line::styled(
             " Styles & Tokens ",
-            app.theme.ratatui_style("keyword"),
+            app.theme.style("keyword"),
         ))
         .style(panel_style(app))
         .border_style(border_style);
@@ -253,14 +251,14 @@ fn render_style_samples(frame: &mut Frame, app: &App, area: Rect) {
         ("timestamp", "2024-01-15 09:30"),
     ];
 
-    let label_style = Style::default().fg(app.theme.ratatui_color("text.secondary"));
+    let label_style = Style::default().fg(app.theme.color("text.secondary").into());
 
     let lines: Vec<Line> = samples
         .iter()
         .map(|(name, sample)| {
             Line::from(vec![
                 Span::styled(format!(" {name:<16} "), label_style),
-                Span::styled((*sample).to_string(), app.theme.ratatui_style(name)),
+                Span::styled((*sample).to_string(), app.theme.style(name)),
             ])
         })
         .collect();
@@ -281,20 +279,20 @@ fn render_token_swatches(frame: &mut Frame, app: &App, area: Rect) {
         "info",
     ];
 
-    let label_style = Style::default().fg(app.theme.ratatui_color("text.secondary"));
+    let label_style = Style::default().fg(app.theme.color("text.secondary").into());
 
     let mut lines: Vec<Line> = vec![Line::styled(
         " \u{2500}\u{2500} Color Tokens \u{2500}\u{2500}",
-        app.theme.ratatui_style("muted"),
+        app.theme.style("muted"),
     )];
 
     for name in &tokens {
-        let color = app.theme.ratatui_color(name);
+        let color = app.theme.color(name);
         lines.push(Line::from(vec![
             Span::styled(format!(" {name:<18} "), label_style),
             Span::styled(
                 "\u{2588}\u{2588}\u{2588}\u{2588}\u{2588}\u{2588}\u{2588}\u{2588}",
-                Style::default().fg(color),
+                Style::default().fg(color.into()),
             ),
         ]));
     }
@@ -305,10 +303,7 @@ fn render_token_swatches(frame: &mut Frame, app: &App, area: Rect) {
 fn render_gradients(frame: &mut Frame, app: &App, area: Rect) {
     let border_style = panel_border(app, Panel::Gradients);
     let block = Block::bordered()
-        .title(Line::styled(
-            " Gradients ",
-            app.theme.ratatui_style("keyword"),
-        ))
+        .title(Line::styled(" Gradients ", app.theme.style("keyword")))
         .style(panel_style(app))
         .border_style(border_style);
     let inner = block.inner(area);
@@ -332,7 +327,7 @@ fn render_gradient_bars(frame: &mut Frame, app: &App, area: Rect) {
     let bar_width = usize::from(area.width.saturating_sub(4));
     let mut lines: Vec<Line> = Vec::new();
 
-    let label_style = Style::default().fg(app.theme.ratatui_color("text.secondary"));
+    let label_style = Style::default().fg(app.theme.color("text.secondary").into());
 
     for name in &names {
         lines.push(Line::styled(format!("  {name}"), label_style));
@@ -358,30 +353,30 @@ fn render_theme_meta(frame: &mut Frame, app: &App, area: Rect) {
     let author = meta.author.as_deref().unwrap_or("\u{2014}");
     let desc = meta.description.as_deref().unwrap_or("");
 
-    let label_style = Style::default().fg(app.theme.ratatui_color("text.muted"));
+    let label_style = Style::default().fg(app.theme.color("text.muted").into());
 
     let lines = vec![
         Line::from(vec![
             Span::styled("  Theme   ", label_style),
-            app.theme.ratatui_span("keyword", meta.name.clone()),
+            app.theme.span("keyword", meta.name.clone()),
         ]),
         Line::from(vec![
             Span::styled("  Author  ", label_style),
-            app.theme.ratatui_span("file_path", author.to_string()),
+            app.theme.span("file_path", author.to_string()),
         ]),
         Line::from(vec![
             Span::styled("  Variant ", label_style),
-            Span::styled(variant_str, app.theme.ratatui_style("info_style")),
+            Span::styled(variant_str, app.theme.style("info_style")),
         ]),
-        Line::styled(format!("  {desc}"), app.theme.ratatui_style("muted")),
+        Line::styled(format!("  {desc}"), app.theme.style("muted")),
     ];
 
     frame.render_widget(Paragraph::new(lines), area);
 }
 
 fn render_footer(frame: &mut Frame, app: &App, area: Rect) {
-    let sep = Style::default().fg(app.theme.ratatui_color("text.secondary"));
-    let key = app.theme.ratatui_style("keyword");
+    let sep = Style::default().fg(app.theme.color("text.secondary").into());
+    let key: Style = app.theme.style("keyword").into();
 
     let hints = Line::from(vec![
         Span::styled(" \u{2191}\u{2193}/jk", key),
@@ -395,8 +390,8 @@ fn render_footer(frame: &mut Frame, app: &App, area: Rect) {
     ]);
 
     let footer_bg = Style::default()
-        .fg(app.theme.ratatui_color("text.secondary"))
-        .bg(app.theme.ratatui_color("bg.base"));
+        .fg(app.theme.color("text.secondary").into())
+        .bg(app.theme.color("bg.base").into());
 
     frame.render_widget(Paragraph::new(hints).style(footer_bg), area);
 }
@@ -408,14 +403,14 @@ fn render_footer(frame: &mut Frame, app: &App, area: Rect) {
 /// terminal emulator, which would break contrast on light themes.
 fn panel_style(app: &App) -> Style {
     Style::default()
-        .fg(app.theme.ratatui_color("text.primary"))
-        .bg(app.theme.ratatui_color("bg.panel"))
+        .fg(app.theme.color("text.primary").into())
+        .bg(app.theme.color("bg.panel").into())
 }
 
 fn panel_border(app: &App, panel: Panel) -> Style {
     if app.focus == panel {
-        app.theme.ratatui_style("focused_border")
+        app.theme.style("focused_border").into()
     } else {
-        app.theme.ratatui_style("unfocused_border")
+        app.theme.style("unfocused_border").into()
     }
 }

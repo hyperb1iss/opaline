@@ -43,6 +43,7 @@ pub mod schema;
 pub mod theme;
 
 pub mod adapters;
+pub mod names;
 
 #[cfg(feature = "builtin-themes")]
 pub mod builtins;
@@ -65,8 +66,6 @@ pub use theme::{Theme, ThemeBuilder};
 pub use gradient::Gradient;
 
 // Ratatui adapter
-#[cfg(feature = "ratatui")]
-pub use adapters::ratatui::ThemeRatatuiExt;
 #[cfg(all(feature = "ratatui", feature = "gradients"))]
 pub use adapters::ratatui::{gradient_bar, gradient_line, gradient_spans, gradient_text_line};
 

@@ -17,13 +17,14 @@ src/
   resolver.rs         # Strict palette → token → style resolution with cycle detection
   loader.rs           # load_from_file(impl AsRef<Path>), load_from_str()
   theme.rs            # Theme struct + accessors + ThemeBuilder + global state
+  names.rs            # String constants for token/style/gradient contract names
   discovery.rs        # User theme directory scanning (app-specific)
   builtins/
     mod.rs            # Auto-generated registry via build.rs
     *.toml            # 20 builtin theme files (auto-discovered at compile time)
   adapters/
     mod.rs
-    ratatui.rs        # From<OpalineColor> for Color, ThemeRatatuiExt, gradient helpers
+    ratatui.rs        # From impls, inherent span/line/text/gradient_text, gradient helpers
     cli.rs            # colored crate: ColoredExt, ThemeCliExt, gradient_string()
 build.rs              # Compile-time theme auto-discovery and codegen
 tests/
@@ -33,7 +34,7 @@ tests/
   resolver_tests.rs   # Pipeline, cycle detection, strict error paths
   loader_tests.rs     # TOML loading, error paths
   builtins_tests.rs   # Theme validation, token/style/gradient contracts (20 themes)
-  adapter_tests.rs    # Ratatui From impls, ThemeRatatuiExt, Styled trait, all modifiers
+  adapter_tests.rs    # Ratatui From impls, inherent methods, Styled trait, all modifiers
 docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```
 
@@ -42,7 +43,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (131 tests)
+cargo test --all-features                 # Full test suite (132 tests)
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -64,7 +65,7 @@ cd docs && pnpm build                     # Build docs for deployment
 - `OpalineColor` — RGB color with hex, tuple, array, u32 conversions + lerp
 - `OpalineStyle` — Composed style (fg, bg, 9 modifiers) with builder pattern, `#[non_exhaustive]`
 - `Gradient` — Multi-stop color interpolation (new() panics, try_new() returns Result)
-- `Theme` — Fully resolved theme with `color()`, `style()`, `gradient()` + strict `try_*` variants
+- `Theme` — Fully resolved theme with `color()`, `style()`, `gradient()` + strict `try_*` variants; ratatui `span()`, `line()`, `text()`, `gradient_text()` (no trait import needed)
 - `ThemeBuilder` — Programmatic theme construction without TOML
 - `ThemeInfo` — Metadata for theme discovery and picker UIs
 - `OpalineError` — All error variants (IO, Parse, InvalidColor, CircularReference, etc.)
