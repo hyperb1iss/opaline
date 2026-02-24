@@ -113,8 +113,6 @@ const REQUIRED_TOKENS: &[&str] = &[
     "mode.active",
     "mode.inactive",
     "mode.hover",
-    "chat.user",
-    "chat.iris",
 ];
 
 #[test]

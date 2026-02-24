@@ -88,9 +88,6 @@ info = "nord8"
 "mode.inactive" = "nord3"
 "mode.hover" = "nord9"
 
-"chat.user" = "nord9"
-"chat.iris" = "nord8"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

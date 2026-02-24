@@ -11,7 +11,7 @@
 //! let kw = theme.style(styles::KEYWORD);
 //! ```
 
-/// Semantic color token names (38 required).
+/// Semantic color token names (36 required).
 pub mod tokens {
     pub const TEXT_PRIMARY: &str = "text.primary";
     pub const TEXT_SECONDARY: &str = "text.secondary";
@@ -60,8 +60,7 @@ pub mod tokens {
     pub const MODE_INACTIVE: &str = "mode.inactive";
     pub const MODE_HOVER: &str = "mode.hover";
 
-    pub const CHAT_USER: &str = "chat.user";
-    pub const CHAT_IRIS: &str = "chat.iris";
+    pub const BG_SELECTION: &str = "bg.selection";
 }
 
 /// Named style constants (18 required).
@@ -84,6 +83,14 @@ pub mod styles {
     pub const GIT_MODIFIED: &str = "git_modified";
     pub const DIFF_ADDED: &str = "diff_added";
     pub const DIFF_REMOVED: &str = "diff_removed";
+    pub const DIFF_HUNK: &str = "diff_hunk";
+    pub const DIFF_CONTEXT: &str = "diff_context";
+    pub const LINE_NUMBER: &str = "line_number";
+    pub const TIMESTAMP: &str = "timestamp";
+    pub const AUTHOR: &str = "author";
+    pub const GIT_UNTRACKED: &str = "git_untracked";
+    pub const GIT_DELETED: &str = "git_deleted";
+    pub const MODE_INACTIVE: &str = "mode_inactive";
 }
 
 /// Named gradient constants (5 required).

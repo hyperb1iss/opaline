@@ -95,9 +95,6 @@ info = "spring_blue"
 "mode.inactive" = "sumi_ink6"
 "mode.hover" = "spring_blue"
 
-"chat.user" = "spring_blue"
-"chat.iris" = "oni_violet"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

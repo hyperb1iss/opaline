@@ -85,9 +85,6 @@ info = "blue"
 "mode.inactive" = "grey1"
 "mode.hover" = "aqua"
 
-"chat.user" = "blue"
-"chat.iris" = "green"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

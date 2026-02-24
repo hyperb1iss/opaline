@@ -90,9 +90,6 @@ info = "cyan"
 "mode.inactive" = "comment"
 "mode.hover" = "blue"
 
-"chat.user" = "blue"
-"chat.iris" = "magenta"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

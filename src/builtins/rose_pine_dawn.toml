@@ -76,9 +76,6 @@ info = "pine"
 "mode.inactive" = "muted"
 "mode.hover" = "foam"
 
-"chat.user" = "foam"
-"chat.iris" = "iris"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

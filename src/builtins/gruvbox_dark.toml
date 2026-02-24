@@ -96,9 +96,6 @@ info = "aqua"
 "mode.inactive" = "gray"
 "mode.hover" = "aqua"
 
-"chat.user" = "aqua"
-"chat.iris" = "orange"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }

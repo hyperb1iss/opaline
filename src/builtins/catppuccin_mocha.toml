@@ -92,9 +92,6 @@ info = "sky"
 "mode.inactive" = "overlay1"
 "mode.hover" = "sapphire"
 
-"chat.user" = "sapphire"
-"chat.iris" = "mauve"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }
