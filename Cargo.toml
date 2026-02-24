@@ -24,7 +24,6 @@ global-state = ["dep:parking_lot"]
 discovery = ["dep:dirs"]
 ratatui = ["dep:ratatui-core"]
 cli = ["dep:colored"]
-named-colors = []
 
 [dependencies]
 thiserror = "2.0"

@@ -20,7 +20,8 @@ pub fn load_from_str(toml_str: &str, path: Option<&Path>) -> Result<Theme, Opali
 }
 
 /// Load a theme from a TOML file on disk.
-pub fn load_from_file(path: &Path) -> Result<Theme, OpalineError> {
+pub fn load_from_file(path: impl AsRef<Path>) -> Result<Theme, OpalineError> {
+    let path = path.as_ref();
     let contents = std::fs::read_to_string(path).map_err(|source| OpalineError::Io {
         path: path.to_path_buf(),
         source,

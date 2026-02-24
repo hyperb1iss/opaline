@@ -58,6 +58,14 @@ impl Theme {
             .unwrap_or(OpalineColor::FALLBACK)
     }
 
+    /// Strict color lookup — returns `None` if the token doesn't exist.
+    pub fn try_color(&self, token: &str) -> Option<OpalineColor> {
+        self.tokens
+            .get(token)
+            .or_else(|| self.palette.get(token))
+            .copied()
+    }
+
     /// Check whether a token or palette name exists.
     pub fn has_token(&self, name: &str) -> bool {
         self.tokens.contains_key(name) || self.palette.contains_key(name)
@@ -68,6 +76,11 @@ impl Theme {
         self.tokens.keys().map(String::as_str).collect()
     }
 
+    /// All palette color names defined in this theme.
+    pub fn palette_names(&self) -> Vec<&str> {
+        self.palette.keys().map(String::as_str).collect()
+    }
+
     // ── Style access ─────────────────────────────────────────────────────
 
     /// Look up a style by name, returning `Default` if missing.
@@ -76,6 +89,11 @@ impl Theme {
             .get(name)
             .cloned()
             .unwrap_or_default()
+    }
+
+    /// Strict style lookup — returns `None` if the style doesn't exist.
+    pub fn try_style(&self, name: &str) -> Option<&OpalineStyle> {
+        self.styles.get(name)
     }
 
     /// Check whether a named style exists.
@@ -97,6 +115,12 @@ impl Theme {
         self.gradients
             .get(name)
             .map_or(OpalineColor::FALLBACK, |g| g.at(t))
+    }
+
+    /// Strict gradient sampling — returns `None` if the gradient doesn't exist.
+    #[cfg(feature = "gradients")]
+    pub fn try_gradient(&self, name: &str, t: f32) -> Option<OpalineColor> {
+        self.gradients.get(name).map(|g| g.at(t))
     }
 
     /// Get a reference to a named gradient for manual sampling.
@@ -177,6 +201,13 @@ impl ThemeBuilder {
     #[must_use]
     pub fn variant(mut self, variant: ThemeVariant) -> Self {
         self.meta.variant = variant;
+        self
+    }
+
+    /// Set the theme version.
+    #[must_use]
+    pub fn version(mut self, version: impl Into<String>) -> Self {
+        self.meta.version = Some(version.into());
         self
     }
 

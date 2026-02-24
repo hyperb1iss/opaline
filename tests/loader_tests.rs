@@ -49,11 +49,7 @@ fn loaded_theme_resolves_styles() {
     let style = theme.style("keyword");
     assert_eq!(
         style,
-        OpalineStyle {
-            fg: Some(OpalineColor::new(255, 0, 0)),
-            bold: true,
-            ..OpalineStyle::new()
-        }
+        OpalineStyle::fg(OpalineColor::new(255, 0, 0)).bold()
     );
 }
 

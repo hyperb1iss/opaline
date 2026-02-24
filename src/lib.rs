@@ -29,7 +29,6 @@
 //! | `cli` | no | `colored` crate adapter for ANSI terminal output |
 //! | `global-state` | no | Process-wide `current()`/`set_theme()` singleton |
 //! | `discovery` | no | Load user themes from `~/.config/<app>/themes/` |
-//! | `named-colors` | no | CSS named color parsing |
 
 pub mod color;
 pub mod error;

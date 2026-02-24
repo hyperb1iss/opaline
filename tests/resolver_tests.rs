@@ -135,12 +135,10 @@ fn style_resolves_fg_bg() {
 
     assert_eq!(
         *style,
-        OpalineStyle {
-            fg: Some(OpalineColor::new(128, 255, 234)),
-            bg: Some(OpalineColor::new(30, 30, 40)),
-            bold: true,
-            ..OpalineStyle::new()
-        }
+        OpalineStyle::new()
+            .with_fg(OpalineColor::new(128, 255, 234))
+            .with_bg(OpalineColor::new(30, 30, 40))
+            .bold()
     );
 }
 

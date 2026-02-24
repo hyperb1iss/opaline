@@ -8,6 +8,7 @@ use crate::color::OpalineColor;
 ///
 /// All 9 ratatui modifiers are supported: `bold`, `dim`, `italic`, `underline`,
 /// `slow_blink`, `rapid_blink`, `reversed`, `hidden`, and `crossed_out`.
+#[non_exhaustive]
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Clone, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct OpalineStyle {
