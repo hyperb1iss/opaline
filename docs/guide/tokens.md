@@ -116,6 +116,21 @@ if theme.has_token("accent.primary") {
 let names = theme.token_names();
 ```
 
+### Name Constants
+
+Use the `names` module for autocomplete-friendly constants instead of raw strings:
+
+```rust
+use opaline::names::{tokens, styles, gradients};
+
+let accent = theme.color(tokens::ACCENT_PRIMARY);
+let bg = theme.color(tokens::BG_BASE);
+let kw = theme.style(styles::KEYWORD);
+let has_aurora = theme.has_gradient(gradients::AURORA);
+```
+
+All 38 required tokens, 18 required styles, and 5 required gradients have corresponding constants.
+
 ## Token Resolution
 
 Tokens resolve through the palette. A token value is a palette key:

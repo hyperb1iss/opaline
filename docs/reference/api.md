@@ -130,33 +130,54 @@ grad.len()             // usize
 grad.stops()           // &[OpalineColor]
 ```
 
-## Ratatui Integration
+## Names Module
 
-Requires `ratatui` feature (default).
-
-### `ThemeRatatuiExt` Trait
+Autocomplete-friendly constants for the standard theme contract. Use these instead of raw strings for typo prevention.
 
 ```rust
-use opaline::ThemeRatatuiExt;
+use opaline::names::{tokens, styles, gradients};
 
-theme.ratatui_color("token")        // ratatui::style::Color
-theme.ratatui_style("name")         // ratatui::style::Style
-theme.ratatui_span("name", "text")  // ratatui::text::Span
-theme.ratatui_line("name", "text")  // ratatui::text::Line
-theme.ratatui_text("name", "text")  // ratatui::text::Text
+theme.color(tokens::ACCENT_PRIMARY)     // OpalineColor
+theme.style(styles::KEYWORD)            // OpalineStyle
+theme.has_gradient(gradients::AURORA)    // bool
+```
+
+Modules: `names::tokens` (38 constants), `names::styles` (18 constants), `names::gradients` (5 constants).
+
+## Ratatui Integration
+
+Requires `ratatui` feature (default). No trait import needed — methods are inherent on `Theme`.
+
+### Theme Methods
+
+```rust
+// Colors/styles use Into conversions
+let color: ratatui::style::Color = theme.color("token").into();
+let style: ratatui::style::Style = theme.style("name").into();
+
+// Or pass theme.style() directly to widget methods (via Into<Style>)
+Block::bordered().style(theme.style("keyword"));
+
+// Text type builders
+theme.span("name", "text")             // ratatui::text::Span
+theme.line("name", "text")             // ratatui::text::Line
+theme.text("name", "text")             // ratatui::text::Text
+theme.gradient_text("name", "text")    // ratatui::text::Line (gradients feature)
 ```
 
 ### Gradient Helpers
 
-Requires `ratatui` + `gradients` features.
+Requires `ratatui` + `gradients` features. Low-level free functions take a `&Gradient` directly:
 
 ```rust
-use opaline::{gradient_spans, gradient_line, gradient_bar, gradient_text_line};
+use opaline::{gradient_spans, gradient_text_line, gradient_bar, gradient_line};
 
-gradient_spans(&theme, "name", "text")      // Vec<Span>
-gradient_line(&theme, "name", "text")        // Line
-gradient_bar(&theme, "name", width)          // Line (block chars)
-gradient_text_line(&theme, "name", "text")   // Line
+let grad = theme.get_gradient("name").unwrap();
+
+gradient_spans("text", &grad)               // Vec<Span>
+gradient_text_line("text", &grad)            // Line
+gradient_bar(width, '█', &grad)              // Line (block chars)
+gradient_line(width, '─', &grad)             // Vec<Span>
 ```
 
 ## CLI Integration

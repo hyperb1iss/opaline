@@ -10,7 +10,7 @@ These are enabled by default with `opaline = "0.1"`:
 |---------|-------------|--------------|
 | `builtin-themes` | 20 embedded TOML themes via `include_str!` | None |
 | `gradients` | Multi-stop gradient support (`Gradient` type) | None |
-| `ratatui` | `From` impls for `ratatui::style::{Color, Style}`, `ThemeRatatuiExt` | `ratatui-core 0.1` |
+| `ratatui` | `From` impls, inherent `span()`/`line()`/`text()`/`gradient_text()` on `Theme` | `ratatui-core 0.1` |
 
 ## Optional Features
 
@@ -63,7 +63,7 @@ Some features gate additional API when combined:
 
 | Combination | Unlocks |
 |-------------|---------|
-| `ratatui` + `gradients` | `gradient_spans()`, `gradient_line()`, `gradient_bar()`, `gradient_text_line()` |
+| `ratatui` + `gradients` | `theme.gradient_text()`, `gradient_spans()`, `gradient_line()`, `gradient_bar()`, `gradient_text_line()` |
 | `cli` + `gradients` | `gradient_string()` |
 | `global-state` + `builtin-themes` | `load_theme_by_name()` |
 

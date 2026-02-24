@@ -15,13 +15,13 @@ let border = Style::default().fg(Color::Rgb(128, 255, 234));
 Opaline replaces this with **semantic names** that resolve through a theme:
 
 ```rust
-use opaline::{Theme, ThemeRatatuiExt};
+use opaline::Theme;
 
 let theme = Theme::default();
 
 // Semantic — the theme decides what "keyword" looks like
-let style = theme.ratatui_style("keyword");
-let border = theme.ratatui_style("focused_border");
+let keyword = theme.style("keyword");   // works directly via Into<Style>
+let border = theme.style("focused_border");
 ```
 
 Change the theme, and every styled element updates automatically. Users can switch between 20 builtin themes or load custom ones from TOML files.
@@ -55,7 +55,7 @@ This separation means palette swaps propagate through the entire theme automatic
 | **20 builtin themes** | SilkCircuit (5 variants), Catppuccin, Dracula, Nord, Tokyo Night, Rose Pine, Kanagawa, Gruvbox, One Dark, Solarized, Everforest |
 | **Token system** | 40+ semantic tokens across 10 namespaces |
 | **Gradients** | Multi-stop color interpolation with `at(t)` and `generate(n)` |
-| **Ratatui adapter** | `From` impls, `ThemeRatatuiExt` trait, gradient spans/lines/bars |
+| **Ratatui adapter** | `From` impls, inherent `span()`/`line()`/`text()` methods, gradient helpers |
 | **CLI adapter** | `colored` crate integration for non-TUI terminal output |
 | **ThemeBuilder** | Programmatic theme construction without TOML |
 | **Strict resolver** | Cycle detection, unresolvable reference errors |

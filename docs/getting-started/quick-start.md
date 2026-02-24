@@ -42,21 +42,21 @@ assert!(theme.has_style("keyword"));
 The `ratatui` feature (enabled by default) gives you seamless integration:
 
 ```rust
-use opaline::{Theme, ThemeRatatuiExt};
+use opaline::Theme;
 use ratatui::text::{Span, Line};
 
 let theme = Theme::default();
 
-// Convert theme styles directly to ratatui types
-let styled_span = theme.ratatui_span("keyword", "fn");
-let styled_line = theme.ratatui_line("keyword", "let x = 42;");
+// Create styled ratatui types directly — no trait import needed
+let styled_span = theme.span("keyword", "fn");
+let styled_line = theme.line("keyword", "let x = 42;");
 
-// Or get raw ratatui Style/Color for manual use
-let rat_style = theme.ratatui_style("keyword");
-let rat_color = theme.ratatui_color("accent.primary");
+// theme.style() works directly with widget methods via Into<Style>
+let block = ratatui::widgets::Block::bordered()
+    .style(theme.style("keyword"));
 
-// Use in your render function
-let span = Span::styled("hello", rat_style);
+// For Style::fg()/bg(), convert colors explicitly
+let color: ratatui::style::Color = theme.color("accent.primary").into();
 ```
 
 ## Use Gradients
@@ -64,18 +64,19 @@ let span = Span::styled("hello", rat_style);
 Gradients produce smooth color transitions — great for progress bars and decorative elements:
 
 ```rust
-use opaline::{Theme, gradient_bar, gradient_spans};
+use opaline::{Theme, gradient_bar};
 
 let theme = Theme::default();
 
 // Sample a single color from a gradient
 let color = theme.gradient("primary", 0.5); // midpoint of primary gradient
 
-// Generate a gradient progress bar
-let bar = gradient_bar(&theme, "primary", 40); // 40 chars wide
+// High-level: gradient-colored text as a Line
+let line = theme.gradient_text("aurora", "Hello, Opaline!");
 
-// Create gradient-styled text
-let spans = gradient_spans(&theme, "aurora", "Hello, Opaline!");
+// Low-level: gradient progress bar from a &Gradient
+let grad = theme.get_gradient("primary").unwrap();
+let bar = gradient_bar(40, '█', grad); // 40 chars wide
 ```
 
 ## Build Themes Programmatically

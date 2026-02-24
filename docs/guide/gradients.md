@@ -68,24 +68,37 @@ Every builtin theme defines these 5 gradients:
 
 ## Ratatui Integration
 
-With the `ratatui` feature, gradients become Ratatui spans directly:
+With the `ratatui` feature, gradients become Ratatui spans directly.
+
+### High-Level: Theme Methods
+
+The simplest way to render gradient text — no extra imports:
 
 ```rust
-use opaline::{Theme, gradient_spans, gradient_line, gradient_bar, gradient_text_line};
+let theme = opaline::Theme::default();
+
+// Per-character gradient coloring → Line
+let line = theme.gradient_text("aurora", "Hello, Opaline!");
+```
+
+### Low-Level: Free Functions
+
+For maximum control, use the free functions with a `&Gradient`:
+
+```rust
+use opaline::{Theme, gradient_spans, gradient_text_line, gradient_bar};
 
 let theme = Theme::default();
+let gradient = theme.get_gradient("primary").unwrap();
 
-// Gradient-colored text — each char gets its own color
-let spans = gradient_spans(&theme, "aurora", "Hello, Opaline!");
+// Vec<Span> — each character colored along the gradient
+let spans = gradient_spans("Status: Online", gradient);
 
-// Gradient as a Line (ready for rendering)
-let line = gradient_line(&theme, "primary", "Status: Online");
+// Line — gradient-colored text
+let line = gradient_text_line("Loading...", gradient);
 
-// Gradient progress bar (block characters)
-let bar = gradient_bar(&theme, "primary", 40); // 40 chars wide
-
-// Gradient text as a Line
-let text_line = gradient_text_line(&theme, "warm", "Loading...");
+// Line — repeated block characters for progress bars
+let bar = gradient_bar(40, '█', gradient);
 ```
 
 ## Building Gradients Programmatically

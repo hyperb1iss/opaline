@@ -23,29 +23,39 @@ let rat: Color = Color::from(&color); // from reference
 let rat: Color = color.into();        // from value
 ```
 
-## ThemeRatatuiExt
+## Theme Methods
 
-The `ThemeRatatuiExt` trait adds Ratatui-specific methods to `Theme`:
+`Theme` has inherent methods for creating Ratatui text types — no trait import needed:
 
 ```rust
-use opaline::{Theme, ThemeRatatuiExt};
+use opaline::Theme;
 
 let theme = Theme::default();
 
-// Get a ratatui Color from a token
-let color: ratatui::style::Color = theme.ratatui_color("accent.primary");
+// Create styled text elements directly
+let span: ratatui::text::Span = theme.span("keyword", "fn");
+let line: ratatui::text::Line = theme.line("keyword", "let x = 42;");
+let text: ratatui::text::Text = theme.text("keyword", "multi\nline\ntext");
 
-// Get a ratatui Style from a named style
-let style: ratatui::style::Style = theme.ratatui_style("keyword");
+// Gradient-colored text (requires `gradients` feature)
+let grad: ratatui::text::Line = theme.gradient_text("aurora", "✦ Opaline");
+```
 
-// Create a styled Span
-let span: ratatui::text::Span = theme.ratatui_span("keyword", "fn");
+## Style Integration
 
-// Create a styled Line
-let line: ratatui::text::Line = theme.ratatui_line("keyword", "let x = 42;");
+`OpalineStyle` implements `Into<Style>`, so `theme.style()` works directly with any Ratatui widget method that accepts `impl Into<Style>`:
 
-// Create a styled Text block
-let text: ratatui::text::Text = theme.ratatui_text("keyword", "multi\nline\ntext");
+```rust
+use ratatui::widgets::Block;
+
+// Works directly — no conversion needed
+Block::bordered()
+    .style(theme.style("keyword"))
+    .border_style(theme.style("focused_border"));
+
+// For Style::fg() / Style::bg(), use .into() on colors
+use ratatui::style::Style;
+let bg = Style::default().bg(theme.color("bg.base").into());
 ```
 
 ## Styled Trait
@@ -79,24 +89,32 @@ All 9 Opaline modifiers map to their Ratatui equivalents:
 
 ## Gradient Helpers
 
-With both `ratatui` and `gradients` features enabled, you get gradient rendering functions:
+With both `ratatui` and `gradients` features enabled, you get gradient rendering helpers.
+
+### High-Level (Theme Methods)
 
 ```rust
-use opaline::{Theme, gradient_spans, gradient_line, gradient_bar, gradient_text_line};
+// Per-character gradient coloring → Line
+let line = theme.gradient_text("aurora", "Rainbow text!");
+```
 
-let theme = Theme::default();
+### Low-Level (Free Functions)
+
+These take a `&Gradient` directly for maximum control:
+
+```rust
+use opaline::{gradient_spans, gradient_text_line, gradient_bar};
+
+let gradient = theme.get_gradient("primary").unwrap();
 
 // Vec<Span> — each character colored along the gradient
-let spans: Vec<ratatui::text::Span> = gradient_spans(&theme, "aurora", "Rainbow text!");
+let spans = gradient_spans("Hello!", gradient);
 
-// Line — ready to render
-let line: ratatui::text::Line = gradient_line(&theme, "primary", "Status bar");
+// Line — gradient-colored text
+let line = gradient_text_line("Status: Online", gradient);
 
-// Progress bar using block characters
-let bar: ratatui::text::Line = gradient_bar(&theme, "warm", 30);
-
-// Text with gradient applied
-let styled: ratatui::text::Line = gradient_text_line(&theme, "primary", "Loading...");
+// Line — repeated block characters for progress bars
+let bar = gradient_bar(40, '█', gradient);
 ```
 
 ## In Your Render Function
@@ -104,20 +122,20 @@ let styled: ratatui::text::Line = gradient_text_line(&theme, "primary", "Loading
 Typical usage inside a Ratatui `render` callback:
 
 ```rust
-use opaline::{Theme, ThemeRatatuiExt, gradient_bar};
+use opaline::{Theme, gradient_bar};
 use ratatui::widgets::{Block, Borders, Paragraph};
 
 fn render(frame: &mut ratatui::Frame, theme: &Theme) {
     let area = frame.area();
 
-    // Themed block
+    // Themed block — OpalineStyle works via Into<Style>
     let block = Block::default()
         .borders(Borders::ALL)
-        .border_style(theme.ratatui_style("focused_border"))
-        .title_style(theme.ratatui_style("keyword"));
+        .border_style(theme.style("focused_border"))
+        .title_style(theme.style("keyword"));
 
     // Themed paragraph
-    let text = theme.ratatui_text("keyword", "Hello, Opaline!");
+    let text = theme.text("keyword", "Hello, Opaline!");
     let paragraph = Paragraph::new(text).block(block);
 
     frame.render_widget(paragraph, area);

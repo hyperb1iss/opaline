@@ -129,6 +129,20 @@ error_gradient
 aurora
 ```
 
+## Name Constants
+
+The `opaline::names` module provides compile-time constants for every required token, style, and gradient:
+
+```rust
+use opaline::names::{tokens, styles, gradients};
+
+// tokens::TEXT_PRIMARY      → "text.primary"
+// styles::KEYWORD           → "keyword"
+// gradients::AURORA          → "aurora"
+```
+
+Use these instead of raw strings for autocomplete support and typo prevention.
+
 ## Enforcement
 
 The contract is enforced by integration tests in `tests/builtins_tests.rs`. Every builtin theme is loaded and checked for all required tokens, styles, and gradients.
