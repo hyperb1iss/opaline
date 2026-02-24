@@ -1,0 +1,69 @@
+name: CI/CD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # ── Publish to crates.io ────────────────────────────────────
+  cargo-publish:
+    name: Publish to crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Publish
+        run: cargo publish --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+
+  # ── Create GitHub Release ───────────────────────────────────
+  create-release:
+    name: Create GitHub Release
+    needs: cargo-publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        if: steps.prev_tag.outputs.tag != ''
+        uses: hyperb1iss/git-iris@v2
+        with:
+          command: release-notes
+          from: ${{ steps.prev_tag.outputs.tag }}
+          to: ${{ github.ref_name }}
+          version-name: ${{ github.ref_name }}
+          provider: anthropic
+          model: claude-sonnet-4-5-20250929
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          output-file: RELEASE_NOTES.md
+
+      - name: Fallback release notes
+        if: steps.prev_tag.outputs.tag == ''
+        run: |
+          echo "# Release ${{ github.ref_name }}" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "Initial release." >> RELEASE_NOTES.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          body_path: RELEASE_NOTES.md
