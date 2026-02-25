@@ -38,10 +38,12 @@ jobs:
         id: prev_tag
         run: |
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [[ -z "$PREVIOUS_TAG" ]]; then
+            PREVIOUS_TAG=$(git rev-list --max-parents=0 HEAD)
+          fi
           echo "tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
 
       - name: Generate release notes
-        if: steps.prev_tag.outputs.tag != ''
         uses: hyperb1iss/git-iris@v2
         with:
           command: release-notes
@@ -52,13 +54,6 @@ jobs:
           model: claude-sonnet-4-5-20250929
           api-key: ${{ secrets.ANTHROPIC_API_KEY }}
           output-file: RELEASE_NOTES.md
-
-      - name: Fallback release notes
-        if: steps.prev_tag.outputs.tag == ''
-        run: |
-          echo "# Release ${{ github.ref_name }}" > RELEASE_NOTES.md
-          echo "" >> RELEASE_NOTES.md
-          echo "Initial release." >> RELEASE_NOTES.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
