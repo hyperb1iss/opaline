@@ -22,122 +22,14 @@ on:
         type: boolean
         default: false
 
-permissions:
-  contents: write
-  actions: write
-
-concurrency:
-  group: release
-  cancel-in-progress: false
-
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   release:
-    name: Release
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Install Rust"
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: "Rust cache"
-        uses: Swatinem/rust-cache@v2
-
-      - name: "Configure git"
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: "Determine version"
-        id: version
-        run: |
-          CURRENT_TAG=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)
-          if [[ -n "$CURRENT_TAG" ]]; then
-            CURRENT="${CURRENT_TAG#v}"
-          else
-            CURRENT=$(grep -m1 '^version' Cargo.toml | sed 's/.*"\(.*\)".*/\1/')
-          fi
-          echo "Current version: $CURRENT (from tag: ${CURRENT_TAG:-none})"
-
-          if [[ -n "${{ inputs.version }}" ]]; then
-            VERSION="${{ inputs.version }}"
-          else
-            MAJOR=$(echo "$CURRENT" | cut -d. -f1)
-            MINOR=$(echo "$CURRENT" | cut -d. -f2)
-            PATCH=$(echo "$CURRENT" | cut -d. -f3)
-
-            case "${{ inputs.bump }}" in
-              major) VERSION="$((MAJOR + 1)).0.0" ;;
-              minor) VERSION="${MAJOR}.$((MINOR + 1)).0" ;;
-              patch) VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))" ;;
-            esac
-          fi
-
-          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::Invalid version format: $VERSION (expected: X.Y.Z)"
-            exit 1
-          fi
-
-          if git tag -l "v$VERSION" | grep -q "v$VERSION"; then
-            echo "::error::Tag v$VERSION already exists"
-            exit 1
-          fi
-
-          echo "current=$CURRENT" >> $GITHUB_OUTPUT
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Releasing: $CURRENT -> $VERSION"
-
-      - name: "Update version"
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          sed -i 's/^version = ".*"/version = "'"$VERSION"'"/' Cargo.toml
-          cargo update -w
-
-      - name: "Build"
-        run: cargo build --all-features --locked
-
-      - name: "Run tests"
-        run: cargo test --all-features --locked
-
-      - name: "Clippy"
-        run: cargo clippy --all-targets --all-features -- -D warnings
-
-      - name: "Commit version bump"
-        if: ${{ !inputs.dry_run }}
-        run: |
-          git add Cargo.toml Cargo.lock
-          git commit -m "release: v${{ steps.version.outputs.version }}"
-
-      - name: "Create and push tag"
-        if: ${{ !inputs.dry_run }}
-        run: |
-          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
-          git push origin HEAD:${{ github.ref_name }}
-          git push origin "v${{ steps.version.outputs.version }}"
-
-      - name: "Trigger CI/CD pipeline"
-        if: ${{ !inputs.dry_run }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run cicd.yml --ref "v${{ steps.version.outputs.version }}"
-
-      - name: "Summary"
-        run: |
-          echo "## Release ${{ inputs.dry_run && '[DRY RUN] ' || '' }}v${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
-            echo "Build and tests passed. Run again without dry-run to publish." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "Version bumped: ${{ steps.version.outputs.current }} -> ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-            echo "Tag pushed: v${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-            echo "CI/CD pipeline will publish to crates.io and create GitHub Release." >> $GITHUB_STEP_SUMMARY
-          fi
+    uses: hyperb1iss/shared-workflows/.github/workflows/rust-release.yml@main
+    with:
+      version: ${{ inputs.version }}
+      bump: ${{ inputs.bump }}
+      dry_run: ${{ inputs.dry_run }}
+    permissions:
+      contents: write
+      actions: write
+    secrets: inherit
