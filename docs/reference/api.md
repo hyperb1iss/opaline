@@ -25,6 +25,16 @@ let mid = OpalineColor::lerp(&start, &end, 0.5);
 
 // Display
 assert_eq!(format!("{color}"), "#e135ff");
+
+// Constants
+OpalineColor::BLACK              // pure black
+OpalineColor::WHITE              // pure white
+OpalineColor::FALLBACK           // neutral gray (128, 128, 128)
+
+// Color manipulation
+color.darken(0.3)                // mix 30% toward black
+color.lighten(0.2)               // mix 20% toward white
+color.desaturate(0.5)            // mix 50% toward luminance gray
 ```
 
 ### `OpalineStyle`
@@ -95,6 +105,12 @@ theme.meta.author                   // Option<String>
 theme.meta.variant                  // ThemeVariant
 theme.is_dark()                     // bool
 theme.is_light()                    // bool
+
+// Token injection (app-level derivation)
+theme.register_default_token("name", color)   // insert if absent (TOML wins)
+theme.register_token("name", color)           // unconditional overwrite
+theme.register_default_style("name", style)   // insert if absent
+theme.register_style("name", style)           // unconditional overwrite
 ```
 
 ### `ThemeBuilder`
@@ -222,6 +238,17 @@ let theme = current();                          // Arc<Theme>
 set_theme(theme);                               // replace global theme
 load_theme(path)?;                              // load from file + set
 load_theme_by_name("dracula")?;                 // load builtin + set
+
+// With app-level derivation callback
+use opaline::load_theme_by_name_with;
+load_theme_by_name_with("dracula", |theme| {    // load + derive + set
+    theme.register_default_token("nav.bg", theme.color("bg.base").darken(0.1));
+})?;
+
+// App-specific discovery paths (requires `discovery` too)
+use opaline::{load_theme_by_name_for_app, load_theme_by_name_for_app_with};
+load_theme_by_name_for_app("custom", "myapp")?;
+load_theme_by_name_for_app_with("custom", "myapp", derive_fn)?;
 ```
 
 ## Builtins
@@ -234,6 +261,34 @@ use opaline::{load_by_name, list_available_themes, ThemeInfo};
 let theme = load_by_name("nord")?;              // Option<Theme>
 let themes: Vec<ThemeInfo> = list_available_themes();
 ```
+
+## Widgets
+
+Requires `widgets` feature.
+
+```rust
+use opaline::{ThemeSelector, ThemeSelectorState, ThemeSelectorAction};
+
+// Create state
+let state = ThemeSelectorState::new();
+let state = ThemeSelectorState::with_current_selected();
+let state = ThemeSelectorState::with_current_selected()
+    .with_derive(derive_fn);                   // app derivation for preview
+
+// Handle input
+let action = state.handle_key(key_event);      // ThemeSelectorAction
+
+// Query state
+state.selected_theme()                         // Option<&ThemeInfo>
+state.filter()                                 // &str
+
+// Render
+let widget = ThemeSelector::new();
+let widget = ThemeSelector::new().title("Pick Theme");
+frame.render_stateful_widget(widget, area, &mut state);
+```
+
+`ThemeSelectorAction` variants: `Navigate`, `Select(String)`, `Cancel`, `FilterChanged`, `Noop`.
 
 ## Discovery
 

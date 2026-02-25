@@ -21,6 +21,7 @@ These must be explicitly enabled:
 | `cli` | `colored` crate adapter — `ThemeCliExt`, `ColoredExt`, `gradient_string` | `colored 3` |
 | `global-state` | Process-wide theme singleton — `current()`, `set_theme()` | `parking_lot 0.12` |
 | `discovery` | User theme directory scanning — `app_theme_dirs()`, `theme_dirs()` | `dirs 6` |
+| `widgets` | Theme selector widget with live preview | `ratatui 0.30`, `crossterm 0.29` (enables `global-state` + `builtin-themes`) |
 
 ## Configuration Examples
 
@@ -49,11 +50,15 @@ opaline = { version = "0.1", features = ["global-state"] }
 [dependencies]
 opaline = { version = "0.1", features = ["discovery"] }
 
+# TUI app with theme picker widget
+[dependencies]
+opaline = { version = "0.1", features = ["widgets"] }
+
 # Everything
 [dependencies]
 opaline = { version = "0.1", features = [
     "builtin-themes", "gradients", "ratatui",
-    "cli", "global-state", "discovery"
+    "cli", "global-state", "discovery", "widgets"
 ] }
 ```
 
@@ -65,7 +70,9 @@ Some features gate additional API when combined:
 |-------------|---------|
 | `ratatui` + `gradients` | `theme.gradient_text()`, `gradient_spans()`, `gradient_line()`, `gradient_bar()`, `gradient_text_line()` |
 | `cli` + `gradients` | `gradient_string()` |
-| `global-state` + `builtin-themes` | `load_theme_by_name()` |
+| `global-state` + `builtin-themes` | `load_theme_by_name()`, `load_theme_by_name_with()` |
+
+| `global-state` + `builtin-themes` + `discovery` | `load_theme_by_name_for_app()`, `load_theme_by_name_for_app_with()` |
 
 ## Without Default Features
 

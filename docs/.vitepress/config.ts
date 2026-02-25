@@ -1,6 +1,10 @@
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
 
 export default defineConfig({
+  vite: {
+    plugins: [llmstxt()],
+  },
   title: 'Opaline',
   description: 'A token-based theme engine for Ratatui TUI applications',
   base: '/opaline/',
@@ -54,7 +58,10 @@ export default defineConfig({
             { text: 'Gradients', link: '/guide/gradients' },
             { text: 'Ratatui Adapter', link: '/guide/ratatui' },
             { text: 'CLI Adapter', link: '/guide/cli' },
+            { text: 'Color Manipulation', link: '/guide/color-manipulation' },
+            { text: 'App-Level Derivation', link: '/guide/derivation' },
             { text: 'ThemeBuilder', link: '/guide/builder' },
+            { text: 'ThemeSelector Widget', link: '/guide/theme-selector' },
             { text: 'Custom Themes', link: '/guide/custom-themes' },
           ],
         },
