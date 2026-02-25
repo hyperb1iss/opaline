@@ -123,6 +123,13 @@ jobs:
           git push origin HEAD:${{ github.ref_name }}
           git push origin "v${{ steps.version.outputs.version }}"
 
+      - name: "Trigger CI/CD pipeline"
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run cicd.yml --ref "v${{ steps.version.outputs.version }}"
+
       - name: "Summary"
         run: |
           echo "## Release ${{ inputs.dry_run && '[DRY RUN] ' || '' }}v${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
