@@ -28,6 +28,8 @@
 </p>
 
 <p align="center">
+  <a href="https://hyperb1iss.github.io/opaline/">Docs</a> &bull;
+  <a href="https://hyperb1iss.github.io/opaline/llms.txt">llms.txt</a> &bull;
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#-features">Features</a> &bull;
   <a href="#-builtin-themes">Themes</a> &bull;
@@ -64,8 +66,11 @@ Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme f
 | 🎨 **20 Builtin Themes** | SilkCircuit, Catppuccin, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark |
 | 🔗 **Semantic Tokens** | 40+ tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
-| 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, `ThemeRatatuiExt` for `ratatui_color()`, `ratatui_style()`, `ratatui_span()` |
+| 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
+| 🎛️ **ThemeSelector Widget** | Drop-in theme picker with live preview, search filtering, and cancel/restore |
+| 🔬 **Color Manipulation** | `darken()`, `lighten()`, `desaturate()` for deriving colors from theme palettes |
 | 🏗️ **ThemeBuilder** | Programmatic theme construction without TOML — perfect for runtime customization |
+| 🧩 **App-Level Derivation** | Register app-specific tokens/styles with `register_default_token()` — TOML overrides respected |
 | 🔍 **Theme Discovery** | Scan `~/.config/` for user themes, list metadata for picker UIs |
 | 🌐 **Global State** | Optional process-wide `current()`/`set_theme()` behind a feature flag |
 | 🛡️ **Strict Resolution** | Cycle detection, unresolvable token errors, compile-time theme validation |
@@ -84,15 +89,15 @@ opaline = "0.1"
 Load a theme and start styling:
 
 ```rust
-use opaline::{load_by_name, ThemeRatatuiExt};
+use opaline::load_by_name;
 
 // Load any of 20 builtin themes
 let theme = load_by_name("catppuccin-mocha").expect("theme exists");
 
 // Use semantic colors and styles in your Ratatui widgets
-let style = theme.ratatui_style("keyword");        // bold accent color
-let color = theme.ratatui_color("accent.primary");  // raw Color value
-let span = theme.ratatui_span("file_path", "src/main.rs".into());
+let style = theme.style("keyword");               // bold accent color
+let color = theme.color("accent.primary");         // OpalineColor
+let span = theme.span("file_path", "src/main.rs"); // styled Span
 ```
 
 ### Run the interactive demo
@@ -136,38 +141,38 @@ Every theme is contract-tested: 40+ semantic tokens, 18 required styles, 5 requi
 ### Colors and Styles
 
 ```rust
-use opaline::{Theme, ThemeRatatuiExt};
+use opaline::Theme;
 
 let theme = Theme::default(); // SilkCircuit Neon
 
 // Semantic color access
-let primary = theme.ratatui_color("accent.primary");
-let bg = theme.ratatui_color("bg.base");
+let primary = theme.color("accent.primary");
+let bg = theme.color("bg.base");
 
 // Composed styles (fg + bg + modifiers)
-let keyword = theme.ratatui_style("keyword");           // bold accent
-let error = theme.ratatui_style("error_style");         // red foreground
-let selected = theme.ratatui_style("active_selected");  // accent on highlight bg
+let keyword = theme.style("keyword");           // bold accent
+let error = theme.style("error_style");         // red foreground
+let selected = theme.style("active_selected");  // accent on highlight bg
 
-// Styled spans for inline text
-let path = theme.ratatui_span("file_path", "src/lib.rs".into());
-let hash = theme.ratatui_span("commit_hash", "a1b2c3d".into());
+// Styled spans for inline text — no trait import needed
+let path = theme.span("file_path", "src/lib.rs");
+let hash = theme.span("commit_hash", "a1b2c3d");
 ```
 
 ### Gradients
 
 ```rust
-use opaline::{gradient_bar, gradient_text_line, ThemeRatatuiExt};
+use opaline::{Theme, gradient_bar};
 
 let theme = Theme::default();
 
 // Render a gradient progress bar
 if let Some(gradient) = theme.get_gradient("aurora") {
-    let bar = gradient_bar(40, '█', gradient); // Line<'_> with per-char colors
+    let bar = gradient_bar(40, '█', gradient); // Line with per-char colors
 }
 
 // Gradient-styled text (each character gets interpolated color)
-let title = theme.gradient_styled_line("primary", "Opaline Theme Engine");
+let title = theme.gradient_text("primary", "Opaline Theme Engine");
 ```
 
 ### Theme Switching
@@ -244,10 +249,11 @@ The resolver validates everything at load time — circular references, missing 
 | --- | --- | --- |
 | `builtin-themes` | ✓ | 20 embedded TOML themes via `include_str!` |
 | `gradients` | ✓ | Multi-stop gradient interpolation |
-| `ratatui` | ✓ | `From` impls + `ThemeRatatuiExt` trait |
+| `ratatui` | ✓ | `From` impls, inherent `span()`/`line()`/`text()`/`gradient_text()` |
 | `cli` | — | `colored` crate adapter for ANSI output |
 | `global-state` | — | Process-wide `current()`/`set_theme()` |
 | `discovery` | — | Load user themes from `~/.config/` |
+| `widgets` | — | Theme selector widget with live preview |
 
 ## 🏗️ Architecture
 
@@ -267,7 +273,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 
 | Component | Purpose |
 | --- | --- |
-| `OpalineColor` | RGB color with hex/tuple/array/u32 conversions + lerp interpolation |
+| `OpalineColor` | RGB color with hex/tuple/array/u32 conversions + lerp + darken/lighten/desaturate |
 | `OpalineStyle` | Composed style (fg, bg, 9 modifiers) with builder pattern |
 | `Gradient` | Multi-stop color interpolation with `at(t)` and `generate(n)` |
 | `Theme` | Fully resolved theme with `color()`, `style()`, `gradient()` accessors |
@@ -280,7 +286,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 ```bash
 cargo check                               # Fast type check
 cargo clippy --all-targets --all-features  # Pedantic lint gate
-cargo test --all-features                  # Full test suite (131 tests)
+cargo test --all-features                  # Full test suite (135 tests)
 cargo doc --all-features --open            # Generate docs
 cargo run --example theme-showcase         # Interactive TUI demo
 ```
@@ -299,7 +305,7 @@ Distributed under the MIT License. See `LICENSE` for details.
 
 <div align="center">
 
-📖 [Documentation](https://docs.rs/opaline) · 🐛 [Report Bug](https://github.com/hyperb1iss/opaline/issues) · 💡 [Request Feature](https://github.com/hyperb1iss/opaline/issues)
+📖 [Documentation](https://hyperb1iss.github.io/opaline/) · 📦 [API Reference](https://docs.rs/opaline) · 🐛 [Report Bug](https://github.com/hyperb1iss/opaline/issues) · 💡 [Request Feature](https://github.com/hyperb1iss/opaline/issues)
 
 </div>
 

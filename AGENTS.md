@@ -22,6 +22,9 @@ src/
   builtins/
     mod.rs            # Auto-generated registry via build.rs
     *.toml            # 20 builtin theme files (auto-discovered at compile time)
+  widgets/
+    mod.rs
+    theme_selector.rs # ThemeSelector stateful widget with live preview + search
   adapters/
     mod.rs
     ratatui.rs        # From impls, inherent span/line/text/gradient_text, gradient helpers
@@ -43,7 +46,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (132 tests)
+cargo test --all-features                 # Full test suite (135 tests)
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -59,6 +62,7 @@ cd docs && pnpm build                     # Build docs for deployment
 | `cli` | no | colored crate adapter for ANSI terminal output |
 | `global-state` | no | Process-wide current()/set_theme() |
 | `discovery` | no | Load user themes from ~/.config/ |
+| `widgets` | no | Theme selector widget with live preview |
 
 ## Key Types
 
