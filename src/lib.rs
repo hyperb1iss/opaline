@@ -82,6 +82,10 @@ pub use adapters::cli::{ColoredExt, ThemeCliExt};
 #[cfg(feature = "css")]
 pub use adapters::css::{generate_css_classes, generate_css_vars, generate_stylesheet};
 
+// owo-colors adapter
+#[cfg(feature = "owo-colors")]
+pub use adapters::owo_colors::OwoThemeExt;
+
 // Global state
 #[cfg(feature = "global-state")]
 pub use theme::{current, load_theme, set_theme};
