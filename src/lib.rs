@@ -78,6 +78,10 @@ pub use adapters::cli::gradient_string;
 #[cfg(feature = "cli")]
 pub use adapters::cli::{ColoredExt, ThemeCliExt};
 
+// CSS adapter
+#[cfg(feature = "css")]
+pub use adapters::css::{generate_css_classes, generate_css_vars, generate_stylesheet};
+
 // Global state
 #[cfg(feature = "global-state")]
 pub use theme::{current, load_theme, set_theme};
