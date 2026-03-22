@@ -79,9 +79,9 @@ fn all_builtins_load() {
 }
 
 #[test]
-fn builtin_count_is_20() {
+fn builtin_count_is_39() {
     assert_eq!(builtins::builtin_names().len(), builtins::BUILTIN_COUNT);
-    assert_eq!(builtins::BUILTIN_COUNT, 20);
+    assert_eq!(builtins::BUILTIN_COUNT, 39);
 }
 
 // ── Token contract: every builtin has the required semantic tokens ────────
@@ -200,7 +200,15 @@ fn all_builtins_have_required_gradients() {
 
 #[test]
 fn light_themes_marked_correctly() {
-    let light_ids = ["catppuccin-latte", "solarized-light", "silkcircuit-dawn"];
+    let light_ids = [
+        "catppuccin-latte",
+        "solarized-light",
+        "silkcircuit-dawn",
+        "github-light",
+        "ayu-light",
+        "light-owl",
+        "flexoki-light",
+    ];
     for id in &light_ids {
         let theme = builtins::load_by_name(id).expect("loads");
         assert!(
@@ -223,6 +231,13 @@ fn dark_themes_marked_correctly() {
         "tokyo-night",
         "gruvbox-dark",
         "one-dark",
+        "github-dark-dimmed",
+        "monokai-pro",
+        "ayu-dark",
+        "ayu-mirage",
+        "night-owl",
+        "palenight",
+        "flexoki-dark",
     ];
     for id in &dark_ids {
         let theme = builtins::load_by_name(id).expect("loads");

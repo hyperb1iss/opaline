@@ -1,0 +1,134 @@
+# Night Owl — A theme for night owls
+# https://github.com/sdras/night-owl-vscode-theme
+
+[meta]
+name = "Night Owl"
+author = "Sarah Drasner"
+variant = "dark"
+version = "1.0"
+description = "Deep blue theme for night owls by Sarah Drasner"
+
+[palette]
+# Background shades
+bg_deep = "#010e1a"
+bg_default = "#011627"
+bg_panel = "#011627"
+bg_selection = "#1d3b53"
+bg_highlight = "#0e293f"
+
+# Foreground
+fg_default = "#d6deeb"
+fg_dim = "#a7bfc8"
+fg_muted = "#7fdbca"
+fg_subtle = "#637777"
+
+# Syntax
+comment = "#637777"
+string = "#ecc48d"
+keyword = "#c792ea"
+func = "#82aaff"
+type_ = "#ffcb8b"
+number = "#f78c6c"
+operator = "#7fdbca"
+variable = "#d6deeb"
+constant = "#82aaff"
+tag = "#caece6"
+
+# Status
+green = "#addb67"
+red = "#ef5350"
+yellow = "#ffeb95"
+cyan = "#7fdbca"
+orange = "#f78c6c"
+pink = "#c792ea"
+blue = "#82aaff"
+
+[tokens]
+"text.primary" = "fg_default"
+"text.secondary" = "fg_dim"
+"text.muted" = "fg_muted"
+"text.dim" = "fg_subtle"
+
+"bg.base" = "bg_deep"
+"bg.panel" = "bg_default"
+"bg.code" = "bg_default"
+"bg.highlight" = "bg_highlight"
+"bg.elevated" = "bg_selection"
+"bg.active" = "bg_selection"
+"bg.selection" = "bg_selection"
+
+"accent.primary" = "keyword"
+"accent.secondary" = "func"
+"accent.tertiary" = "operator"
+"accent.deep" = "blue"
+
+success = "green"
+error = "red"
+warning = "yellow"
+info = "cyan"
+
+"git.staged" = "green"
+"git.modified" = "yellow"
+"git.untracked" = "fg_subtle"
+"git.deleted" = "red"
+
+"diff.added" = "green"
+"diff.removed" = "red"
+"diff.hunk" = "func"
+"diff.context" = "fg_subtle"
+
+"border.focused" = "keyword"
+"border.unfocused" = "bg_selection"
+
+"code.hash" = "number"
+"code.path" = "func"
+"code.keyword" = "keyword"
+"code.function" = "func"
+"code.string" = "string"
+"code.number" = "number"
+"code.comment" = "comment"
+"code.type" = "type_"
+"code.line_number" = "fg_subtle"
+
+"mode.active" = "keyword"
+"mode.inactive" = "fg_subtle"
+"mode.hover" = "func"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true }
+file_path = { fg = "code.path" }
+file_path_bold = { fg = "code.path", bold = true }
+commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
+selected = { fg = "accent.secondary", bg = "bg.highlight" }
+active_selected = { fg = "accent.primary", bg = "bg.active", bold = true }
+focused_border = { fg = "border.focused" }
+unfocused_border = { fg = "border.unfocused" }
+success_style = { fg = "success" }
+error_style = { fg = "error" }
+warning_style = { fg = "warning" }
+info_style = { fg = "info" }
+dimmed = { fg = "text.dim" }
+muted = { fg = "text.muted" }
+inline_code = { fg = "success", bg = "bg.code" }
+mode_active = { fg = "mode.active", bold = true }
+mode_inactive = { fg = "mode.inactive" }
+mode_hover = { fg = "mode.hover" }
+git_staged = { fg = "git.staged" }
+git_modified = { fg = "git.modified" }
+git_untracked = { fg = "git.untracked" }
+git_deleted = { fg = "git.deleted" }
+diff_added = { fg = "diff.added" }
+diff_removed = { fg = "diff.removed" }
+diff_hunk = { fg = "diff.hunk" }
+diff_context = { fg = "diff.context" }
+author = { fg = "text.primary" }
+timestamp = { fg = "warning" }
+
+[gradients]
+primary = ["keyword", "func"]
+warm = ["number", "string"]
+success_gradient = ["green", "cyan"]
+error_gradient = ["red", "orange"]
+aurora = ["keyword", "func", "cyan", "green", "string"]
