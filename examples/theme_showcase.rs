@@ -1,6 +1,6 @@
 //! # Opaline Theme Showcase
 //!
-//! Interactive TUI demo for the Opaline theme engine. Browse all 20 builtin
+//! Interactive TUI demo for the Opaline theme engine. Browse all 39 builtin
 //! themes, see styles rendered in real-time, and explore gradient capabilities.
 //!
 //! ```bash

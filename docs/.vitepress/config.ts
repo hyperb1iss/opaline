@@ -17,7 +17,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:description',
-        content: 'Token-based theme engine with 20 builtin themes, gradients, and adapters for ratatui, egui, crossterm, syntect, and more',
+        content: 'Token-based theme engine with 39 builtin themes, gradients, and adapters for ratatui, egui, crossterm, syntect, and more',
       },
     ],
   ],

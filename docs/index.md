@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Opaline
   text: Theme Engine for Rust
-  tagline: Token-based themes with 20 builtins, gradients, and adapters for ratatui, egui, crossterm, syntect, and more
+  tagline: Token-based themes with 39 builtins, gradients, and adapters for ratatui, egui, crossterm, syntect, and more
   actions:
     - theme: brand
       text: Get Started
@@ -18,8 +18,8 @@ features:
     title: Token-Based Design
     details: Three-layer resolution — palette colors, semantic tokens, composed styles — keeps themes consistent and maintainable
   - icon: "\U0001F308"
-    title: 20 Builtin Themes
-    details: SilkCircuit, Catppuccin, Dracula, Nord, Tokyo Night, Rose Pine, Kanagawa, Gruvbox, and more
+    title: 39 Builtin Themes
+    details: SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One
   - icon: "\U0001F4A0"
     title: Smooth Gradients
     details: Multi-stop color gradients with linear interpolation — perfect for progress bars, status indicators, and decorative elements

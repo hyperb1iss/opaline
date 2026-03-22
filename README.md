@@ -146,8 +146,6 @@ Browse all 39 themes, see every style and gradient rendered in real-time.
 | **Gruvbox** | Dark, Light | Retro groove with warm contrast |
 | **Solarized** | Dark, Light | Precision colors for machines and people |
 | **One** | Dark, Light | Atom's iconic syntax palette |
-| **Solarized** | Light | Precision colors for machines and people |
-| **Kanagawa** | Wave | The great wave off Kanagawa |
 
 Every theme is contract-tested: 26 core semantic tokens, 13 required styles, 5 required gradients.
 
@@ -306,7 +304,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 ```bash
 cargo check                               # Fast type check
 cargo clippy --all-targets --all-features  # Pedantic lint gate
-cargo test --all-features                  # Full test suite (181 tests)
+cargo test --all-features                  # Full test suite (203 tests)
 cargo doc --all-features --open            # Generate docs
 cargo run --example theme-showcase         # Interactive TUI demo
 ```
