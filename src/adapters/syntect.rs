@@ -90,7 +90,7 @@ fn style_to_modifier(s: &OpalineStyle) -> StyleModifier {
 // Theme generation
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/// Mapping from Opaline token names to TextMate scope selectors.
+/// Mapping from Opaline token names to `TextMate` scope selectors.
 const SCOPE_MAPPINGS: &[(&str, &str)] = &[
     ("code.keyword", "keyword"),
     ("code.string", "string"),
@@ -113,7 +113,7 @@ const SCOPE_MAPPINGS: &[(&str, &str)] = &[
 /// Convert an Opaline [`Theme`] to a [`syntect::highlighting::Theme`].
 ///
 /// Maps theme metadata, token colors to `ThemeSettings`, and `code.*` tokens
-/// to TextMate scope selectors for syntax highlighting.
+/// to `TextMate` scope selectors for syntax highlighting.
 pub fn to_syntect_theme(theme: &Theme) -> SyntectTheme {
     let settings = build_settings(theme);
     let scopes = build_scopes(theme);

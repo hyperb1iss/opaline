@@ -127,5 +127,5 @@ pub fn generate_stylesheet(theme: &Theme) -> String {
 /// Normalize a token/style name into a valid CSS identifier fragment.
 /// Dots and underscores become dashes.
 fn css_ident(name: &str) -> String {
-    name.replace('.', "-").replace('_', "-")
+    name.replace(['.', '_'], "-")
 }
