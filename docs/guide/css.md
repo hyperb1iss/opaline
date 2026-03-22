@@ -25,7 +25,7 @@ Output:
   --opaline-accent-primary: #cba6f7;
   --opaline-bg-base: #1e1e2e;
   --opaline-text-primary: #cdd6f4;
-  /* ... 40+ token variables */
+  /* ... 39 token variables */
   --opaline-gradient-primary: linear-gradient(to right, #e135ff, #80ffea);
   --opaline-gradient-aurora: linear-gradient(to right, #e135ff, #80ffea, #ff6ac1);
 }

@@ -2,7 +2,7 @@
 
 Every builtin theme must define a minimum set of semantic tokens, styles, and gradients. This contract ensures that consuming applications can rely on these names existing in any theme.
 
-## Required Tokens (40)
+## Required Tokens (39)
 
 These tokens must be present in every builtin theme:
 
@@ -22,6 +22,7 @@ bg.base
 bg.panel
 bg.code
 bg.highlight
+bg.selection
 ```
 
 ### Accent (4)
@@ -87,13 +88,6 @@ code.line_number
 mode.active
 mode.inactive
 mode.hover
-```
-
-### Chat (2)
-
-```
-chat.user
-chat.iris
 ```
 
 ## Required Styles (18)

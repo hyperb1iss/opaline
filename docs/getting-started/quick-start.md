@@ -98,5 +98,5 @@ let theme = Theme::builder("My Custom Theme")
 ## Next Steps
 
 - [Theme System](../guide/themes) — Understand the resolution pipeline
-- [Token Reference](../reference/tokens) — All 40+ semantic tokens
+- [Token Reference](../reference/tokens) — All 39 semantic tokens
 - [Theme Gallery](../themes/) — Browse all 20 builtin themes

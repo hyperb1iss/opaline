@@ -38,6 +38,7 @@ orange = "#ffb86c"
 "bg.panel" = "bg"
 "bg.code" = "bg"
 "bg.highlight" = "bg"
+"bg.selection" = "bg"
 
 "accent.primary" = "accent"
 "accent.secondary" = "secondary"
@@ -76,9 +77,6 @@ info = "blue"
 "mode.inactive" = "muted"
 "mode.hover" = "secondary"
 
-"chat.user" = "blue"
-"chat.iris" = "accent"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 file_path = { fg = "code.path" }
@@ -115,7 +113,7 @@ let theme = opaline::load_from_file("~/.config/myapp/themes/custom.toml")?;
 
 // From a string (e.g., embedded or fetched)
 let toml_str = std::fs::read_to_string("theme.toml")?;
-let theme = opaline::load_from_str(&toml_str)?;
+let theme = opaline::load_from_str(&toml_str, None)?;
 ```
 
 ## Theme Discovery
@@ -127,9 +125,14 @@ With the `discovery` feature, Opaline can scan standard directories for user the
 let dirs = opaline::app_theme_dirs("myapp");
 // → ~/.config/myapp/themes/
 
+// List discoverable themes for a specific app
+let themes = opaline::builtins::list_available_themes_for_app("myapp");
+
 // Scan all theme directories
 let dirs = opaline::theme_dirs();
 ```
+
+If a custom theme file uses the same id as a builtin, the file-backed theme wins in discovery and name-based loading. That keeps app-specific themes predictable when users override a shipped theme id.
 
 ## Validation
 
@@ -139,7 +142,7 @@ The strict resolver catches issues at load time:
 - **Circular reference** — Tokens form a cycle (`a → b → a`)
 - **Invalid hex** — A palette value isn't a valid hex color
 
-If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all 40+ required tokens, 18 required styles, and 5 required gradients.
+If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all required tokens, 18 required styles, and 5 required gradients.
 
 ## Tips
 

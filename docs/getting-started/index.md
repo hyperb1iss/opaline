@@ -53,7 +53,7 @@ This separation means palette swaps propagate through the entire theme automatic
 | Feature | Description |
 |---------|-------------|
 | **20 builtin themes** | SilkCircuit (5 variants), Catppuccin, Dracula, Nord, Tokyo Night, Rose Pine, Kanagawa, Gruvbox, One Dark, Solarized, Everforest |
-| **Token system** | 40+ semantic tokens across 10 namespaces |
+| **Token system** | 39 semantic tokens across 9 namespaces |
 | **Gradients** | Multi-stop color interpolation with `at(t)` and `generate(n)` |
 | **Ratatui adapter** | `From` impls, inherent `span()`/`line()`/`text()` methods, gradient helpers |
 | **CLI adapter** | `colored` crate integration for non-TUI terminal output |

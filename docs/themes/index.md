@@ -45,9 +45,10 @@ let theme = opaline::load_by_name("default").unwrap();
 // Get all builtin theme metadata
 let themes = opaline::list_available_themes();
 for info in &themes {
+    let author = if info.author.is_empty() { "unknown" } else { &info.author };
     println!("{} by {} ({})",
         info.display_name,
-        info.author.as_deref().unwrap_or("unknown"),
+        author,
         if info.builtin { "builtin" } else { "custom" }
     );
 }

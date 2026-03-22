@@ -59,14 +59,14 @@ Opaline ships adapters for **ratatui**, **egui**, **crossterm**, **owo-colors**,
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
 ```
 
-Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme families, all enforced by a strict contract test suite that validates 40+ semantic tokens, 18 styles, and 5 gradients per theme.
+Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme families, all enforced by a strict contract test suite that validates 39 semantic tokens, 18 styles, and 5 gradients per theme.
 
 ## ✦ Features
 
 | Feature | Description |
 | --- | --- |
 | 🎨 **20 Builtin Themes** | SilkCircuit, Catppuccin, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark |
-| 🔗 **Semantic Tokens** | 40+ tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
+| 🔗 **Semantic Tokens** | 39 tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
 | 🎮 **egui Integration** | `Color32` conversion, full `Visuals` generation from theme tokens |
@@ -90,7 +90,7 @@ Add opaline to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-opaline = "0.1"
+opaline = "0.2"
 ```
 
 Load a theme and start styling:
@@ -141,7 +141,7 @@ Browse all 20 themes, see every style and gradient rendered in real-time.
 | **Solarized** | Light | Precision colors for machines and people |
 | **Kanagawa** | Wave | The great wave off Kanagawa |
 
-Every theme is contract-tested: 40+ semantic tokens, 18 required styles, 5 required gradients.
+Every theme is contract-tested: 39 semantic tokens, 18 required styles, 5 required gradients.
 
 ## 🔮 Usage
 
@@ -190,8 +190,8 @@ use opaline::{list_available_themes, load_by_name};
 // Enumerate all themes for a picker UI
 let themes = list_available_themes();
 for info in &themes {
-    println!("{} ({:?}) by {}", info.display_name, info.variant,
-             info.author.as_deref().unwrap_or("—"));
+    let author = if info.author.is_empty() { "—" } else { &info.author };
+    println!("{} ({:?}) by {}", info.display_name, info.variant, author);
 }
 
 // Hot-swap themes at runtime
@@ -202,23 +202,22 @@ let nord = load_by_name("nord").unwrap();
 ### ThemeBuilder (Programmatic)
 
 ```rust
-use opaline::ThemeBuilder;
+use opaline::{OpalineColor, OpalineStyle, Theme};
 
-let theme = ThemeBuilder::new("My Theme")
-    .palette("bg", "#1a1b26")
-    .palette("fg", "#c0caf5")
-    .palette("blue", "#7aa2f7")
-    .token("text.primary", "fg")
-    .token("bg.base", "bg")
-    .token("accent.primary", "blue")
-    .style("keyword", "accent.primary", None, true, false, false)
-    .build()
-    .expect("valid theme");
+let theme = Theme::builder("My Theme")
+    .palette("bg", OpalineColor::new(26, 27, 38))
+    .palette("fg", OpalineColor::new(192, 202, 245))
+    .palette("blue", OpalineColor::new(122, 162, 247))
+    .token("text.primary", OpalineColor::new(192, 202, 245))
+    .token("bg.base", OpalineColor::new(26, 27, 38))
+    .token("accent.primary", OpalineColor::new(122, 162, 247))
+    .style("keyword", OpalineStyle::fg(OpalineColor::new(122, 162, 247)).bold())
+    .build();
 ```
 
 ## 🪄 Custom Themes
 
-Drop a `.toml` file in `src/builtins/` — it's auto-discovered at compile time. Or load from any path at runtime.
+Add a builtin theme by dropping a `.toml` file in `src/builtins/`. For user themes, load from any path at runtime or place the file in your app's theme directory.
 
 ```toml
 [meta]
@@ -236,8 +235,9 @@ purple = "#bb9af7"
 [tokens]
 "text.primary" = "fg"
 "bg.base" = "bg"
+"bg.selection" = "bg"
 "accent.primary" = "blue"
-# ... 40+ tokens across text.*, bg.*, accent.*, git.*, diff.*, code.*, etc.
+# ... 39 tokens across text.*, bg.*, accent.*, git.*, diff.*, code.*, etc.
 
 [styles]
 keyword = { fg = "accent.primary", bold = true }

@@ -4,7 +4,7 @@ Tokens are the **semantic layer** between raw palette colors and composed styles
 
 ## Token Namespaces
 
-Opaline's token contract defines 40+ tokens across 10 namespaces:
+Opaline's token contract defines 39 tokens across 9 namespaces:
 
 ### Text
 
@@ -23,6 +23,7 @@ Opaline's token contract defines 40+ tokens across 10 namespaces:
 | `bg.panel` | Panel/sidebar background |
 | `bg.code` | Code block background |
 | `bg.highlight` | Highlighted line background |
+| `bg.selection` | Selection background |
 
 ### Accent
 
@@ -89,13 +90,6 @@ Opaline's token contract defines 40+ tokens across 10 namespaces:
 | `mode.inactive` | Inactive mode indicator |
 | `mode.hover` | Hovered mode indicator |
 
-### Chat
-
-| Token | Purpose |
-|-------|---------|
-| `chat.user` | User messages |
-| `chat.iris` | AI/assistant messages |
-
 ## Accessing Tokens
 
 ```rust
@@ -129,7 +123,7 @@ let kw = theme.style(styles::KEYWORD);
 let has_aurora = theme.has_gradient(gradients::AURORA);
 ```
 
-All 38 required tokens, 18 required styles, and 5 required gradients have corresponding constants.
+All 39 required tokens, 18 required styles, and 5 required gradients have corresponding constants.
 
 ## Token Resolution
 

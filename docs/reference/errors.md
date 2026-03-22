@@ -13,9 +13,9 @@ use opaline::OpalineError;
 | Variant | When | Example |
 |---------|------|---------|
 | `Io` | File operations fail | File not found, permission denied |
-| `TomlParse` | TOML syntax error | Missing closing quote, invalid table |
+| `Parse` | TOML syntax error | Missing closing quote, invalid table |
 | `InvalidColor` | Hex string isn't a valid color | `"#xyz"`, `"not-a-color"` |
-| `UnresolvableToken` | Token references unknown palette/token | `"accent.primary" = "nonexistent"` |
+| `UnresolvedToken` | Token references unknown palette/token | `"accent.primary" = "nonexistent"` |
 | `CircularReference` | Tokens form a cycle | `a → b → c → a` |
 | `EmptyGradient` | Gradient has no stops | `gradient = []` |
 
@@ -29,12 +29,12 @@ use opaline::OpalineError;
 match opaline::load_from_file("theme.toml") {
     Ok(theme) => println!("Loaded: {}", theme.meta.name),
     Err(OpalineError::Io(e)) => eprintln!("File error: {e}"),
-    Err(OpalineError::TomlParse(e)) => eprintln!("TOML syntax: {e}"),
-    Err(OpalineError::InvalidColor { value }) => {
-        eprintln!("Bad color: {value}");
+    Err(OpalineError::Parse { source, .. }) => eprintln!("TOML syntax: {source}"),
+    Err(OpalineError::InvalidColor { token, .. }) => {
+        eprintln!("Bad color in token '{token}'");
     }
-    Err(OpalineError::UnresolvableToken { name, reference }) => {
-        eprintln!("Token '{name}' references unknown '{reference}'");
+    Err(OpalineError::UnresolvedToken { token, reference }) => {
+        eprintln!("Token '{token}' references unknown '{reference}'");
     }
     Err(OpalineError::CircularReference { chain }) => {
         eprintln!("Circular: {}", chain.join(" → "));

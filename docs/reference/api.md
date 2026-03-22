@@ -75,9 +75,9 @@ use opaline::Theme;
 // Construction
 let theme = Theme::default();
 let theme = Theme::builder("name").build();
-let theme = opaline::load_from_str(toml)?;
+let theme = opaline::load_from_str(toml, None)?;
 let theme = opaline::load_from_file("path.toml")?;
-let theme = opaline::load_by_name("dracula")?;
+let theme = opaline::load_by_name("dracula").expect("theme exists");
 
 // Color access
 theme.color("token.name")           // OpalineColor (fallback on miss)
@@ -158,7 +158,7 @@ theme.style(styles::KEYWORD)            // OpalineStyle
 theme.has_gradient(gradients::AURORA)    // bool
 ```
 
-Modules: `names::tokens` (38 constants), `names::styles` (18 constants), `names::gradients` (5 constants).
+Modules: `names::tokens` (39 constants), `names::styles` (18 constants), `names::gradients` (5 constants).
 
 ## Ratatui Integration
 
@@ -203,18 +203,25 @@ Requires `cli` feature.
 ### `ThemeCliExt` Trait
 
 ```rust
-use opaline::ThemeCliExt;
+use opaline::{Theme, ThemeCliExt};
 
-theme.colorize("token", "text")     // ColoredString
-theme.style_text("name", "text")    // ColoredString
+let theme = Theme::default();
+let rgb = theme.cli_rgb("token");              // (u8, u8, u8)
+let colored = theme.cli_colored("text", "token"); // ColoredString
+let rainbow = theme.cli_gradient("text", "aurora"); // String
 ```
 
 ### `ColoredExt` Trait
 
 ```rust
-use opaline::ColoredExt;
+use opaline::{ColoredExt, OpalineColor, OpalineStyle};
 
-"text".opaline_fg(color)            // ColoredString
+let color = OpalineColor::new(225, 53, 255);
+let style = OpalineStyle::fg(color).bold();
+
+"text".theme_fg(color)              // ColoredString
+"text".theme_bg(color)              // ColoredString
+"text".theme_style(&style)          // ColoredString
 ```
 
 ### Gradient String
@@ -222,9 +229,11 @@ use opaline::ColoredExt;
 Requires `cli` + `gradients` features.
 
 ```rust
-use opaline::gradient_string;
+use opaline::{gradient_string, Theme};
 
-gradient_string(&theme, "name", "text")  // ColoredString
+let theme = Theme::default();
+let grad = theme.get_gradient("name").unwrap();
+let rainbow = gradient_string("text", grad); // String
 ```
 
 ## Global State
@@ -258,7 +267,7 @@ Requires `builtin-themes` feature (default).
 ```rust
 use opaline::{load_by_name, list_available_themes, ThemeInfo};
 
-let theme = load_by_name("nord")?;              // Option<Theme>
+let theme = load_by_name("nord").expect("builtin exists");
 let themes: Vec<ThemeInfo> = list_available_themes();
 ```
 

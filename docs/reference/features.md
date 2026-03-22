@@ -37,11 +37,11 @@ opaline = "0.2"
 
 # Minimal — just the core engine, no builtins or adapters
 [dependencies]
-opaline = { version = "0.1", default-features = false }
+opaline = { version = "0.2", default-features = false }
 
 # Core + gradients only (for non-Ratatui use)
 [dependencies]
-opaline = { version = "0.1", default-features = false, features = ["gradients"] }
+opaline = { version = "0.2", default-features = false, features = ["gradients"] }
 
 # CLI tool (colored output, no TUI)
 [dependencies]
@@ -110,7 +110,7 @@ With `default-features = false`, you get:
 
 - `OpalineColor`, `OpalineStyle`, `OpalineError`
 - `Theme`, `ThemeBuilder`
-- `load_from_str()`, `load_from_file()`
+- `load_from_str(toml, None)`, `load_from_file(path)`
 - Schema types (`ThemeFile`, `ThemeMeta`, `StyleDef`)
 - Resolver pipeline
 

@@ -90,7 +90,7 @@ description = "A beautiful theme"
 use opaline::Theme;
 
 // From a TOML string
-let theme = opaline::load_from_str(toml_string)?;
+let theme = opaline::load_from_str(toml_string, None)?;
 
 // From a file path
 let theme = opaline::load_from_file("path/to/theme.toml")?;
@@ -109,7 +109,7 @@ The resolver is intentionally strict. If a token references a palette color that
 ```rust
 // This will error if "nonexistent" isn't in the palette
 // "accent.primary" = "nonexistent"
-// → OpalineError::UnresolvableToken { name: "accent.primary", reference: "nonexistent" }
+// → OpalineError::UnresolvedToken { token: "accent.primary", reference: "nonexistent" }
 ```
 
 Circular references are also detected:

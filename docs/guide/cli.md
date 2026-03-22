@@ -4,7 +4,7 @@ The `cli` feature enables integration with the [`colored`](https://crates.io/cra
 
 ```toml
 [dependencies]
-opaline = { version = "0.1", features = ["cli"] }
+opaline = { version = "0.2", features = ["cli"] }
 ```
 
 ## ThemeCliExt
@@ -14,13 +14,13 @@ use opaline::{Theme, ThemeCliExt};
 
 let theme = Theme::default();
 
-// Apply a token color to a string
-let colored_text = theme.colorize("accent.primary", "important text");
-println!("{colored_text}");
+// Get an RGB tuple for manual coloring
+let rgb = theme.cli_rgb("accent.primary");
+println!("{rgb:?}");
 
-// Apply a named style
-let styled = theme.style_text("keyword", "fn");
-println!("{styled}");
+// Apply a token color to a string
+let colored_text = theme.cli_colored("important text", "accent.primary");
+println!("{colored_text}");
 ```
 
 ## ColoredExt
@@ -29,11 +29,12 @@ Apply Opaline colors directly to `colored` strings:
 
 ```rust
 use opaline::{OpalineColor, ColoredExt};
-use colored::Colorize;
 
 let color = OpalineColor::new(225, 53, 255);
-let text = "electric purple".opaline_fg(color);
-println!("{text}");
+let fg_text = "electric purple".theme_fg(color);
+let bg_text = "electric purple".theme_bg(color);
+println!("{fg_text}");
+println!("{bg_text}");
 ```
 
 ## Gradient Strings
@@ -41,10 +42,10 @@ println!("{text}");
 With `cli` + `gradients`:
 
 ```rust
-use opaline::{Theme, gradient_string};
+use opaline::{Theme, ThemeCliExt};
 
 let theme = Theme::default();
-let rainbow = gradient_string(&theme, "aurora", "Gradient text in the terminal!");
+let rainbow = theme.cli_gradient("Gradient text in the terminal!", "aurora");
 println!("{rainbow}");
 ```
 

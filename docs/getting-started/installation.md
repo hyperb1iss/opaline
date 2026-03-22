@@ -15,19 +15,19 @@ Opaline uses feature flags to keep the dependency tree lean. Enable only what yo
 ```toml
 [dependencies]
 # Default — builtins + gradients + ratatui adapter
-opaline = "0.1"
+opaline = "0.2"
 
 # Minimal — just the core theme engine
-opaline = { version = "0.1", default-features = false }
+opaline = { version = "0.2", default-features = false }
 
 # With CLI colored output
-opaline = { version = "0.1", features = ["cli"] }
+opaline = { version = "0.2", features = ["cli"] }
 
 # With global theme singleton
-opaline = { version = "0.1", features = ["global-state"] }
+opaline = { version = "0.2", features = ["global-state"] }
 
 # Everything
-opaline = { version = "0.1", features = ["builtin-themes", "gradients", "ratatui", "cli", "global-state", "discovery"] }
+opaline = { version = "0.2", features = ["builtin-themes", "gradients", "ratatui", "cli", "global-state", "discovery"] }
 ```
 
 | Feature | Default | Description |

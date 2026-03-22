@@ -8,10 +8,11 @@ The widget requires the `widgets` feature:
 
 ```toml
 [dependencies]
-opaline = { version = "0.1", features = ["widgets"] }
+opaline = { version = "0.2", features = ["widgets"] }
 ```
 
 This enables `global-state` and `builtin-themes` automatically, and pulls in full `ratatui` (with crossterm) rather than just `ratatui-core`.
+It also makes file-backed themes shadow builtin ids during discovery and live preview, so a local `dracula.toml` will win over the shipped `dracula` theme.
 
 ## Quick Start
 
@@ -103,7 +104,7 @@ The widget renders a two-pane layout:
 │                             │ success  warning  error       │
 │                             │                               │
 │                             │ ▓▓▒▒░░██▓▓▒▒░░██▓▓▒▒░░██    │
-│ ↑↓/jk Navigate  Enter OK   │ primary gradient              │
+│ ↑↓ Navigate    Enter OK    │ primary gradient              │
 │ Esc Cancel                  │                               │
 └─────────────────────────────┴───────────────────────────────┘
 ```
@@ -115,12 +116,14 @@ The widget renders a two-pane layout:
 
 | Key | Action |
 |-----|--------|
-| `↑` / `k` | Move cursor up |
-| `↓` / `j` | Move cursor down |
+| `↑` | Move cursor up |
+| `↓` | Move cursor down |
 | `Enter` | Confirm selection |
 | `Esc` | Cancel (restore original theme) |
 | Any character | Append to filter |
 | `Backspace` | Delete last filter character |
+
+The filter accepts all printable characters, including lowercase `j` and `k`.
 
 ## Live Preview
 
