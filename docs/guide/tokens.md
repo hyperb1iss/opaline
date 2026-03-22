@@ -4,7 +4,7 @@ Tokens are the **semantic layer** between raw palette colors and composed styles
 
 ## Token Namespaces
 
-Opaline's token contract defines 39 tokens across 9 namespaces:
+Opaline's core token contract defines 26 tokens across 6 namespaces:
 
 ### Text
 
@@ -13,7 +13,7 @@ Opaline's token contract defines 39 tokens across 9 namespaces:
 | `text.primary` | Main body text |
 | `text.secondary` | Less prominent text |
 | `text.muted` | De-emphasized text |
-| `text.dim` | Very subtle text (line numbers, metadata) |
+| `text.dim` | Very subtle text |
 
 ### Background
 
@@ -43,24 +43,6 @@ Opaline's token contract defines 39 tokens across 9 namespaces:
 | `warning` | Warning states |
 | `info` | Informational states |
 
-### Git
-
-| Token | Purpose |
-|-------|---------|
-| `git.staged` | Staged changes |
-| `git.modified` | Modified files |
-| `git.untracked` | Untracked files |
-| `git.deleted` | Deleted files |
-
-### Diff
-
-| Token | Purpose |
-|-------|---------|
-| `diff.added` | Added lines |
-| `diff.removed` | Removed lines |
-| `diff.hunk` | Hunk headers |
-| `diff.context` | Context lines |
-
 ### Border
 
 | Token | Purpose |
@@ -72,8 +54,6 @@ Opaline's token contract defines 39 tokens across 9 namespaces:
 
 | Token | Purpose |
 |-------|---------|
-| `code.hash` | Commit hashes, hex values |
-| `code.path` | File paths |
 | `code.keyword` | Language keywords |
 | `code.function` | Function names |
 | `code.string` | String literals |
@@ -81,14 +61,6 @@ Opaline's token contract defines 39 tokens across 9 namespaces:
 | `code.comment` | Comments |
 | `code.type` | Type names |
 | `code.line_number` | Line numbers |
-
-### Mode
-
-| Token | Purpose |
-|-------|---------|
-| `mode.active` | Active mode indicator |
-| `mode.inactive` | Inactive mode indicator |
-| `mode.hover` | Hovered mode indicator |
 
 ## Accessing Tokens
 
@@ -123,7 +95,11 @@ let kw = theme.style(styles::KEYWORD);
 let has_aurora = theme.has_gradient(gradients::AURORA);
 ```
 
-All 39 required tokens, 18 required styles, and 5 required gradients have corresponding constants.
+All 26 required tokens, 13 required styles, and 5 required gradients have corresponding constants.
+
+## App-Specific Tokens
+
+Git status colors, diff colors, mode indicators, file path/hash colors, and similar domain-specific semantics are intentionally **not** part of Opaline's core contract. Consumer apps should derive those from the generic token set with `register_default_token()` / `register_default_style()`.
 
 ## Token Resolution
 

@@ -54,13 +54,12 @@ inline_code = { fg = "success", bg = "bg.code" }
 
 ## Required Styles
 
-Every builtin theme must define these 18 styles:
+Every builtin theme must define these 13 styles:
 
 | Style | Purpose |
 |-------|---------|
 | `keyword` | Language keywords |
-| `file_path` | File paths |
-| `commit_hash` | Git commit hashes |
+| `line_number` | Code line numbers |
 | `selected` | Selected item |
 | `active_selected` | Active + selected item |
 | `focused_border` | Focused panel border |
@@ -72,10 +71,8 @@ Every builtin theme must define these 18 styles:
 | `dimmed` | Dimmed/subtle text |
 | `muted` | Muted text |
 | `inline_code` | Inline code snippets |
-| `git_staged` | Staged git changes |
-| `git_modified` | Modified git files |
-| `diff_added` | Diff added lines |
-| `diff_removed` | Diff removed lines |
+
+Domain-specific styles such as git status colors, diff styles, timestamps, authors, and mode indicators should be derived by consuming apps rather than required by Opaline core.
 
 ## Accessing Styles
 

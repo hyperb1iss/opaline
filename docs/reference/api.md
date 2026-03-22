@@ -118,15 +118,19 @@ theme.register_style("name", style)           // unconditional overwrite
 Programmatic theme construction.
 
 ```rust
+use opaline::{OpalineColor, OpalineStyle, Theme, ThemeVariant};
+
+let accent = OpalineColor::new(225, 53, 255);
+let style = OpalineStyle::fg(accent).bold();
+
 Theme::builder("name")
     .author("author")
     .variant(ThemeVariant::Dark)
     .version("1.0")
     .description("desc")
-    .palette("name", color)
-    .token("name", color)
-    .style("name", style)
-    .gradient("name", gradient)       // requires `gradients`
+    .palette("accent", accent)
+    .token("accent.primary", accent)
+    .style("keyword", style)
     .build()                          // -> Theme
 ```
 
@@ -158,7 +162,7 @@ theme.style(styles::KEYWORD)            // OpalineStyle
 theme.has_gradient(gradients::AURORA)    // bool
 ```
 
-Modules: `names::tokens` (39 constants), `names::styles` (18 constants), `names::gradients` (5 constants).
+Modules: `names::tokens` (26 required constants), `names::styles` (13 required constants), `names::gradients` (5 constants).
 
 ## Ratatui Integration
 
@@ -241,10 +245,10 @@ let rainbow = gradient_string("text", grad); // String
 Requires `global-state` feature.
 
 ```rust
-use opaline::{current, set_theme, load_theme, load_theme_by_name};
+use opaline::{current, load_theme, load_theme_by_name, set_theme, Theme};
 
 let theme = current();                          // Arc<Theme>
-set_theme(theme);                               // replace global theme
+set_theme(Theme::default());                    // replace global theme
 load_theme(path)?;                              // load from file + set
 load_theme_by_name("dracula")?;                 // load builtin + set
 
@@ -255,9 +259,16 @@ load_theme_by_name_with("dracula", |theme| {    // load + derive + set
 })?;
 
 // App-specific discovery paths (requires `discovery` too)
-use opaline::{load_theme_by_name_for_app, load_theme_by_name_for_app_with};
+use opaline::{
+    load_theme_by_name_for_app,
+    load_theme_by_name_for_app_with,
+    load_theme_by_name_in_dirs,
+};
 load_theme_by_name_for_app("custom", "myapp")?;
-load_theme_by_name_for_app_with("custom", "myapp", derive_fn)?;
+load_theme_by_name_for_app_with("custom", "myapp", |theme| {
+    theme.register_default_token("nav.bg", theme.color("bg.panel"));
+})?;
+load_theme_by_name_in_dirs("custom", [std::path::PathBuf::from("/tmp/themes")])?;
 ```
 
 ## Builtins

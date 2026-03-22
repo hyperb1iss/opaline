@@ -84,12 +84,12 @@ fn token_chains_to_another_token() {
     tf.tokens
         .insert("success".to_string(), "green_400".to_string());
     tf.tokens
-        .insert("diff.added".to_string(), "success".to_string());
+        .insert("accent.success".to_string(), "success".to_string());
 
     let resolved = opaline::resolver::resolve(&tf).expect("resolves");
     let expected = OpalineColor::new(80, 250, 123);
     assert_eq!(resolved.tokens.get("success"), Some(&expected));
-    assert_eq!(resolved.tokens.get("diff.added"), Some(&expected));
+    assert_eq!(resolved.tokens.get("accent.success"), Some(&expected));
 }
 
 #[test]

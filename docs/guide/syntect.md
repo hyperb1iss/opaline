@@ -63,7 +63,7 @@ let mut h = HighlightLines::new(syntax, &syntect_theme);
 
 ### Token → Scope Mapping
 
-The adapter maps Opaline's `code.*` tokens to standard TextMate scopes:
+The adapter maps Opaline's generic core tokens to standard TextMate scopes:
 
 | Opaline Token | TextMate Scope |
 |--------------|----------------|
@@ -73,8 +73,14 @@ The adapter maps Opaline's `code.*` tokens to standard TextMate scopes:
 | `code.function` | `entity.name.function, support.function` |
 | `code.number` | `constant.numeric` |
 | `code.type` | `entity.name.type, support.type` |
-| `code.hash` | `constant.other` |
-| `code.path` | `string.other.link` |
+| `code.line_number` | `constant.numeric.line-number` |
+| `accent.primary` | `variable` |
+| `accent.secondary` | `storage.type, storage.modifier` |
+| `accent.tertiary` | `constant.other, variable.other.constant` |
+| `success` | `markup.inserted` |
+| `warning` | `markup.changed` |
+| `error` | `invalid, message.error` |
+| `info` | `string.other.link, support.constant` |
 
 ### ThemeSettings Mapping
 
@@ -94,4 +100,4 @@ Editor-level settings are derived from semantic tokens:
 
 ### Style Modifiers
 
-If a named style exists that matches a `code.*` token (e.g., `keyword` for `code.keyword`), its modifiers (bold, italic, underline) are included in the generated scope.
+If a named style exists that matches a `code.*` token (for example, `keyword` for `code.keyword`), its modifiers are included in the generated scope.

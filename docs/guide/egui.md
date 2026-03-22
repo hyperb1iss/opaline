@@ -78,4 +78,4 @@ fn switch_theme(ctx: &egui::Context, theme_name: &str) {
 }
 ```
 
-All 20 builtin themes work with egui — dark themes start from `Visuals::dark()`, light themes from `Visuals::light()`.
+All 39 builtin themes work with egui — dark themes start from `Visuals::dark()`, light themes from `Visuals::light()`.

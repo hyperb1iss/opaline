@@ -1,6 +1,7 @@
 # Theme Gallery
 
-Opaline ships with **20 builtin themes** covering a wide range of aesthetics — from electric neon to cozy forest greens.
+Opaline ships with **39 builtin themes** covering a wide range of aesthetics — from electric neon to cozy forest greens.
+This page highlights a curated cross-section of the builtin catalog rather than listing every variant exhaustively.
 
 ## At a Glance
 
@@ -66,7 +67,7 @@ The signature Opaline theme family. Electric meets elegant.
 - **Vibrant** — High-contrast magenta + electric blue
 - **Dawn** — Light variant with purple accents
 
-### Catppuccin (2 variants)
+### Catppuccin
 
 The soothing pastel theme for the high-spirited.
 
@@ -81,14 +82,14 @@ All natural pine, faux fur, and a bit of soho.
 - **Moon** — Darker, cooler variant
 - **Dawn** — Light variant with warm undertones
 
-### Tokyo Night (2 variants)
+### Tokyo Night
 
 Inspired by the lights of Downtown Tokyo.
 
 - **Tokyo Night** — Clean dark blue tones
 - **Storm** — Deeper blues with sharper contrast
 
-### Everforest (2 variants)
+### Everforest
 
 A comfortable green forest theme.
 

@@ -50,21 +50,9 @@ error = "red"
 warning = "yellow"
 info = "blue"
 
-"git.staged" = "green"
-"git.modified" = "yellow"
-"git.untracked" = "muted"
-"git.deleted" = "red"
-
-"diff.added" = "green"
-"diff.removed" = "red"
-"diff.hunk" = "blue"
-"diff.context" = "muted"
-
 "border.focused" = "accent"
 "border.unfocused" = "muted"
 
-"code.hash" = "orange"
-"code.path" = "blue"
 "code.keyword" = "accent"
 "code.function" = "secondary"
 "code.string" = "green"
@@ -73,14 +61,9 @@ info = "blue"
 "code.type" = "yellow"
 "code.line_number" = "muted"
 
-"mode.active" = "accent"
-"mode.inactive" = "muted"
-"mode.hover" = "secondary"
-
 [styles]
 keyword = { fg = "accent.primary", bold = true }
-file_path = { fg = "code.path" }
-commit_hash = { fg = "code.hash" }
+line_number = { fg = "code.line_number" }
 selected = { fg = "accent.secondary", bg = "bg.highlight" }
 active_selected = { fg = "accent.primary", bg = "bg.highlight", bold = true }
 focused_border = { fg = "border.focused" }
@@ -92,10 +75,6 @@ info_style = { fg = "info" }
 dimmed = { fg = "text.dim" }
 muted = { fg = "text.muted" }
 inline_code = { fg = "success", bg = "bg.code" }
-git_staged = { fg = "git.staged" }
-git_modified = { fg = "git.modified" }
-diff_added = { fg = "diff.added" }
-diff_removed = { fg = "diff.removed" }
 
 [gradients]
 primary = ["accent", "secondary"]
@@ -134,6 +113,8 @@ let dirs = opaline::theme_dirs();
 
 If a custom theme file uses the same id as a builtin, the file-backed theme wins in discovery and name-based loading. That keeps app-specific themes predictable when users override a shipped theme id.
 
+For application-specific semantics like git status colors, diff colors, or view-mode indicators, derive extra tokens and styles in the consuming app instead of baking them into the core theme contract.
+
 ## Validation
 
 The strict resolver catches issues at load time:
@@ -142,7 +123,7 @@ The strict resolver catches issues at load time:
 - **Circular reference** — Tokens form a cycle (`a → b → a`)
 - **Invalid hex** — A palette value isn't a valid hex color
 
-If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all required tokens, 18 required styles, and 5 required gradients.
+If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all required tokens, 13 required styles, and 5 required gradients.
 
 ## Tips
 

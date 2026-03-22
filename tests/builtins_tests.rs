@@ -104,18 +104,8 @@ const REQUIRED_TOKENS: &[&str] = &[
     "error",
     "warning",
     "info",
-    "git.staged",
-    "git.modified",
-    "git.untracked",
-    "git.deleted",
-    "diff.added",
-    "diff.removed",
-    "diff.hunk",
-    "diff.context",
     "border.focused",
     "border.unfocused",
-    "code.hash",
-    "code.path",
     "code.keyword",
     "code.function",
     "code.string",
@@ -123,9 +113,6 @@ const REQUIRED_TOKENS: &[&str] = &[
     "code.comment",
     "code.type",
     "code.line_number",
-    "mode.active",
-    "mode.inactive",
-    "mode.hover",
 ];
 
 #[test]
@@ -143,8 +130,7 @@ fn all_builtins_have_required_tokens() {
 
 const REQUIRED_STYLES: &[&str] = &[
     "keyword",
-    "file_path",
-    "commit_hash",
+    "line_number",
     "selected",
     "active_selected",
     "focused_border",
@@ -156,10 +142,6 @@ const REQUIRED_STYLES: &[&str] = &[
     "dimmed",
     "muted",
     "inline_code",
-    "git_staged",
-    "git_modified",
-    "diff_added",
-    "diff_removed",
 ];
 
 #[test]

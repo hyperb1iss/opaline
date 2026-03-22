@@ -59,14 +59,14 @@ Opaline ships adapters for **ratatui**, **egui**, **crossterm**, **owo-colors**,
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
 ```
 
-Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme families, all enforced by a strict contract test suite that validates 39 semantic tokens, 18 styles, and 5 gradients per theme.
+Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme families, all enforced by a strict contract test suite that validates 26 core semantic tokens, 13 required styles, and 5 gradients per theme.
 
 ## ✦ Features
 
 | Feature | Description |
 | --- | --- |
 | 🎨 **39 Builtin Themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark/Light |
-| 🔗 **Semantic Tokens** | 39 tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
+| 🔗 **Semantic Tokens** | 26 core tokens across generic `text.*`, `bg.*`, `accent.*`, `border.*`, and `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
 | 🎮 **egui Integration** | `Color32` conversion, full `Visuals` generation from theme tokens |
@@ -98,13 +98,13 @@ Load a theme and start styling:
 ```rust
 use opaline::load_by_name;
 
-// Load any of 20 builtin themes
+// Load any builtin theme
 let theme = load_by_name("catppuccin-mocha").expect("theme exists");
 
 // Use semantic colors and styles in your Ratatui widgets
 let style = theme.style("keyword");               // bold accent color
 let color = theme.color("accent.primary");         // OpalineColor
-let span = theme.span("file_path", "src/main.rs"); // styled Span
+let span = theme.span("muted", "src/main.rs");     // styled Span
 ```
 
 ### Run the interactive demo
@@ -149,7 +149,7 @@ Browse all 39 themes, see every style and gradient rendered in real-time.
 | **Solarized** | Light | Precision colors for machines and people |
 | **Kanagawa** | Wave | The great wave off Kanagawa |
 
-Every theme is contract-tested: 39 semantic tokens, 18 required styles, 5 required gradients.
+Every theme is contract-tested: 26 core semantic tokens, 13 required styles, 5 required gradients.
 
 ## 🔮 Usage
 
@@ -170,8 +170,8 @@ let error = theme.style("error_style");         // red foreground
 let selected = theme.style("active_selected");  // accent on highlight bg
 
 // Styled spans for inline text — no trait import needed
-let path = theme.span("file_path", "src/lib.rs");
-let hash = theme.span("commit_hash", "a1b2c3d");
+let path = theme.span("muted", "src/lib.rs");
+let keyword_span = theme.span("keyword", "fn");
 ```
 
 ### Gradients
@@ -245,11 +245,11 @@ purple = "#bb9af7"
 "bg.base" = "bg"
 "bg.selection" = "bg"
 "accent.primary" = "blue"
-# ... 39 tokens across text.*, bg.*, accent.*, git.*, diff.*, code.*, etc.
+# ... 26 required core tokens across text.*, bg.*, accent.*, border.*, code.*, etc.
 
 [styles]
 keyword = { fg = "accent.primary", bold = true }
-# ... 18 required styles
+# ... 13 required core styles
 
 [gradients]
 primary = ["blue", "purple"]
@@ -262,7 +262,7 @@ The resolver validates everything at load time — circular references, missing 
 
 | Feature | Default | Description |
 | --- | --- | --- |
-| `builtin-themes` | ✓ | 20 embedded TOML themes via `include_str!` |
+| `builtin-themes` | ✓ | 39 embedded TOML themes via `include_str!` |
 | `gradients` | ✓ | Multi-stop gradient interpolation |
 | `ratatui` | ✓ | `From` impls, inherent `span()`/`line()`/`text()`/`gradient_text()` |
 | `cli` | — | `colored` crate adapter for ANSI output |

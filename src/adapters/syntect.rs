@@ -98,16 +98,14 @@ const SCOPE_MAPPINGS: &[(&str, &str)] = &[
     ("code.function", "entity.name.function, support.function"),
     ("code.number", "constant.numeric"),
     ("code.type", "entity.name.type, support.type"),
-    ("code.hash", "constant.other"),
-    ("code.path", "string.other.link"),
     ("code.line_number", "constant.numeric.line-number"),
     ("accent.primary", "variable"),
     ("accent.secondary", "storage.type, storage.modifier"),
+    ("accent.tertiary", "constant.other, variable.other.constant"),
     ("success", "markup.inserted"),
     ("error", "invalid, message.error"),
     ("warning", "markup.changed"),
-    ("diff.added", "markup.inserted"),
-    ("diff.removed", "markup.deleted"),
+    ("info", "string.other.link, support.constant"),
 ];
 
 /// Convert an Opaline [`Theme`] to a [`syntect::highlighting::Theme`].

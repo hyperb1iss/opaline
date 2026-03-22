@@ -25,10 +25,7 @@ fn css_classes_from_styles() {
                 .bold()
                 .italic(),
         )
-        .style(
-            "diff_added",
-            OpalineStyle::fg(OpalineColor::new(80, 250, 123)),
-        )
+        .style("status_badge", OpalineStyle::fg(OpalineColor::new(80, 250, 123)))
         .build();
 
     let css = opaline::generate_css_classes(&theme);
@@ -36,7 +33,7 @@ fn css_classes_from_styles() {
     assert!(css.contains("color: #e135ff;"));
     assert!(css.contains("font-weight: bold;"));
     assert!(css.contains("font-style: italic;"));
-    assert!(css.contains(".opaline-diff-added {"));
+    assert!(css.contains(".opaline-status-badge {"));
 }
 
 #[test]

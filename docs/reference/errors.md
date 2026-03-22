@@ -28,7 +28,7 @@ use opaline::OpalineError;
 
 match opaline::load_from_file("theme.toml") {
     Ok(theme) => println!("Loaded: {}", theme.meta.name),
-    Err(OpalineError::Io(e)) => eprintln!("File error: {e}"),
+    Err(OpalineError::Io { source, .. }) => eprintln!("File error: {source}"),
     Err(OpalineError::Parse { source, .. }) => eprintln!("TOML syntax: {source}"),
     Err(OpalineError::InvalidColor { token, .. }) => {
         eprintln!("Bad color in token '{token}'");

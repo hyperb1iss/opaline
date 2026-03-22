@@ -24,7 +24,7 @@ let keyword = theme.style("keyword");   // works directly via Into<Style>
 let border = theme.style("focused_border");
 ```
 
-Change the theme, and every styled element updates automatically. Users can switch between 20 builtin themes or load custom ones from TOML files.
+Change the theme, and every styled element updates automatically. Users can switch between 39 builtin themes or load custom ones from TOML files.
 
 ## Architecture
 
@@ -52,8 +52,8 @@ This separation means palette swaps propagate through the entire theme automatic
 
 | Feature | Description |
 |---------|-------------|
-| **20 builtin themes** | SilkCircuit (5 variants), Catppuccin, Dracula, Nord, Tokyo Night, Rose Pine, Kanagawa, Gruvbox, One Dark, Solarized, Everforest |
-| **Token system** | 39 semantic tokens across 9 namespaces |
+| **39 builtin themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Rose Pine, Everforest, Tokyo Night, Kanagawa, Dracula, Nord, Gruvbox, Solarized, One |
+| **Token system** | 26 core semantic tokens across generic namespaces |
 | **Gradients** | Multi-stop color interpolation with `at(t)` and `generate(n)` |
 | **Ratatui adapter** | `From` impls, inherent `span()`/`line()`/`text()` methods, gradient helpers |
 | **CLI adapter** | `colored` crate integration for non-TUI terminal output |

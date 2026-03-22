@@ -8,8 +8,8 @@ These are enabled by default with `opaline = "0.2"`:
 
 | Feature | Description | Dependencies |
 |---------|-------------|--------------|
-| `builtin-themes` | 20 embedded TOML themes via `include_str!` | None |
-| `gradients` | Multi-stop gradient support (`Gradient` type) | None |
+| `builtin-themes` | 39 embedded TOML themes via `include_str!` | None |
+| `gradients` | Multi-stop gradient support (`Gradient` type) | `unicode-segmentation 1.12` |
 | `ratatui` | `From` impls, inherent `span()`/`line()`/`text()`/`gradient_text()` on `Theme` | `ratatui-core 0.1` |
 
 ## Optional Features
@@ -26,7 +26,7 @@ These must be explicitly enabled:
 | `egui` | Immediate-mode GUI adapter — `Color32`, `Visuals` from theme tokens | `egui 0.33` |
 | `global-state` | Process-wide theme singleton — `current()`, `set_theme()` | `parking_lot 0.12` |
 | `discovery` | User theme directory scanning — `app_theme_dirs()`, `theme_dirs()` | `dirs 6` |
-| `widgets` | Theme selector widget with live preview | `ratatui 0.30`, `crossterm 0.29` (enables `global-state` + `builtin-themes`) |
+| `widgets` | Theme selector widget with live preview | `ratatui 0.30`, `crossterm 0.29`, `unicode-width 0.2` (enables `global-state` + `builtin-themes`) |
 
 ## Configuration Examples
 
@@ -101,8 +101,8 @@ Some features gate additional API when combined:
 | `owo-colors` + `gradients` | `gradient_string()` (owo-colors) |
 | `css` + `gradients` | Gradient CSS custom properties as `linear-gradient()` |
 | `global-state` + `builtin-themes` | `load_theme_by_name()`, `load_theme_by_name_with()` |
-
-| `global-state` + `builtin-themes` + `discovery` | `load_theme_by_name_for_app()`, `load_theme_by_name_for_app_with()` |
+| `builtin-themes` + `discovery` | `list_available_themes_for_app()`, `list_available_themes_in_dirs()` |
+| `global-state` + `builtin-themes` + `discovery` | `load_theme_by_name_for_app()`, `load_theme_by_name_for_app_with()`, `load_theme_by_name_in_dirs()` |
 
 ## Without Default Features
 

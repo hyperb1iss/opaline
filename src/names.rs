@@ -11,7 +11,7 @@
 //! let kw = theme.style(styles::KEYWORD);
 //! ```
 
-/// Semantic color token names (39 required).
+/// Semantic color token names (26 required).
 pub mod tokens {
     pub const TEXT_PRIMARY: &str = "text.primary";
     pub const TEXT_SECONDARY: &str = "text.secondary";
@@ -34,21 +34,8 @@ pub mod tokens {
     pub const WARNING: &str = "warning";
     pub const INFO: &str = "info";
 
-    pub const GIT_STAGED: &str = "git.staged";
-    pub const GIT_MODIFIED: &str = "git.modified";
-    pub const GIT_UNTRACKED: &str = "git.untracked";
-    pub const GIT_DELETED: &str = "git.deleted";
-
-    pub const DIFF_ADDED: &str = "diff.added";
-    pub const DIFF_REMOVED: &str = "diff.removed";
-    pub const DIFF_HUNK: &str = "diff.hunk";
-    pub const DIFF_CONTEXT: &str = "diff.context";
-
     pub const BORDER_FOCUSED: &str = "border.focused";
     pub const BORDER_UNFOCUSED: &str = "border.unfocused";
-
-    pub const CODE_HASH: &str = "code.hash";
-    pub const CODE_PATH: &str = "code.path";
     pub const CODE_KEYWORD: &str = "code.keyword";
     pub const CODE_FUNCTION: &str = "code.function";
     pub const CODE_STRING: &str = "code.string";
@@ -56,17 +43,12 @@ pub mod tokens {
     pub const CODE_COMMENT: &str = "code.comment";
     pub const CODE_TYPE: &str = "code.type";
     pub const CODE_LINE_NUMBER: &str = "code.line_number";
-
-    pub const MODE_ACTIVE: &str = "mode.active";
-    pub const MODE_INACTIVE: &str = "mode.inactive";
-    pub const MODE_HOVER: &str = "mode.hover";
 }
 
-/// Named style constants (18 required).
+/// Named style constants (13 required).
 pub mod styles {
     pub const KEYWORD: &str = "keyword";
-    pub const FILE_PATH: &str = "file_path";
-    pub const COMMIT_HASH: &str = "commit_hash";
+    pub const LINE_NUMBER: &str = "line_number";
     pub const SELECTED: &str = "selected";
     pub const ACTIVE_SELECTED: &str = "active_selected";
     pub const FOCUSED_BORDER: &str = "focused_border";
@@ -78,18 +60,6 @@ pub mod styles {
     pub const DIMMED: &str = "dimmed";
     pub const MUTED: &str = "muted";
     pub const INLINE_CODE: &str = "inline_code";
-    pub const GIT_STAGED: &str = "git_staged";
-    pub const GIT_MODIFIED: &str = "git_modified";
-    pub const DIFF_ADDED: &str = "diff_added";
-    pub const DIFF_REMOVED: &str = "diff_removed";
-    pub const DIFF_HUNK: &str = "diff_hunk";
-    pub const DIFF_CONTEXT: &str = "diff_context";
-    pub const LINE_NUMBER: &str = "line_number";
-    pub const TIMESTAMP: &str = "timestamp";
-    pub const AUTHOR: &str = "author";
-    pub const GIT_UNTRACKED: &str = "git_untracked";
-    pub const GIT_DELETED: &str = "git_deleted";
-    pub const MODE_INACTIVE: &str = "mode_inactive";
 }
 
 /// Named gradient constants (5 required).

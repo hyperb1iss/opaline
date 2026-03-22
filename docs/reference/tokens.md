@@ -2,7 +2,7 @@
 
 Every builtin theme must define a minimum set of semantic tokens, styles, and gradients. This contract ensures that consuming applications can rely on these names existing in any theme.
 
-## Required Tokens (39)
+## Required Tokens (26)
 
 These tokens must be present in every builtin theme:
 
@@ -15,7 +15,7 @@ text.muted
 text.dim
 ```
 
-### Background (4)
+### Background (5)
 
 ```
 bg.base
@@ -43,24 +43,6 @@ warning
 info
 ```
 
-### Git (4)
-
-```
-git.staged
-git.modified
-git.untracked
-git.deleted
-```
-
-### Diff (4)
-
-```
-diff.added
-diff.removed
-diff.hunk
-diff.context
-```
-
 ### Border (2)
 
 ```
@@ -68,11 +50,9 @@ border.focused
 border.unfocused
 ```
 
-### Code (9)
+### Code (7)
 
 ```
-code.hash
-code.path
 code.keyword
 code.function
 code.string
@@ -82,20 +62,11 @@ code.type
 code.line_number
 ```
 
-### Mode (3)
-
-```
-mode.active
-mode.inactive
-mode.hover
-```
-
-## Required Styles (18)
+## Required Styles (13)
 
 ```
 keyword
-file_path
-commit_hash
+line_number
 selected
 active_selected
 focused_border
@@ -107,10 +78,6 @@ info_style
 dimmed
 muted
 inline_code
-git_staged
-git_modified
-diff_added
-diff_removed
 ```
 
 ## Required Gradients (5)
@@ -159,6 +126,6 @@ fn all_builtins_have_required_tokens() {
 
 ## Adding Tokens to Your Theme
 
-If you're creating a custom theme, you don't need to satisfy the full contract — it's only enforced for builtins. However, following the contract ensures your theme works with any Opaline-powered app.
+If you're creating a custom theme, you don't need to satisfy the full contract — it's only enforced for builtins. However, following the contract ensures your theme works with any Opaline-powered app. Domain-specific semantics such as git status colors, diff colors, and mode indicators should be derived by the consuming app instead of being treated as core contract names.
 
 Use the [custom themes template](../guide/custom-themes) as a starting point.

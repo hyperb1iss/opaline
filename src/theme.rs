@@ -332,14 +332,16 @@ mod global {
         I: IntoIterator<Item = P>,
         P: Into<std::path::PathBuf>,
     {
+        let mut matched_path = None;
+
         for dir in dirs.into_iter().map(Into::into) {
             let path = dir.join(format!("{name}.toml"));
             if path.exists() {
-                return crate::loader::load_from_file(&path).map(Some);
+                matched_path = Some(path);
             }
         }
 
-        Ok(None)
+        matched_path.map_or(Ok(None), |path| crate::loader::load_from_file(&path).map(Some))
     }
 
     static ACTIVE_THEME: LazyLock<RwLock<Arc<Theme>>> =

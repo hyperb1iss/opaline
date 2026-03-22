@@ -32,7 +32,7 @@ opaline = { version = "0.2", features = ["builtin-themes", "gradients", "ratatui
 
 | Feature | Default | Description |
 |---------|---------|-------------|
-| `builtin-themes` | yes | 20 embedded TOML themes via `include_str!` |
+| `builtin-themes` | yes | 39 embedded TOML themes via `include_str!` |
 | `gradients` | yes | Multi-stop gradient support |
 | `ratatui` | yes | `From` impls for `ratatui::style::{Color, Style}` |
 | `cli` | no | `colored` crate adapter for ANSI terminal output |
