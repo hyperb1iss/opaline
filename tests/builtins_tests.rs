@@ -2,6 +2,18 @@ use opaline::OpalineColor;
 use opaline::builtins;
 use opaline::schema::ThemeVariant;
 use pretty_assertions::assert_eq;
+use std::fs;
+use std::sync::{Mutex, MutexGuard, OnceLock};
+
+#[cfg(all(
+    feature = "builtin-themes",
+    feature = "discovery",
+    feature = "global-state"
+))]
+fn global_lock() -> MutexGuard<'static, ()> {
+    static LOCK: OnceLock<Mutex<()>> = OnceLock::new();
+    LOCK.get_or_init(|| Mutex::new(())).lock().expect("lock")
+}
 
 // ── SilkCircuit Neon (default) ───────────────────────────────────────────
 
@@ -83,6 +95,7 @@ const REQUIRED_TOKENS: &[&str] = &[
     "bg.panel",
     "bg.code",
     "bg.highlight",
+    "bg.selection",
     "accent.primary",
     "accent.secondary",
     "accent.tertiary",
@@ -232,16 +245,135 @@ fn load_by_name_unknown() {
 }
 
 #[test]
-fn list_available_themes_includes_all_builtins() {
+fn list_available_themes_keeps_builtin_ids_unique() {
     let themes = builtins::list_available_themes();
-    assert_eq!(
-        themes.iter().filter(|t| t.builtin).count(),
-        builtins::BUILTIN_COUNT
-    );
+
+    for &(id, _) in builtins::builtin_names() {
+        let visible_count = themes.iter().filter(|theme| theme.name == id).count();
+        assert_eq!(
+            visible_count, 1,
+            "expected exactly one visible theme entry for builtin id {id}"
+        );
+    }
 }
 
 #[test]
 fn default_theme_is_silkcircuit_neon() {
     let theme = opaline::Theme::default();
     assert_eq!(theme.meta.name, "SilkCircuit Neon");
+}
+
+#[test]
+fn theme_info_load_prefers_path_over_builtin_id() {
+    let unique = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .expect("time went backwards")
+        .as_nanos();
+    let temp_dir = std::env::temp_dir().join(format!("opaline-theme-info-{unique}"));
+    fs::create_dir_all(&temp_dir).expect("create temp dir");
+
+    let path = temp_dir.join("dracula.toml");
+    fs::write(
+        &path,
+        r##"
+[meta]
+name = "Shadow Dracula"
+variant = "dark"
+author = "local"
+
+[palette]
+shadow = "#010203"
+"##,
+    )
+    .expect("write theme file");
+
+    let info = builtins::ThemeInfo {
+        name: "dracula".to_string(),
+        display_name: "Shadow Dracula".to_string(),
+        variant: ThemeVariant::Dark,
+        author: "local".to_string(),
+        description: String::new(),
+        builtin: false,
+        path: Some(path),
+    };
+
+    let theme = info.load().expect("theme loads");
+    assert_eq!(theme.meta.name, "Shadow Dracula");
+}
+
+#[cfg(all(
+    feature = "builtin-themes",
+    feature = "discovery",
+    feature = "global-state"
+))]
+#[test]
+fn discovered_theme_shadowing_builtin_wins_in_loader_and_listing() {
+    let _guard = global_lock();
+    let previous = opaline::current();
+    let unique = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .expect("time went backwards")
+        .as_nanos();
+    let temp_root = std::env::temp_dir().join(format!("opaline-config-{unique}"));
+    fs::create_dir_all(&temp_root).expect("create temp config root");
+    let base_dir = temp_root.join("opaline").join("themes");
+    let app_dir = temp_root.join("opaline-local").join("themes");
+
+    fs::create_dir_all(&base_dir).expect("create base theme dir");
+    fs::create_dir_all(&app_dir).expect("create app theme dir");
+
+    let builtin = builtins::load_by_name("dracula").expect("builtin loads");
+    assert_eq!(builtin.meta.name, "Dracula");
+
+    fs::write(
+        base_dir.join("dracula.toml"),
+        r##"
+[meta]
+name = "Shadow Dracula"
+variant = "dark"
+author = "local"
+
+[palette]
+shadow = "#010203"
+"##,
+    )
+    .expect("write shadowing theme");
+
+    fs::write(
+        app_dir.join("opaline-local.toml"),
+        r##"
+[meta]
+name = "Opaline Local"
+variant = "light"
+author = "local"
+
+[palette]
+accent = "#abcdef"
+"##,
+    )
+    .expect("write app theme");
+
+    opaline::load_theme_by_name_in_dirs("dracula", [base_dir.clone()]).expect("custom theme loads");
+    assert_eq!(opaline::current().meta.name, "Shadow Dracula");
+
+    let all = builtins::list_available_themes_in_dirs([base_dir.clone(), app_dir.clone()]);
+    let dracula = all
+        .iter()
+        .find(|theme| theme.name == "dracula")
+        .expect("dracula theme present");
+    assert!(!dracula.builtin);
+    assert_eq!(dracula.display_name, "Shadow Dracula");
+    assert!(dracula.path.is_some());
+
+    let app_themes = builtins::list_available_themes_in_dirs([app_dir.clone()]);
+    assert!(
+        app_themes
+            .iter()
+            .any(|theme| theme.name == "opaline-local" && theme.display_name == "Opaline Local")
+    );
+
+    let _ = fs::remove_file(base_dir.join("dracula.toml"));
+    let _ = fs::remove_file(app_dir.join("opaline-local.toml"));
+
+    opaline::set_theme((*previous).clone());
 }

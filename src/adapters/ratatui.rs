@@ -12,6 +12,8 @@ use ratatui_core::style::{Color, Modifier, Style, Styled};
 #[cfg(feature = "gradients")]
 use ratatui_core::text::Span;
 use ratatui_core::text::{Line, Text};
+#[cfg(feature = "gradients")]
+use unicode_segmentation::UnicodeSegmentation;
 
 use crate::color::OpalineColor;
 #[cfg(feature = "gradients")]
@@ -130,18 +132,18 @@ impl Theme {
 /// Render a string with per-character gradient coloring, producing a `Vec<Span>`.
 #[cfg(feature = "gradients")]
 pub fn gradient_spans(text: &str, gradient: &Gradient) -> Vec<Span<'static>> {
-    let chars: Vec<char> = text.chars().collect();
-    if chars.is_empty() {
+    let graphemes: Vec<&str> = text.graphemes(true).collect();
+    if graphemes.is_empty() {
         return vec![];
     }
 
-    let colors = gradient.generate(chars.len());
-    chars
+    let colors = gradient.generate(graphemes.len());
+    graphemes
         .into_iter()
         .zip(colors)
-        .map(|(ch, color)| {
+        .map(|(grapheme, color)| {
             Span::styled(
-                ch.to_string(),
+                grapheme.to_string(),
                 Style::default().fg(Color::Rgb(color.r, color.g, color.b)),
             )
         })

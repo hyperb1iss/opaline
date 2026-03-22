@@ -14,6 +14,8 @@ use owo_colors::Style;
 
 use crate::style::OpalineStyle;
 use crate::theme::Theme;
+#[cfg(feature = "gradients")]
+use unicode_segmentation::UnicodeSegmentation;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Style conversion
@@ -112,20 +114,16 @@ pub fn gradient_string(text: &str, gradient: &crate::gradient::Gradient) -> Stri
     use owo_colors::OwoColorize as _;
     use std::fmt::Write as _;
 
-    let chars: Vec<char> = text.chars().collect();
-    if chars.is_empty() {
+    let graphemes: Vec<&str> = text.graphemes(true).collect();
+    if graphemes.is_empty() {
         return String::new();
     }
 
-    let colors = gradient.generate(chars.len());
+    let colors = gradient.generate(graphemes.len());
     let mut result = String::with_capacity(text.len() * 20);
 
-    for (ch, color) in chars.into_iter().zip(colors) {
-        let _ = write!(
-            result,
-            "{}",
-            ch.truecolor(color.r, color.g, color.b)
-        );
+    for (grapheme, color) in graphemes.into_iter().zip(colors) {
+        let _ = write!(result, "{}", grapheme.truecolor(color.r, color.g, color.b));
     }
 
     result

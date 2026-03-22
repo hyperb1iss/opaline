@@ -11,8 +11,8 @@
 //! ctx.set_visuals(visuals);
 //! ```
 
-use egui::{Color32, Stroke, Visuals};
 use egui::style::{Selection, WidgetVisuals, Widgets};
+use egui::{Color32, Stroke, Visuals};
 
 use crate::color::OpalineColor;
 use crate::theme::Theme;
@@ -74,7 +74,7 @@ pub fn to_egui_visuals(theme: &Theme) -> Visuals {
     // ── Global colors ────────────────────────────────────────────────────
 
     v.dark_mode = theme.is_dark();
-    v.override_text_color = Some(text_primary);
+    v.override_text_color = None;
     v.panel_fill = bg_base;
     v.window_fill = bg_panel;
     v.faint_bg_color = bg_highlight;

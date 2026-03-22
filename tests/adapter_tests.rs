@@ -334,15 +334,15 @@ fn gradient_spans_empty_text() {
 }
 
 #[test]
-fn gradient_spans_unicode() {
+fn gradient_spans_unicode_grapheme_clusters() {
     let grad = Gradient::new(vec![
         OpalineColor::new(255, 0, 0),
         OpalineColor::new(0, 255, 0),
     ]);
-    let spans = opaline::adapters::ratatui::gradient_spans("AB", &grad);
+    let spans = opaline::adapters::ratatui::gradient_spans("e\u{301}🙂", &grad);
     assert_eq!(spans.len(), 2);
-    assert_eq!(spans[0].content, "A");
-    assert_eq!(spans[1].content, "B");
+    assert_eq!(spans[0].content, "e\u{301}");
+    assert_eq!(spans[1].content, "🙂");
 }
 
 #[test]
@@ -393,6 +393,19 @@ fn gradient_bar_zero_width_empty() {
     let grad = Gradient::new(vec![OpalineColor::new(255, 0, 0)]);
     let line: Line = opaline::adapters::ratatui::gradient_bar(0, '\u{2588}', &grad);
     assert!(line.spans.is_empty());
+}
+
+#[cfg(all(feature = "cli", feature = "gradients"))]
+#[test]
+fn cli_gradient_string_unicode_grapheme_clusters() {
+    let grad = Gradient::new(vec![
+        OpalineColor::new(255, 0, 0),
+        OpalineColor::new(0, 0, 255),
+    ]);
+
+    let output = opaline::gradient_string("e\u{301}🙂", &grad);
+    assert!(output.contains("e\u{301}"));
+    assert!(output.contains("🙂"));
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

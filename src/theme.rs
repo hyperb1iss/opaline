@@ -1,11 +1,10 @@
 use std::collections::HashMap;
 
 use crate::color::OpalineColor;
-use crate::error::OpalineError;
 #[cfg(feature = "gradients")]
 use crate::gradient::Gradient;
 use crate::resolver::ResolvedTheme;
-use crate::schema::{StyleDef, ThemeFile, ThemeMeta, ThemeVariant};
+use crate::schema::{ThemeMeta, ThemeVariant};
 use crate::style::OpalineStyle;
 
 /// A fully resolved theme ready for use.
@@ -159,7 +158,9 @@ impl Theme {
     /// priority so theme authors can override derivations.
     pub fn register_default_token(&mut self, name: impl Into<String>, color: OpalineColor) {
         let key = name.into();
-        self.tokens.entry(key).or_insert(color);
+        if !self.has_token(&key) {
+            self.tokens.insert(key, color);
+        }
     }
 
     /// Register a token, overwriting any existing value.
@@ -176,88 +177,6 @@ impl Theme {
     /// Register a style, overwriting any existing value.
     pub fn register_style(&mut self, name: impl Into<String>, style: OpalineStyle) {
         self.styles.insert(name.into(), style);
-    }
-
-    // ── Export / serialization ────────────────────────────────────────
-
-    /// Convert to a [`ThemeFile`] for serialization.
-    ///
-    /// All resolved colors are emitted as hex strings. Palette references
-    /// are not reconstructed — the output is a fully flattened theme that
-    /// round-trips through `load_from_str()`.
-    pub fn to_theme_file(&self) -> ThemeFile {
-        let palette = self
-            .palette
-            .iter()
-            .map(|(k, v)| (k.clone(), v.to_hex()))
-            .collect();
-
-        let tokens = self
-            .tokens
-            .iter()
-            .map(|(k, v)| (k.clone(), v.to_hex()))
-            .collect();
-
-        let styles = self
-            .styles
-            .iter()
-            .map(|(k, v)| {
-                let def = StyleDef {
-                    fg: v.fg.map(OpalineColor::to_hex),
-                    bg: v.bg.map(OpalineColor::to_hex),
-                    bold: v.bold,
-                    dim: v.dim,
-                    italic: v.italic,
-                    underline: v.underline,
-                    slow_blink: v.slow_blink,
-                    rapid_blink: v.rapid_blink,
-                    reversed: v.reversed,
-                    hidden: v.hidden,
-                    crossed_out: v.crossed_out,
-                };
-                (k.clone(), def)
-            })
-            .collect();
-
-        #[cfg(feature = "gradients")]
-        let gradients = self
-            .gradients
-            .iter()
-            .map(|(k, g)| {
-                let stops = g.stops().iter().map(|c| c.to_hex()).collect();
-                (k.clone(), stops)
-            })
-            .collect();
-
-        #[cfg(not(feature = "gradients"))]
-        let gradients = HashMap::new();
-
-        ThemeFile {
-            meta: self.meta.clone(),
-            palette,
-            tokens,
-            styles,
-            gradients,
-        }
-    }
-
-    /// Serialize to a TOML string.
-    ///
-    /// Produces a valid `.toml` theme file that can be loaded with
-    /// [`load_from_str()`](crate::loader::load_from_str).
-    pub fn to_toml(&self) -> Result<String, OpalineError> {
-        let theme_file = self.to_theme_file();
-        toml::to_string_pretty(&theme_file).map_err(|source| OpalineError::Serialize { source })
-    }
-
-    /// Save to a TOML file on disk.
-    pub fn save_to_file(&self, path: impl AsRef<std::path::Path>) -> Result<(), OpalineError> {
-        let path = path.as_ref();
-        let toml_str = self.to_toml()?;
-        std::fs::write(path, toml_str).map_err(|source| OpalineError::Io {
-            path: path.to_path_buf(),
-            source,
-        })
     }
 }
 
@@ -408,11 +327,12 @@ mod global {
     use crate::error::OpalineError;
 
     #[cfg(feature = "discovery")]
-    fn load_from_dirs(
-        name: &str,
-        dirs: Vec<std::path::PathBuf>,
-    ) -> Result<Option<Theme>, OpalineError> {
-        for dir in dirs {
+    fn load_from_dirs<I, P>(name: &str, dirs: I) -> Result<Option<Theme>, OpalineError>
+    where
+        I: IntoIterator<Item = P>,
+        P: Into<std::path::PathBuf>,
+    {
+        for dir in dirs.into_iter().map(Into::into) {
             let path = dir.join(format!("{name}.toml"));
             if path.exists() {
                 return crate::loader::load_from_file(&path).map(Some);
@@ -442,19 +362,19 @@ mod global {
     #[cfg(feature = "builtin-themes")]
     pub fn load_theme_by_name(name: &str) -> Result<(), OpalineError> {
         #[cfg(feature = "discovery")]
-        if let Some(theme) = load_from_dirs(name, crate::discovery::theme_dirs())? {
-            set_theme(theme);
-            return Ok(());
-        }
+        return load_theme_by_name_in_dirs(name, crate::discovery::theme_dirs());
 
-        if let Some(theme) = crate::builtins::load_by_name(name) {
-            set_theme(theme);
-            return Ok(());
-        }
+        #[cfg(not(feature = "discovery"))]
+        {
+            if let Some(theme) = crate::builtins::load_by_name(name) {
+                set_theme(theme);
+                return Ok(());
+            }
 
-        Err(OpalineError::ThemeNotFound {
-            name: name.to_string(),
-        })
+            Err(OpalineError::ThemeNotFound {
+                name: name.to_string(),
+            })
+        }
     }
 
     /// Load a theme by name, run an app-level derivation callback, then
@@ -491,7 +411,21 @@ mod global {
     /// `~/.config/<app_name>/themes/`.
     #[cfg(all(feature = "builtin-themes", feature = "discovery"))]
     pub fn load_theme_by_name_for_app(name: &str, app_name: &str) -> Result<(), OpalineError> {
-        if let Some(theme) = load_from_dirs(name, crate::discovery::app_theme_dirs(app_name))? {
+        load_theme_by_name_in_dirs(name, crate::discovery::app_theme_dirs(app_name))
+    }
+
+    /// Load a theme by name from an explicit set of discovery directories.
+    ///
+    /// This is the directory-driven variant of [`load_theme_by_name`]. It
+    /// checks the provided directories first, then falls back to builtin
+    /// themes when no file-backed match exists.
+    #[cfg(all(feature = "builtin-themes", feature = "discovery"))]
+    pub fn load_theme_by_name_in_dirs<I, P>(name: &str, dirs: I) -> Result<(), OpalineError>
+    where
+        I: IntoIterator<Item = P>,
+        P: Into<std::path::PathBuf>,
+    {
+        if let Some(theme) = load_from_dirs(name, dirs)? {
             set_theme(theme);
             return Ok(());
         }
@@ -546,6 +480,13 @@ pub use global::{current, load_theme, set_theme};
 
 #[cfg(all(feature = "global-state", feature = "builtin-themes"))]
 pub use global::load_theme_by_name;
+
+#[cfg(all(
+    feature = "global-state",
+    feature = "builtin-themes",
+    feature = "discovery"
+))]
+pub use global::load_theme_by_name_in_dirs;
 
 #[cfg(all(
     feature = "global-state",

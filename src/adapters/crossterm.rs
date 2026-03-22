@@ -22,6 +22,8 @@ use crate::color::OpalineColor;
 use crate::gradient::Gradient;
 use crate::style::OpalineStyle;
 use crate::theme::Theme;
+#[cfg(feature = "gradients")]
+use unicode_segmentation::UnicodeSegmentation;
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Color conversion
@@ -102,11 +104,7 @@ impl From<&OpalineStyle> for ContentStyle {
 
 impl Theme {
     /// Apply a named style to content, producing a crossterm [`StyledContent`].
-    pub fn crossterm_styled<D: Display>(
-        &self,
-        style_name: &str,
-        content: D,
-    ) -> StyledContent<D> {
+    pub fn crossterm_styled<D: Display>(&self, style_name: &str, content: D) -> StyledContent<D> {
         ContentStyle::from(self.style(style_name)).apply(content)
     }
 }
@@ -119,21 +117,21 @@ impl Theme {
 /// [`StyledContent`] values. Each element implements `Display`.
 #[cfg(feature = "gradients")]
 pub fn gradient_styled(text: &str, gradient: &Gradient) -> Vec<StyledContent<String>> {
-    let chars: Vec<char> = text.chars().collect();
-    if chars.is_empty() {
+    let graphemes: Vec<&str> = text.graphemes(true).collect();
+    if graphemes.is_empty() {
         return vec![];
     }
 
-    let colors = gradient.generate(chars.len());
-    chars
+    let colors = gradient.generate(graphemes.len());
+    graphemes
         .into_iter()
         .zip(colors)
-        .map(|(ch, color)| {
+        .map(|(grapheme, color)| {
             let style = ContentStyle {
                 foreground_color: Some(color.into()),
                 ..ContentStyle::new()
             };
-            style.apply(ch.to_string())
+            style.apply(grapheme.to_string())
         })
         .collect()
 }

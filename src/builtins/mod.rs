@@ -41,8 +41,6 @@ pub fn silkcircuit_neon() -> Theme {
     load_by_name("silkcircuit-neon").expect("default builtin must exist")
 }
 
-// ── Theme info ───────────────────────────────────────────────────────────
-
 /// Metadata about a discoverable theme.
 #[derive(Debug, Clone)]
 pub struct ThemeInfo {
@@ -62,6 +60,20 @@ pub struct ThemeInfo {
     pub path: Option<std::path::PathBuf>,
 }
 
+impl ThemeInfo {
+    /// Load the theme represented by this metadata.
+    ///
+    /// File-backed themes prefer their filesystem path. Builtins fall back to
+    /// the compile-time registry.
+    #[must_use]
+    pub fn load(&self) -> Option<Theme> {
+        self.path
+            .as_ref()
+            .and_then(|path| loader::load_from_file(path).ok())
+            .or_else(|| load_by_name(&self.name))
+    }
+}
+
 impl std::fmt::Display for ThemeInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} ({})", self.display_name, self.variant)?;
@@ -72,54 +84,109 @@ impl std::fmt::Display for ThemeInfo {
     }
 }
 
-/// List all available themes: builtins first, then user-installed themes
-/// from discovery paths.
+/// List all available themes: builtins plus user-installed themes from
+/// discovery paths. File-backed themes replace builtin entries when ids
+/// collide.
 pub fn list_available_themes() -> Vec<ThemeInfo> {
-    let mut themes = Vec::new();
-
-    // Builtins — auto-discovered at compile time
-    for &(id, _) in builtin_names() {
-        if let Some(theme) = load_by_name(id) {
-            themes.push(ThemeInfo {
-                name: id.to_string(),
-                display_name: theme.meta.name.clone(),
-                variant: theme.meta.variant,
-                author: theme.meta.author.clone().unwrap_or_default(),
-                description: theme.meta.description.clone().unwrap_or_default(),
-                builtin: true,
-                path: None,
-            });
-        }
-    }
-
-    // User-installed themes from discovery paths
     #[cfg(feature = "discovery")]
     {
-        for dir in crate::discovery::theme_dirs() {
-            if let Ok(entries) = std::fs::read_dir(&dir) {
-                for entry in entries.flatten() {
-                    let path = entry.path();
-                    if path.extension().is_some_and(|e| e == "toml") {
-                        if let Ok(theme) = loader::load_from_file(&path) {
-                            let id = path
-                                .file_stem()
-                                .map(|s| s.to_string_lossy().to_string())
-                                .unwrap_or_default();
-                            themes.push(ThemeInfo {
-                                name: id,
-                                display_name: theme.meta.name.clone(),
-                                variant: theme.meta.variant,
-                                author: theme.meta.author.clone().unwrap_or_default(),
-                                description: theme.meta.description.clone().unwrap_or_default(),
-                                builtin: false,
-                                path: Some(path),
-                            });
-                        }
-                    }
-                }
-            }
+        list_available_themes_in_dirs(crate::discovery::theme_dirs())
+    }
+
+    #[cfg(not(feature = "discovery"))]
+    {
+        builtin_theme_infos()
+    }
+}
+
+/// List all available themes for a specific application.
+///
+/// This includes the base Opaline discovery directory plus the app-specific
+/// `~/.config/<app_name>/themes/` directory. When ids collide, file-backed
+/// themes replace builtin entries.
+#[cfg(feature = "discovery")]
+pub fn list_available_themes_for_app(app_name: &str) -> Vec<ThemeInfo> {
+    list_available_themes_in_dirs(crate::discovery::app_theme_dirs(app_name))
+}
+
+/// List all available themes using an explicit set of discovery directories.
+///
+/// Builtins are always included. File-backed themes replace builtin entries
+/// when ids collide. This is useful for applications that manage their own
+/// theme search paths or for tests that need deterministic discovery.
+#[cfg(feature = "discovery")]
+pub fn list_available_themes_in_dirs<I, P>(dirs: I) -> Vec<ThemeInfo>
+where
+    I: IntoIterator<Item = P>,
+    P: Into<std::path::PathBuf>,
+{
+    let mut themes = builtin_theme_infos();
+    scan_theme_dirs(&mut themes, dirs);
+    themes
+}
+
+fn builtin_theme_infos() -> Vec<ThemeInfo> {
+    let mut themes = Vec::new();
+
+    for &(id, _) in builtin_names() {
+        if let Some(theme) = load_by_name(id) {
+            push_or_replace_theme(
+                &mut themes,
+                ThemeInfo {
+                    name: id.to_string(),
+                    display_name: theme.meta.name.clone(),
+                    variant: theme.meta.variant,
+                    author: theme.meta.author.clone().unwrap_or_default(),
+                    description: theme.meta.description.clone().unwrap_or_default(),
+                    builtin: true,
+                    path: None,
+                },
+            );
         }
     }
 
     themes
+}
+
+fn push_or_replace_theme(themes: &mut Vec<ThemeInfo>, info: ThemeInfo) {
+    if let Some(existing) = themes.iter_mut().find(|theme| theme.name == info.name) {
+        *existing = info;
+    } else {
+        themes.push(info);
+    }
+}
+
+#[cfg(feature = "discovery")]
+fn scan_theme_dirs<I, P>(themes: &mut Vec<ThemeInfo>, dirs: I)
+where
+    I: IntoIterator<Item = P>,
+    P: Into<std::path::PathBuf>,
+{
+    for dir in dirs.into_iter().map(Into::into) {
+        if let Ok(entries) = std::fs::read_dir(&dir) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                if path.extension().is_some_and(|e| e == "toml")
+                    && let Ok(theme) = loader::load_from_file(&path)
+                {
+                    let id = path
+                        .file_stem()
+                        .map(|s| s.to_string_lossy().to_string())
+                        .unwrap_or_default();
+                    push_or_replace_theme(
+                        themes,
+                        ThemeInfo {
+                            name: id,
+                            display_name: theme.meta.name.clone(),
+                            variant: theme.meta.variant,
+                            author: theme.meta.author.clone().unwrap_or_default(),
+                            description: theme.meta.description.clone().unwrap_or_default(),
+                            builtin: false,
+                            path: Some(path),
+                        },
+                    );
+                }
+            }
+        }
+    }
 }

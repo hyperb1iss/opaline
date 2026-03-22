@@ -94,7 +94,10 @@ fn widget_visuals_use_theme_colors() {
     let v = opaline::adapters::egui::to_egui_visuals(&theme);
 
     // Noninteractive uses base bg
-    assert_eq!(v.widgets.noninteractive.bg_fill, Color32::from_rgb(30, 30, 46));
+    assert_eq!(
+        v.widgets.noninteractive.bg_fill,
+        Color32::from_rgb(30, 30, 46)
+    );
     // Inactive uses panel bg
     assert_eq!(v.widgets.inactive.bg_fill, Color32::from_rgb(36, 36, 54));
     // Hovered uses highlight bg
@@ -125,6 +128,30 @@ fn selection_uses_theme_colors() {
     let v = opaline::adapters::egui::to_egui_visuals(&theme);
     assert_eq!(v.selection.bg_fill, Color32::from_rgb(69, 71, 90));
     assert_eq!(v.selection.stroke.color, Color32::from_rgb(203, 166, 247));
+}
+
+#[test]
+fn visuals_do_not_force_global_text_override() {
+    let theme = Theme::builder("Test")
+        .variant(ThemeVariant::Dark)
+        .token("bg.base", OpalineColor::new(30, 30, 46))
+        .token("bg.panel", OpalineColor::new(36, 36, 54))
+        .token("bg.highlight", OpalineColor::new(49, 50, 68))
+        .token("bg.code", OpalineColor::new(24, 24, 37))
+        .token("bg.selection", OpalineColor::new(69, 71, 90))
+        .token("text.primary", OpalineColor::new(205, 214, 244))
+        .token("text.secondary", OpalineColor::new(186, 194, 222))
+        .token("text.muted", OpalineColor::new(147, 153, 178))
+        .token("accent.primary", OpalineColor::new(203, 166, 247))
+        .token("accent.secondary", OpalineColor::new(137, 180, 250))
+        .token("border.focused", OpalineColor::new(203, 166, 247))
+        .token("border.unfocused", OpalineColor::new(88, 91, 112))
+        .token("warning", OpalineColor::new(249, 226, 175))
+        .token("error", OpalineColor::new(243, 139, 168))
+        .build();
+
+    let v = opaline::adapters::egui::to_egui_visuals(&theme);
+    assert!(v.override_text_color.is_none());
 }
 
 #[cfg(feature = "builtin-themes")]

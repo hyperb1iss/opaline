@@ -28,14 +28,24 @@ fn color_ref_to_syntect() {
 fn style_to_modifier_fg_only() {
     let s = OpalineStyle::fg(OpalineColor::new(225, 53, 255));
     let m: StyleModifier = s.into();
-    assert_eq!(m.foreground, Some(Color { r: 225, g: 53, b: 255, a: 255 }));
+    assert_eq!(
+        m.foreground,
+        Some(Color {
+            r: 225,
+            g: 53,
+            b: 255,
+            a: 255
+        })
+    );
     assert_eq!(m.background, None);
     assert_eq!(m.font_style, None);
 }
 
 #[test]
 fn style_to_modifier_with_modifiers() {
-    let s = OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold().italic();
+    let s = OpalineStyle::fg(OpalineColor::new(225, 53, 255))
+        .bold()
+        .italic();
     let m: StyleModifier = s.into();
     let fs = m.font_style.expect("should have font style");
     assert!(fs.contains(FontStyle::BOLD));
@@ -82,10 +92,42 @@ fn to_syntect_theme_settings() {
         .build();
 
     let st = opaline::adapters::syntect::to_syntect_theme(&theme);
-    assert_eq!(st.settings.foreground, Some(Color { r: 205, g: 214, b: 244, a: 255 }));
-    assert_eq!(st.settings.background, Some(Color { r: 30, g: 30, b: 46, a: 255 }));
-    assert_eq!(st.settings.caret, Some(Color { r: 203, g: 166, b: 247, a: 255 }));
-    assert_eq!(st.settings.line_highlight, Some(Color { r: 49, g: 50, b: 68, a: 255 }));
+    assert_eq!(
+        st.settings.foreground,
+        Some(Color {
+            r: 205,
+            g: 214,
+            b: 244,
+            a: 255
+        })
+    );
+    assert_eq!(
+        st.settings.background,
+        Some(Color {
+            r: 30,
+            g: 30,
+            b: 46,
+            a: 255
+        })
+    );
+    assert_eq!(
+        st.settings.caret,
+        Some(Color {
+            r: 203,
+            g: 166,
+            b: 247,
+            a: 255
+        })
+    );
+    assert_eq!(
+        st.settings.line_highlight,
+        Some(Color {
+            r: 49,
+            g: 50,
+            b: 68,
+            a: 255
+        })
+    );
 }
 
 #[test]
@@ -106,19 +148,45 @@ fn to_syntect_theme_scopes() {
 fn to_syntect_theme_scope_with_style_modifiers() {
     let theme = Theme::builder("Test")
         .token("code.keyword", OpalineColor::new(203, 166, 247))
-        .style("keyword", OpalineStyle::fg(OpalineColor::new(203, 166, 247)).bold())
+        .style(
+            "keyword",
+            OpalineStyle::fg(OpalineColor::new(203, 166, 247))
+                .with_bg(OpalineColor::new(30, 30, 46))
+                .bold(),
+        )
         .build();
 
     let st = opaline::adapters::syntect::to_syntect_theme(&theme);
-    let keyword_scope = st.scopes.iter()
+    let keyword_scope = st
+        .scopes
+        .iter()
         .find(|item| {
-            item.style.foreground == Some(Color { r: 203, g: 166, b: 247, a: 255 })
+            item.style.foreground
+                == Some(Color {
+                    r: 203,
+                    g: 166,
+                    b: 247,
+                    a: 255,
+                })
         })
         .expect("should have keyword scope");
 
-    assert!(keyword_scope.style.font_style
-        .expect("should have font style")
-        .contains(FontStyle::BOLD));
+    assert_eq!(
+        keyword_scope.style.background,
+        Some(Color {
+            r: 30,
+            g: 30,
+            b: 46,
+            a: 255,
+        })
+    );
+    assert!(
+        keyword_scope
+            .style
+            .font_style
+            .expect("should have font style")
+            .contains(FontStyle::BOLD)
+    );
 }
 
 #[test]

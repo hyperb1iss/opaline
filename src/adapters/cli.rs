@@ -10,6 +10,8 @@ use crate::color::OpalineColor;
 use crate::gradient::Gradient;
 use crate::style::OpalineStyle;
 use crate::theme::Theme;
+#[cfg(feature = "gradients")]
+use unicode_segmentation::UnicodeSegmentation;
 
 // ── String coloring ─────────────────────────────────────────────────────
 
@@ -114,16 +116,16 @@ impl ThemeCliExt for Theme {
 #[cfg(feature = "gradients")]
 #[allow(clippy::cast_precision_loss, clippy::as_conversions)]
 pub fn gradient_string(text: &str, gradient: &Gradient) -> String {
-    let chars: Vec<char> = text.chars().collect();
-    if chars.is_empty() {
+    let graphemes: Vec<&str> = text.graphemes(true).collect();
+    if graphemes.is_empty() {
         return String::new();
     }
 
-    let colors = gradient.generate(chars.len());
+    let colors = gradient.generate(graphemes.len());
     let mut result = String::new();
 
-    for (ch, color) in chars.into_iter().zip(colors) {
-        let colored = ch.to_string().truecolor(color.r, color.g, color.b);
+    for (grapheme, color) in graphemes.into_iter().zip(colors) {
+        let colored = grapheme.truecolor(color.r, color.g, color.b);
         result.push_str(&colored.to_string());
     }
 

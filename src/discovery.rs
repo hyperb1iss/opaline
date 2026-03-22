@@ -2,8 +2,8 @@ use std::path::PathBuf;
 
 /// Return directories to scan for user-installed theme TOML files.
 ///
-/// Includes the opaline-specific config directory plus any app-specific
-/// directories registered via [`app_theme_dirs`].
+/// Includes the Opaline-specific config directory only.
+/// For app-specific paths as well, use [`app_theme_dirs`].
 pub fn theme_dirs() -> Vec<PathBuf> {
     let mut dirs = Vec::new();
 

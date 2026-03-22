@@ -50,7 +50,10 @@ fn all_modifiers_applied() {
 #[test]
 fn theme_owo_style() {
     let theme = Theme::builder("Test")
-        .style("keyword", OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold())
+        .style(
+            "keyword",
+            OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold(),
+        )
         .build();
 
     let style = theme.owo_style("keyword");
@@ -106,4 +109,19 @@ fn gradient_string_empty() {
     let gradient = Gradient::new(vec![OpalineColor::new(255, 0, 0)]);
     let output = opaline::adapters::owo_colors::gradient_string("", &gradient);
     assert!(output.is_empty());
+}
+
+#[cfg(feature = "gradients")]
+#[test]
+fn gradient_string_unicode_grapheme_clusters() {
+    use opaline::Gradient;
+
+    let gradient = Gradient::new(vec![
+        OpalineColor::new(255, 0, 0),
+        OpalineColor::new(0, 0, 255),
+    ]);
+
+    let output = opaline::adapters::owo_colors::gradient_string("e\u{301}🙂", &gradient);
+    assert!(output.contains("e\u{301}"));
+    assert!(output.contains("🙂"));
 }

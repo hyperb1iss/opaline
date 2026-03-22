@@ -98,11 +98,15 @@ pub use theme::{load_theme_by_name, load_theme_by_name_with};
     feature = "builtin-themes",
     feature = "discovery"
 ))]
-pub use theme::{load_theme_by_name_for_app, load_theme_by_name_for_app_with};
+pub use theme::{
+    load_theme_by_name_for_app, load_theme_by_name_for_app_with, load_theme_by_name_in_dirs,
+};
 
 // Builtins
 #[cfg(feature = "builtin-themes")]
 pub use builtins::{ThemeInfo, list_available_themes, load_by_name};
+#[cfg(all(feature = "builtin-themes", feature = "discovery"))]
+pub use builtins::{list_available_themes_for_app, list_available_themes_in_dirs};
 
 // Discovery
 #[cfg(feature = "discovery")]

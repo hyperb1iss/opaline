@@ -13,8 +13,8 @@
 //! ```
 
 use syntect::highlighting::{
-    Color, FontStyle, ScopeSelectors, StyleModifier, Theme as SyntectTheme,
-    ThemeItem, ThemeSettings,
+    Color, FontStyle, ScopeSelectors, StyleModifier, Theme as SyntectTheme, ThemeItem,
+    ThemeSettings,
 };
 
 use crate::color::OpalineColor;
@@ -151,35 +151,15 @@ fn build_scopes(theme: &Theme) -> Vec<ThemeItem> {
     for &(token, scope_str) in SCOPE_MAPPINGS {
         if let Some(color) = theme.try_color(token) {
             // Check if there's a corresponding style with modifiers
-            let style_name = token
-                .strip_prefix("code.")
-                .unwrap_or(token);
-            let font_style = theme
+            let style_name = token.strip_prefix("code.").unwrap_or(token);
+            let mut style = theme
                 .try_style(style_name)
-                .map(|s| {
-                    let mut fs = FontStyle::empty();
-                    if s.bold {
-                        fs |= FontStyle::BOLD;
-                    }
-                    if s.italic {
-                        fs |= FontStyle::ITALIC;
-                    }
-                    if s.underline {
-                        fs |= FontStyle::UNDERLINE;
-                    }
-                    fs
-                })
-                .filter(|fs| !fs.is_empty());
+                .map(StyleModifier::from)
+                .unwrap_or_default();
+            style.foreground = Some(color.into());
 
             if let Ok(scope) = scope_str.parse::<ScopeSelectors>() {
-                items.push(ThemeItem {
-                    scope,
-                    style: StyleModifier {
-                        foreground: Some(color.into()),
-                        background: None,
-                        font_style,
-                    },
-                });
+                items.push(ThemeItem { scope, style });
             }
         }
     }

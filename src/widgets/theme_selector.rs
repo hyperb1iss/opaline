@@ -30,6 +30,7 @@ use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Borders, StatefulWidget, Widget};
+use unicode_width::UnicodeWidthStr;
 
 use crate::builtins::ThemeInfo;
 use crate::names::tokens;
@@ -98,15 +99,7 @@ impl ThemeSelectorState {
         // Pre-load all themes into cache
         let theme_cache: Vec<Theme> = themes
             .iter()
-            .map(|info| {
-                crate::builtins::load_by_name(&info.name)
-                    .or_else(|| {
-                        info.path
-                            .as_ref()
-                            .and_then(|p| crate::load_from_file(p).ok())
-                    })
-                    .unwrap_or_default()
-            })
+            .map(|info| info.load().unwrap_or_default())
             .collect();
 
         let search_cache: Vec<(String, String)> = themes
@@ -164,7 +157,7 @@ impl ThemeSelectorState {
     /// Handle a key event. Returns the action taken.
     pub fn handle_key(&mut self, key: KeyEvent) -> ThemeSelectorAction {
         match key.code {
-            KeyCode::Up | KeyCode::Char('k') => {
+            KeyCode::Up => {
                 if self.filtered_indices.is_empty() {
                     return ThemeSelectorAction::Noop;
                 }
@@ -179,7 +172,7 @@ impl ThemeSelectorState {
                     ThemeSelectorAction::Noop
                 }
             }
-            KeyCode::Down | KeyCode::Char('j') => {
+            KeyCode::Down => {
                 if self.filtered_indices.is_empty() {
                     return ThemeSelectorAction::Noop;
                 }
@@ -710,16 +703,21 @@ fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
 
     let mut lines = Vec::new();
     let mut current_line = String::new();
+    let mut current_width = 0;
 
     for word in text.split_whitespace() {
+        let word_width = word.width();
         if current_line.is_empty() {
             current_line = word.to_string();
-        } else if current_line.len() + 1 + word.len() > max_width {
+            current_width = word_width;
+        } else if current_width + 1 + word_width > max_width {
             lines.push(current_line);
             current_line = word.to_string();
+            current_width = word_width;
         } else {
             current_line.push(' ');
             current_line.push_str(word);
+            current_width += 1 + word_width;
         }
     }
     if !current_line.is_empty() {
@@ -749,5 +747,11 @@ mod tests {
     fn wrap_text_single_long_word() {
         let result = wrap_text("superlongword", 5);
         assert_eq!(result, vec!["superlongword"]);
+    }
+
+    #[test]
+    fn wrap_text_uses_display_width() {
+        let result = wrap_text("é é", 3);
+        assert_eq!(result, vec!["é é"]);
     }
 }

@@ -19,11 +19,18 @@ path = "src/lib.rs"
 [features]
 default = ["builtin-themes", "gradients", "ratatui"]
 builtin-themes = []
-gradients = []
+gradients = ["dep:unicode-segmentation"]
 global-state = ["dep:parking_lot"]
 discovery = ["dep:dirs"]
 ratatui = ["dep:ratatui-core"]
-widgets = ["dep:ratatui", "dep:crossterm", "ratatui", "global-state", "builtin-themes"]
+widgets = [
+    "dep:ratatui",
+    "dep:crossterm",
+    "dep:unicode-width",
+    "ratatui",
+    "global-state",
+    "builtin-themes",
+]
 cli = ["dep:colored"]
 css = []
 crossterm = ["dep:crossterm"]
@@ -35,6 +42,8 @@ egui = ["dep:egui"]
 thiserror = "2.0"
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"
+unicode-segmentation = { version = "1.12", optional = true }
+unicode-width = { version = "0.2.2", optional = true }
 ratatui-core = { version = "0.1", optional = true }
 ratatui = { version = "0.30", optional = true, default-features = false, features = ["crossterm"] }
 crossterm = { version = "0.29", optional = true }

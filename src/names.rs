@@ -11,7 +11,7 @@
 //! let kw = theme.style(styles::KEYWORD);
 //! ```
 
-/// Semantic color token names (36 required).
+/// Semantic color token names (39 required).
 pub mod tokens {
     pub const TEXT_PRIMARY: &str = "text.primary";
     pub const TEXT_SECONDARY: &str = "text.secondary";
@@ -22,6 +22,7 @@ pub mod tokens {
     pub const BG_PANEL: &str = "bg.panel";
     pub const BG_CODE: &str = "bg.code";
     pub const BG_HIGHLIGHT: &str = "bg.highlight";
+    pub const BG_SELECTION: &str = "bg.selection";
 
     pub const ACCENT_PRIMARY: &str = "accent.primary";
     pub const ACCENT_SECONDARY: &str = "accent.secondary";
@@ -59,8 +60,6 @@ pub mod tokens {
     pub const MODE_ACTIVE: &str = "mode.active";
     pub const MODE_INACTIVE: &str = "mode.inactive";
     pub const MODE_HOVER: &str = "mode.hover";
-
-    pub const BG_SELECTION: &str = "bg.selection";
 }
 
 /// Named style constants (18 required).
