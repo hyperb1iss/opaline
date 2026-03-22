@@ -77,25 +77,11 @@ error = "red_400"
 warning = "yellow_400"
 info = "#2952cc"
 
-# Git status
-"git.staged" = "green_400"
-"git.modified" = "cyan_400"
-"git.untracked" = "yellow_400"
-"git.deleted" = "red_400"
-
-# Diff
-"diff.added" = "green_400"
-"diff.removed" = "red_400"
-"diff.hunk" = "cyan_400"
-"diff.context" = "gray_500"
-
 # UI elements
 "border.focused" = "purple_500"
 "border.unfocused" = "gray_500"
 
 # Code elements
-"code.hash" = "coral_400"
-"code.path" = "cyan_400"
 "code.keyword" = "purple_500"
 "code.function" = "cyan_400"
 "code.string" = "pink_400"
@@ -104,11 +90,6 @@ info = "#2952cc"
 "code.type" = "yellow_400"
 "code.line_number" = "gray_500"
 
-# Mode tabs
-"mode.active" = "purple_500"
-"mode.inactive" = "gray_500"
-"mode.hover" = "cyan_400"
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # Styles — Composed styles with modifiers
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -116,13 +97,6 @@ info = "#2952cc"
 [styles]
 # Keywords and importance
 keyword = { fg = "accent.primary", bold = true }
-
-# File paths
-file_path = { fg = "code.path" }
-file_path_bold = { fg = "code.path", bold = true }
-
-# Commit hashes
-commit_hash = { fg = "code.hash" }
 
 # Line numbers
 line_number = { fg = "code.line_number" }
@@ -150,27 +124,6 @@ muted = { fg = "text.muted" }
 
 # Inline code
 inline_code = { fg = "purple_500", bg = "bg.code" }
-
-# Mode tabs
-mode_active = { fg = "mode.active", bold = true }
-mode_inactive = { fg = "mode.inactive" }
-mode_hover = { fg = "mode.hover" }
-
-# Git status styles
-git_staged = { fg = "git.staged" }
-git_modified = { fg = "git.modified" }
-git_untracked = { fg = "git.untracked" }
-git_deleted = { fg = "git.deleted" }
-
-# Diff styles
-diff_added = { fg = "diff.added" }
-diff_removed = { fg = "diff.removed" }
-diff_hunk = { fg = "diff.hunk" }
-diff_context = { fg = "diff.context" }
-
-# Author and timestamp
-author = { fg = "text.primary" }
-timestamp = { fg = "warning" }
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Gradients — Color transitions

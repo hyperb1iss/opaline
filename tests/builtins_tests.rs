@@ -144,6 +144,41 @@ const REQUIRED_STYLES: &[&str] = &[
     "inline_code",
 ];
 
+const FORBIDDEN_LEGACY_TOKENS: &[&str] = &[
+    "git.staged",
+    "git.modified",
+    "git.untracked",
+    "git.deleted",
+    "diff.added",
+    "diff.removed",
+    "diff.hunk",
+    "diff.context",
+    "code.hash",
+    "code.path",
+    "mode.active",
+    "mode.inactive",
+    "mode.hover",
+];
+
+const FORBIDDEN_LEGACY_STYLES: &[&str] = &[
+    "file_path",
+    "file_path_bold",
+    "commit_hash",
+    "mode_active",
+    "mode_inactive",
+    "mode_hover",
+    "git_staged",
+    "git_modified",
+    "git_untracked",
+    "git_deleted",
+    "diff_added",
+    "diff_removed",
+    "diff_hunk",
+    "diff_context",
+    "author",
+    "timestamp",
+];
+
 #[test]
 fn all_builtins_have_required_styles() {
     for &(id, _) in builtins::builtin_names() {
@@ -152,6 +187,27 @@ fn all_builtins_have_required_styles() {
             assert!(
                 theme.has_style(style),
                 "theme '{id}' missing required style: {style}"
+            );
+        }
+    }
+}
+
+#[test]
+fn builtins_do_not_embed_legacy_app_tokens_or_styles() {
+    for &(id, _) in builtins::builtin_names() {
+        let theme = builtins::load_by_name(id).expect("loads");
+
+        for &token in FORBIDDEN_LEGACY_TOKENS {
+            assert!(
+                !theme.has_token(token),
+                "theme '{id}' should not embed legacy app token: {token}"
+            );
+        }
+
+        for &style in FORBIDDEN_LEGACY_STYLES {
+            assert!(
+                !theme.has_style(style),
+                "theme '{id}' should not embed legacy app style: {style}"
             );
         }
     }
@@ -371,6 +427,69 @@ accent = "#abcdef"
 
     let _ = fs::remove_file(base_dir.join("dracula.toml"));
     let _ = fs::remove_file(app_dir.join("opaline-local.toml"));
+
+    opaline::set_theme((*previous).clone());
+}
+
+#[cfg(all(
+    feature = "builtin-themes",
+    feature = "discovery",
+    feature = "global-state"
+))]
+#[test]
+fn later_discovery_dirs_override_earlier_ones() {
+    let _guard = global_lock();
+    let previous = opaline::current();
+    let unique = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .expect("time went backwards")
+        .as_nanos();
+    let temp_root = std::env::temp_dir().join(format!("opaline-precedence-{unique}"));
+    let base_dir = temp_root.join("opaline").join("themes");
+    let app_dir = temp_root.join("opaline-local").join("themes");
+
+    fs::create_dir_all(&base_dir).expect("create base theme dir");
+    fs::create_dir_all(&app_dir).expect("create app theme dir");
+
+    fs::write(
+        base_dir.join("shared.toml"),
+        r##"
+[meta]
+name = "Base Shared"
+variant = "dark"
+
+[palette]
+accent = "#010203"
+"##,
+    )
+    .expect("write base theme");
+
+    fs::write(
+        app_dir.join("shared.toml"),
+        r##"
+[meta]
+name = "App Shared"
+variant = "light"
+
+[palette]
+accent = "#abcdef"
+"##,
+    )
+    .expect("write app theme");
+
+    opaline::load_theme_by_name_in_dirs("shared", [base_dir.clone(), app_dir.clone()])
+        .expect("later theme loads");
+    assert_eq!(opaline::current().meta.name, "App Shared");
+
+    let listed = builtins::list_available_themes_in_dirs([base_dir.clone(), app_dir.clone()]);
+    let shared = listed
+        .iter()
+        .find(|theme| theme.name == "shared")
+        .expect("shared theme present");
+    assert_eq!(shared.display_name, "App Shared");
+
+    let _ = fs::remove_file(base_dir.join("shared.toml"));
+    let _ = fs::remove_file(app_dir.join("shared.toml"));
 
     opaline::set_theme((*previous).clone());
 }

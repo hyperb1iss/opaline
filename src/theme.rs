@@ -341,7 +341,9 @@ mod global {
             }
         }
 
-        matched_path.map_or(Ok(None), |path| crate::loader::load_from_file(&path).map(Some))
+        matched_path.map_or(Ok(None), |path| {
+            crate::loader::load_from_file(&path).map(Some)
+        })
     }
 
     static ACTIVE_THEME: LazyLock<RwLock<Arc<Theme>>> =

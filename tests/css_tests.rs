@@ -25,7 +25,10 @@ fn css_classes_from_styles() {
                 .bold()
                 .italic(),
         )
-        .style("status_badge", OpalineStyle::fg(OpalineColor::new(80, 250, 123)))
+        .style(
+            "status_badge",
+            OpalineStyle::fg(OpalineColor::new(80, 250, 123)),
+        )
         .build();
 
     let css = opaline::generate_css_classes(&theme);
