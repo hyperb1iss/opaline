@@ -4,13 +4,13 @@ version = "0.2.0"
 edition = "2024"
 rust-version = "1.85"
 authors = ["Stefanie Jane <stef@hyperbliss.tech>"]
-description = "A token-based theme engine for Ratatui TUI applications"
+description = "A token-based theme engine for Rust applications"
 readme = "README.md"
 homepage = "https://github.com/hyperb1iss/opaline"
 repository = "https://github.com/hyperb1iss/opaline"
 license = "MIT"
-keywords = ["ratatui", "theme", "tui", "terminal", "color"]
-categories = ["command-line-interface", "config"]
+keywords = ["theme", "color", "tui", "terminal", "egui"]
+categories = ["command-line-interface", "config", "gui"]
 
 [lib]
 name = "opaline"
