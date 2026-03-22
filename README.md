@@ -311,6 +311,13 @@ cargo run --example theme-showcase         # Interactive TUI demo
 
 Requires **Rust 1.85+** (Edition 2024). `unsafe_code = "forbid"`, `clippy::pedantic` deny.
 
+## 🚀 Used By
+
+| Project | Description |
+| --- | --- |
+| [**git-iris**](https://github.com/hyperb1iss/git-iris) | AI-powered Git workflow assistant with Iris Studio TUI |
+| [**unifly**](https://github.com/hyperb1iss/unifi-cli) | CLI + TUI for UniFi network management |
+
 ## 🤝 Contributing
 
 Contributions welcome! Adding a new builtin theme is as easy as dropping a `.toml` file in `src/builtins/` — it's auto-discovered at compile time. Run `cargo test --all-features` to validate against the contract test suite.
