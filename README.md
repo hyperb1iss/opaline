@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>A token-based theme engine for Rust applications</strong><br>
-  <sub>20 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; ratatui &middot; egui &middot; crossterm &middot; syntect &middot; CSS</sub>
+  <sub>39 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; ratatui &middot; egui &middot; crossterm &middot; syntect &middot; CSS</sub>
 </p>
 
 <p align="center">
@@ -20,7 +20,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/hyperb1iss/opaline/ci.yml?style=for-the-badge&logo=github-actions&logoColor=white&color=4C566A" alt="CI">
   </a>
   <a href="#-builtin-themes">
-    <img src="https://img.shields.io/badge/Themes-20_Built--in-ff6ac1?style=for-the-badge&logo=palette&logoColor=white" alt="20 Themes">
+    <img src="https://img.shields.io/badge/Themes-39_Built--in-ff6ac1?style=for-the-badge&logo=palette&logoColor=white" alt="39 Themes">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-50fa7b?style=for-the-badge&logoColor=white" alt="License">
@@ -45,7 +45,7 @@
   <img src="https://raw.githubusercontent.com/hyperb1iss/opaline/main/docs/images/showcase-silkcircuit-dawn.png" alt="SilkCircuit Dawn" width="49%">
 </div>
 
-<p align="center"><em>SilkCircuit Neon (dark) and SilkCircuit Dawn (light) — two of 20 builtin themes</em></p>
+<p align="center"><em>SilkCircuit Neon (dark) and SilkCircuit Dawn (light) — two of 39 builtin themes</em></p>
 
 ---
 
@@ -59,13 +59,13 @@ Opaline ships adapters for **ratatui**, **egui**, **crossterm**, **owo-colors**,
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
 ```
 
-Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme families, all enforced by a strict contract test suite that validates 39 semantic tokens, 18 styles, and 5 gradients per theme.
+Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme families, all enforced by a strict contract test suite that validates 39 semantic tokens, 18 styles, and 5 gradients per theme.
 
 ## ✦ Features
 
 | Feature | Description |
 | --- | --- |
-| 🎨 **20 Builtin Themes** | SilkCircuit, Catppuccin, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark |
+| 🎨 **39 Builtin Themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark/Light |
 | 🔗 **Semantic Tokens** | 39 tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
@@ -113,7 +113,7 @@ let span = theme.span("file_path", "src/main.rs"); // styled Span
 cargo run --example theme-showcase
 ```
 
-Browse all 20 themes, see every style and gradient rendered in real-time.
+Browse all 39 themes, see every style and gradient rendered in real-time.
 
 ## 🎨 Builtin Themes
 
@@ -130,14 +130,22 @@ Browse all 20 themes, see every style and gradient rendered in real-time.
 | Family | Variants | Character |
 | --- | --- | --- |
 | **SilkCircuit** | Neon, Soft, Glow, Vibrant, Dawn | Electric meets elegant — the signature design language |
-| **Catppuccin** | Mocha, Latte | Soothing pastels for dark and light |
+| **Catppuccin** | Mocha, Macchiato, Frappé, Latte | Soothing pastels across four flavors |
+| **GitHub** | Dark Dimmed, Light | Clean, familiar, institutional |
+| **Monokai Pro** | Classic | The iconic warm vivid syntax palette |
+| **Ayu** | Dark, Mirage, Light | Calm, modern, bright across three modes |
+| **Night Owl** | Dark, Light | Accessibility-designed deep blue |
+| **Flexoki** | Dark, Light | Ink-on-paper aesthetic, Oklab-designed |
+| **Palenight** | — | Soft purple-blue pastel sci-fi |
 | **Rose Pine** | Base, Moon, Dawn | Botanical elegance across three variants |
 | **Everforest** | Dark, Light | Warm green forest tones |
-| **Tokyo Night** | Default, Storm | Neo-Tokyo neon aesthetic |
+| **Tokyo Night** | Default, Storm, Moon | Neo-Tokyo neon aesthetic |
+| **Kanagawa** | Wave, Dragon, Lotus | The great wave — dark, darker, light |
 | **Dracula** | — | The classic dark syntax theme |
 | **Nord** | — | Arctic, north-bluish clean |
-| **Gruvbox** | Dark | Retro groove with warm contrast |
-| **One Dark** | — | Atom's iconic syntax palette |
+| **Gruvbox** | Dark, Light | Retro groove with warm contrast |
+| **Solarized** | Dark, Light | Precision colors for machines and people |
+| **One** | Dark, Light | Atom's iconic syntax palette |
 | **Solarized** | Light | Precision colors for machines and people |
 | **Kanagawa** | Wave | The great wave off Kanagawa |
 
