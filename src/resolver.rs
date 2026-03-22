@@ -129,20 +129,17 @@ fn resolve_token(
     Ok(color)
 }
 
-/// Resolve a color reference from the combined token + palette namespace.
-/// Lookup order: hex literal → tokens → palette → `None`.
-fn resolve_color_ref(
+/// Resolve a named color reference from the combined token + palette namespace.
+/// Lookup order: tokens → palette → `None`.
+fn resolve_named_color_ref(
     reference: &str,
     palette: &HashMap<String, OpalineColor>,
     tokens: &HashMap<String, OpalineColor>,
 ) -> Option<OpalineColor> {
-    if reference.starts_with('#') {
-        OpalineColor::from_hex(reference).ok()
-    } else if let Some(&color) = tokens.get(reference) {
-        Some(color)
-    } else {
-        palette.get(reference).copied()
-    }
+    tokens
+        .get(reference)
+        .copied()
+        .or_else(|| palette.get(reference).copied())
 }
 
 /// Pass 3: Resolve style definitions into concrete `OpalineStyle` values.
@@ -154,26 +151,39 @@ fn resolve_styles(
     let mut styles = HashMap::with_capacity(raw.len());
 
     for (name, def) in raw {
-        let fg = def
-            .fg
-            .as_ref()
-            .map(|r| {
-                resolve_color_ref(r, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+        let fg = def.fg.as_ref().map(|r| {
+            if r.starts_with('#') {
+                OpalineColor::from_hex(r).map_err(|source| OpalineError::InvalidColor {
                     token: format!("{name}.fg"),
-                    reference: r.clone(),
+                    source,
                 })
-            })
-            .transpose()?;
-        let bg = def
-            .bg
-            .as_ref()
-            .map(|r| {
-                resolve_color_ref(r, palette, tokens).ok_or_else(|| OpalineError::UnresolvedToken {
+            } else {
+                resolve_named_color_ref(r, palette, tokens).ok_or_else(|| {
+                    OpalineError::UnresolvedToken {
+                        token: format!("{name}.fg"),
+                        reference: r.clone(),
+                    }
+                })
+            }
+        });
+        let fg = fg.transpose()?;
+
+        let bg = def.bg.as_ref().map(|r| {
+            if r.starts_with('#') {
+                OpalineColor::from_hex(r).map_err(|source| OpalineError::InvalidColor {
                     token: format!("{name}.bg"),
-                    reference: r.clone(),
+                    source,
                 })
-            })
-            .transpose()?;
+            } else {
+                resolve_named_color_ref(r, palette, tokens).ok_or_else(|| {
+                    OpalineError::UnresolvedToken {
+                        token: format!("{name}.bg"),
+                        reference: r.clone(),
+                    }
+                })
+            }
+        });
+        let bg = bg.transpose()?;
 
         styles.insert(
             name.clone(),
@@ -206,20 +216,29 @@ fn resolve_gradients(
     let mut gradients = HashMap::with_capacity(raw.len());
 
     for (name, stops) in raw {
+        if stops.is_empty() {
+            return Err(OpalineError::EmptyGradient);
+        }
+
         let mut colors = Vec::with_capacity(stops.len());
         for (i, stop) in stops.iter().enumerate() {
-            let color = resolve_color_ref(stop, palette, tokens).ok_or_else(|| {
-                OpalineError::UnresolvedToken {
+            let color = if stop.starts_with('#') {
+                OpalineColor::from_hex(stop).map_err(|source| OpalineError::InvalidColor {
                     token: format!("{name}[{i}]"),
-                    reference: stop.clone(),
-                }
-            })?;
+                    source,
+                })?
+            } else {
+                resolve_named_color_ref(stop, palette, tokens).ok_or_else(|| {
+                    OpalineError::UnresolvedToken {
+                        token: format!("{name}[{i}]"),
+                        reference: stop.clone(),
+                    }
+                })?
+            };
             colors.push(color);
         }
 
-        if !colors.is_empty() {
-            gradients.insert(name.clone(), Gradient::new(colors));
-        }
+        gradients.insert(name.clone(), Gradient::new(colors));
     }
 
     Ok(gradients)

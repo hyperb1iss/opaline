@@ -142,6 +142,21 @@ fn style_resolves_fg_bg() {
 }
 
 #[test]
+fn style_invalid_hex_returns_invalid_color() {
+    let mut tf = minimal_theme_file();
+    tf.styles.insert(
+        "highlight".to_string(),
+        StyleDef {
+            fg: Some("#zzzzzz".to_string()),
+            ..StyleDef::default()
+        },
+    );
+
+    let err = opaline::resolver::resolve(&tf).expect_err("should fail");
+    assert!(matches!(err, OpalineError::InvalidColor { .. }));
+}
+
+#[test]
 fn gradient_resolves_stops() {
     let mut tf = minimal_theme_file();
     tf.palette.insert("red".to_string(), "#ff0000".to_string());
@@ -156,6 +171,27 @@ fn gradient_resolves_stops() {
     assert_eq!(grad.len(), 2);
     assert_eq!(grad.at(0.0), OpalineColor::new(255, 0, 0));
     assert_eq!(grad.at(1.0), OpalineColor::new(0, 0, 255));
+}
+
+#[test]
+fn gradient_invalid_hex_returns_invalid_color() {
+    let mut tf = minimal_theme_file();
+    tf.gradients.insert(
+        "broken".to_string(),
+        vec!["#zzzzzz".to_string(), "#0000ff".to_string()],
+    );
+
+    let err = opaline::resolver::resolve(&tf).expect_err("should fail");
+    assert!(matches!(err, OpalineError::InvalidColor { .. }));
+}
+
+#[test]
+fn empty_gradient_returns_error() {
+    let mut tf = minimal_theme_file();
+    tf.gradients.insert("empty".to_string(), vec![]);
+
+    let err = opaline::resolver::resolve(&tf).expect_err("should fail");
+    assert!(matches!(err, OpalineError::EmptyGradient));
 }
 
 #[test]

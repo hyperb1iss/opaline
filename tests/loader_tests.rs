@@ -139,3 +139,57 @@ variant = "light"
     assert!(theme.is_light());
     assert!(!theme.is_dark());
 }
+
+#[test]
+fn empty_gradient_array_returns_error() {
+    let toml = r#"
+[meta]
+name = "Empty Gradient"
+
+[gradients]
+primary = []
+"#;
+
+    let err = loader::load_from_str(toml, None).expect_err("should fail");
+    assert!(matches!(err, OpalineError::EmptyGradient));
+}
+
+#[test]
+fn unknown_top_level_field_is_rejected() {
+    let toml = r#"
+oops = "nope"
+
+[meta]
+name = "Unknown Top Level"
+"#;
+
+    let err = loader::load_from_str(toml, None).expect_err("should fail");
+    assert!(matches!(err, OpalineError::Parse { .. }));
+}
+
+#[test]
+fn unknown_meta_field_is_rejected() {
+    let toml = r#"
+[meta]
+name = "Unknown Meta"
+variant = "dark"
+unexpected = "nope"
+"#;
+
+    let err = loader::load_from_str(toml, None).expect_err("should fail");
+    assert!(matches!(err, OpalineError::Parse { .. }));
+}
+
+#[test]
+fn unknown_style_field_is_rejected() {
+    let toml = r#"
+[meta]
+name = "Unknown Style"
+
+[styles]
+keyword = { fg = "accent.primary", bold = true, unexpected = true }
+"#;
+
+    let err = loader::load_from_str(toml, None).expect_err("should fail");
+    assert!(matches!(err, OpalineError::Parse { .. }));
+}

@@ -1,12 +1,13 @@
 use crate::color::OpalineColor;
 use crate::error::OpalineError;
+use serde::de::Deserializer;
 
 /// A multi-stop color gradient for smooth transitions.
 ///
 /// Gradients interpolate between two or more color stops. Use `at(t)` to sample
 /// a color at any point along the gradient, or `generate(n)` to produce a
 /// sequence of evenly-spaced colors.
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize)]
 pub struct Gradient {
     stops: Vec<OpalineColor>,
 }
@@ -88,5 +89,21 @@ impl Default for Gradient {
         Self {
             stops: vec![OpalineColor::FALLBACK],
         }
+    }
+}
+
+impl<'de> serde::Deserialize<'de> for Gradient {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(serde::Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct GradientRepr {
+            stops: Vec<OpalineColor>,
+        }
+
+        let GradientRepr { stops } = GradientRepr::deserialize(deserializer)?;
+        Self::try_new(stops).map_err(serde::de::Error::custom)
     }
 }

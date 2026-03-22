@@ -120,3 +120,8 @@ fn default_is_single_fallback() {
 fn empty_stops_panics() {
     Gradient::new(vec![]);
 }
+
+#[test]
+fn empty_gradient_deserialization_fails() {
+    assert!(serde_json::from_str::<Gradient>(r#"{"stops":[]}"#).is_err());
+}

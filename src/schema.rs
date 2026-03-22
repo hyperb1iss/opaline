@@ -5,6 +5,7 @@ use serde::Deserialize;
 
 /// Top-level structure of a `.toml` theme file.
 #[derive(Debug, Clone, Deserialize, serde::Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ThemeFile {
     pub meta: ThemeMeta,
 
@@ -27,6 +28,7 @@ pub struct ThemeFile {
 
 /// Theme metadata from the `[meta]` section.
 #[derive(Debug, Clone, Deserialize, serde::Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ThemeMeta {
     pub name: String,
 
@@ -80,6 +82,7 @@ impl fmt::Display for ThemeVariant {
 /// during theme loading.
 #[allow(clippy::struct_excessive_bools)]
 #[derive(Debug, Clone, Default, Deserialize, serde::Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct StyleDef {
     pub fg: Option<String>,
     pub bg: Option<String>,
