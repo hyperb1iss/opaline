@@ -1,6 +1,6 @@
 # Opaline
 
-A token-based theme engine for Ratatui TUI applications.
+A token-based theme engine for Rust applications.
 
 ## Architecture
 
@@ -29,6 +29,11 @@ src/
     mod.rs
     ratatui.rs        # From impls, inherent span/line/text/gradient_text, gradient helpers
     cli.rs            # colored crate: ColoredExt, ThemeCliExt, gradient_string()
+    crossterm.rs      # Direct crossterm: Color, ContentStyle, gradient helpers
+    owo_colors.rs     # owo-colors: Style conversion, OwoThemeExt, gradient_string()
+    css.rs            # CSS custom properties + classes from tokens/styles/gradients
+    syntect.rs        # Syntax highlighting: Theme/Color/StyleModifier generation
+    egui.rs           # Immediate-mode GUI: Color32, Visuals from theme tokens
 build.rs              # Compile-time theme auto-discovery and codegen
 tests/
   color_tests.rs      # Hex parsing, lerp, Display, FromStr
@@ -38,6 +43,11 @@ tests/
   loader_tests.rs     # TOML loading, error paths
   builtins_tests.rs   # Theme validation, token/style/gradient contracts (20 themes)
   adapter_tests.rs    # Ratatui From impls, inherent methods, Styled trait, all modifiers
+  crossterm_tests.rs  # Crossterm Color, ContentStyle, gradient helpers
+  owo_colors_tests.rs # owo-colors Style, OwoThemeExt, gradient_string
+  css_tests.rs        # CSS vars, classes, gradients, stylesheet
+  syntect_tests.rs    # Color, StyleModifier, Theme generation
+  egui_tests.rs       # Color32, Visuals, widget visuals, selection
 docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```
 
@@ -46,7 +56,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (135 tests)
+cargo test --all-features                 # Full test suite (181 tests)
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -60,6 +70,11 @@ cd docs && pnpm build                     # Build docs for deployment
 | `gradients` | yes | Multi-stop gradient support |
 | `ratatui` | yes | From impls for ratatui types |
 | `cli` | no | colored crate adapter for ANSI terminal output |
+| `crossterm` | no | Direct crossterm Color/ContentStyle adapter |
+| `owo-colors` | no | owo-colors zero-allocation terminal adapter |
+| `css` | no | CSS custom properties + classes generation |
+| `syntect` | no | Syntax highlighting theme generation |
+| `egui` | no | egui Visuals/Color32 adapter |
 | `global-state` | no | Process-wide current()/set_theme() |
 | `discovery` | no | Load user themes from ~/.config/ |
 | `widgets` | no | Theme selector widget with live preview |
@@ -74,12 +89,18 @@ cd docs && pnpm build                     # Build docs for deployment
 - `ThemeInfo` — Metadata for theme discovery and picker UIs
 - `OpalineError` — All error variants (IO, Parse, InvalidColor, CircularReference, etc.)
 
-## Builtin Themes (20)
+## Builtin Themes (39)
 
-SilkCircuit (Neon, Soft, Glow, Vibrant, Dawn), Catppuccin (Mocha, Latte),
-Dracula, Nord, Tokyo Night, Tokyo Night Storm, Gruvbox Dark, One Dark,
-Solarized Light, Rose Pine, Rose Pine Moon, Rose Pine Dawn,
-Kanagawa Wave, Everforest Dark, Everforest Light
+SilkCircuit (Neon, Soft, Glow, Vibrant, Dawn),
+Catppuccin (Mocha, Macchiato, Frappé, Latte),
+GitHub (Dark Dimmed, Light), Monokai Pro,
+Ayu (Dark, Mirage, Light), Night Owl (Dark, Light),
+Flexoki (Dark, Light), Palenight,
+Rose Pine (Base, Moon, Dawn), Everforest (Dark, Light),
+Tokyo Night (Default, Storm, Moon),
+Kanagawa (Wave, Dragon, Lotus),
+Dracula, Nord, Gruvbox (Dark, Light),
+Solarized (Dark, Light), One (Dark, Light)
 
 ## Conventions
 
