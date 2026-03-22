@@ -21,7 +21,7 @@ src/
   discovery.rs        # User theme directory scanning (app-specific)
   builtins/
     mod.rs            # Auto-generated registry via build.rs
-    *.toml            # 20 builtin theme files (auto-discovered at compile time)
+    *.toml            # 39 builtin theme files (auto-discovered at compile time)
   widgets/
     mod.rs
     theme_selector.rs # ThemeSelector stateful widget with live preview + search
@@ -41,7 +41,8 @@ tests/
   gradient_tests.rs   # Interpolation, generate, edge cases
   resolver_tests.rs   # Pipeline, cycle detection, strict error paths
   loader_tests.rs     # TOML loading, error paths
-  builtins_tests.rs   # Theme validation, token/style/gradient contracts (20 themes)
+  builtins_tests.rs   # Theme validation, token/style/gradient contracts (39 themes)
+  export_tests.rs     # TOML export round-trip, save_to_file
   adapter_tests.rs    # Ratatui From impls, inherent methods, Styled trait, all modifiers
   crossterm_tests.rs  # Crossterm Color, ContentStyle, gradient helpers
   owo_colors_tests.rs # owo-colors Style, OwoThemeExt, gradient_string
@@ -56,7 +57,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (181 tests)
+cargo test --all-features                 # Full test suite (203 tests)
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -66,7 +67,7 @@ cd docs && pnpm build                     # Build docs for deployment
 
 | Feature | Default | Description |
 |---------|---------|-------------|
-| `builtin-themes` | yes | 20 embedded TOML themes via include_str! |
+| `builtin-themes` | yes | 39 embedded TOML themes via include_str! |
 | `gradients` | yes | Multi-stop gradient support |
 | `ratatui` | yes | From impls for ratatui types |
 | `cli` | no | colored crate adapter for ANSI terminal output |
@@ -114,11 +115,14 @@ Solarized (Dark, Light), One (Dark, Light)
 
 ## Token Contract
 
-Every builtin theme must define 40+ semantic tokens across these namespaces:
-`text.*`, `bg.*`, `accent.*`, `success/error/warning/info`, `git.*`, `diff.*`,
-`border.*`, `code.*`, `mode.*`, `chat.*`
+Every builtin theme must define 26 core semantic tokens across these namespaces:
+`text.*`, `bg.*`, `accent.*`, `success/error/warning/info`,
+`border.*`, `code.*`
 
-Plus 18 required styles, 5 required gradients — enforced by contract tests.
+Plus 13 required styles, 5 required gradients — enforced by contract tests.
+
+App-specific semantics (git status, diff, mode indicators) are derived
+by consuming apps via `register_default_token()`, not baked into the core.
 
 ## Adding a Builtin Theme
 
