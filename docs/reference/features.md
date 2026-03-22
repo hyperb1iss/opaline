@@ -4,7 +4,7 @@ Opaline uses Cargo feature flags to keep the dependency tree lean. Enable only w
 
 ## Default Features
 
-These are enabled by default with `opaline = "0.1"`:
+These are enabled by default with `opaline = "0.2"`:
 
 | Feature | Description | Dependencies |
 |---------|-------------|--------------|
@@ -19,6 +19,11 @@ These must be explicitly enabled:
 | Feature | Description | Dependencies |
 |---------|-------------|--------------|
 | `cli` | `colored` crate adapter — `ThemeCliExt`, `ColoredExt`, `gradient_string` | `colored 3` |
+| `crossterm` | Direct crossterm adapter — `Color`, `ContentStyle`, gradient helpers | `crossterm 0.29` |
+| `owo-colors` | Zero-allocation terminal coloring — `Style` conversion, `OwoThemeExt` | `owo-colors 4` |
+| `css` | CSS custom properties + classes generation from tokens/styles/gradients | None |
+| `syntect` | Syntax highlighting theme generation — `Color`, `StyleModifier`, `Theme` | `syntect 5` |
+| `egui` | Immediate-mode GUI adapter — `Color32`, `Visuals` from theme tokens | `egui 0.33` |
 | `global-state` | Process-wide theme singleton — `current()`, `set_theme()` | `parking_lot 0.12` |
 | `discovery` | User theme directory scanning — `app_theme_dirs()`, `theme_dirs()` | `dirs 6` |
 | `widgets` | Theme selector widget with live preview | `ratatui 0.30`, `crossterm 0.29` (enables `global-state` + `builtin-themes`) |
@@ -28,7 +33,7 @@ These must be explicitly enabled:
 ```toml
 # Default — builtins + gradients + ratatui
 [dependencies]
-opaline = "0.1"
+opaline = "0.2"
 
 # Minimal — just the core engine, no builtins or adapters
 [dependencies]
@@ -40,25 +45,47 @@ opaline = { version = "0.1", default-features = false, features = ["gradients"] 
 
 # CLI tool (colored output, no TUI)
 [dependencies]
-opaline = { version = "0.1", features = ["cli"] }
+opaline = { version = "0.2", features = ["cli"] }
+
+# Direct crossterm styling
+[dependencies]
+opaline = { version = "0.2", features = ["crossterm"] }
+
+# Zero-allocation terminal coloring
+[dependencies]
+opaline = { version = "0.2", features = ["owo-colors"] }
+
+# CSS generation for web frameworks (Leptos, Yew, Dioxus, Tauri)
+[dependencies]
+opaline = { version = "0.2", features = ["css"] }
+
+# Syntax highlighting theme generation
+[dependencies]
+opaline = { version = "0.2", features = ["syntect"] }
+
+# egui GUI theming
+[dependencies]
+opaline = { version = "0.2", features = ["egui"] }
 
 # Full TUI app with global state
 [dependencies]
-opaline = { version = "0.1", features = ["global-state"] }
+opaline = { version = "0.2", features = ["global-state"] }
 
 # User-configurable themes
 [dependencies]
-opaline = { version = "0.1", features = ["discovery"] }
+opaline = { version = "0.2", features = ["discovery"] }
 
 # TUI app with theme picker widget
 [dependencies]
-opaline = { version = "0.1", features = ["widgets"] }
+opaline = { version = "0.2", features = ["widgets"] }
 
 # Everything
 [dependencies]
-opaline = { version = "0.1", features = [
+opaline = { version = "0.2", features = [
     "builtin-themes", "gradients", "ratatui",
-    "cli", "global-state", "discovery", "widgets"
+    "cli", "crossterm", "owo-colors", "css",
+    "syntect", "egui",
+    "global-state", "discovery", "widgets"
 ] }
 ```
 
@@ -69,7 +96,10 @@ Some features gate additional API when combined:
 | Combination | Unlocks |
 |-------------|---------|
 | `ratatui` + `gradients` | `theme.gradient_text()`, `gradient_spans()`, `gradient_line()`, `gradient_bar()`, `gradient_text_line()` |
-| `cli` + `gradients` | `gradient_string()` |
+| `cli` + `gradients` | `gradient_string()` (colored crate) |
+| `crossterm` + `gradients` | `gradient_styled()`, `gradient_bar()` |
+| `owo-colors` + `gradients` | `gradient_string()` (owo-colors) |
+| `css` + `gradients` | Gradient CSS custom properties as `linear-gradient()` |
 | `global-state` + `builtin-themes` | `load_theme_by_name()`, `load_theme_by_name_with()` |
 
 | `global-state` + `builtin-themes` + `discovery` | `load_theme_by_name_for_app()`, `load_theme_by_name_for_app_with()` |

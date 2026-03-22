@@ -5,8 +5,8 @@
 </h1>
 
 <p align="center">
-  <strong>A token-based theme engine for Ratatui TUI applications</strong><br>
-  <sub>20 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; zero unsafe</sub>
+  <strong>A token-based theme engine for Rust applications</strong><br>
+  <sub>20 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; ratatui &middot; egui &middot; crossterm &middot; syntect &middot; CSS</sub>
 </p>
 
 <p align="center">
@@ -51,7 +51,9 @@
 
 ## 💜 What is Opaline?
 
-Opaline is a **theme engine** that brings consistent, beautiful color to [Ratatui](https://ratatui.rs) terminal applications. Instead of scattering hex codes across your codebase, you define themes as TOML files with a **palette → token → style → gradient** resolution pipeline. Switch themes at runtime with a single call — every widget updates instantly.
+Opaline is a **theme engine** that brings consistent, beautiful color to Rust applications. Instead of scattering hex codes across your codebase, you define themes as TOML files with a **palette → token → style → gradient** resolution pipeline. Switch themes at runtime with a single call — every widget updates instantly.
+
+Opaline ships adapters for **ratatui**, **egui**, **crossterm**, **owo-colors**, **syntect**, and **CSS** — one theme definition, every rendering target.
 
 ```
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
@@ -67,6 +69,11 @@ Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme f
 | 🔗 **Semantic Tokens** | 40+ tokens across `text.*`, `bg.*`, `accent.*`, `git.*`, `diff.*`, `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
+| 🎮 **egui Integration** | `Color32` conversion, full `Visuals` generation from theme tokens |
+| ⌨️ **Crossterm Adapter** | Direct `Color`/`ContentStyle` conversion with gradient rendering |
+| 🌈 **owo-colors Adapter** | Zero-allocation terminal coloring with `Style` conversion |
+| 🖌️ **Syntax Highlighting** | Generate [syntect](https://crates.io/crates/syntect) themes — powers bat, delta, and more |
+| 🌐 **CSS Generation** | Custom properties + classes for web frameworks (Leptos, Yew, Dioxus, Tauri) |
 | 🎛️ **ThemeSelector Widget** | Drop-in theme picker with live preview, search filtering, and cancel/restore |
 | 🔬 **Color Manipulation** | `darken()`, `lighten()`, `desaturate()` for deriving colors from theme palettes |
 | 🏗️ **ThemeBuilder** | Programmatic theme construction without TOML — perfect for runtime customization |
@@ -74,7 +81,7 @@ Opaline ships with **20 professionally crafted themes** spanning 8 colorscheme f
 | 🔍 **Theme Discovery** | Scan `~/.config/` for user themes, list metadata for picker UIs |
 | 🌐 **Global State** | Optional process-wide `current()`/`set_theme()` behind a feature flag |
 | 🛡️ **Strict Resolution** | Cycle detection, unresolvable token errors, compile-time theme validation |
-| 🖨️ **CLI Adapter** | `colored` crate integration for ANSI terminal output outside of Ratatui |
+| 🖨️ **CLI Adapter** | `colored` crate integration for ANSI terminal output |
 | ⚡ **Zero Cost Builtins** | Themes embedded via `include_str!` at compile time — no file I/O at runtime |
 
 ## ⚡ Quick Start
@@ -251,6 +258,11 @@ The resolver validates everything at load time — circular references, missing 
 | `gradients` | ✓ | Multi-stop gradient interpolation |
 | `ratatui` | ✓ | `From` impls, inherent `span()`/`line()`/`text()`/`gradient_text()` |
 | `cli` | — | `colored` crate adapter for ANSI output |
+| `crossterm` | — | Direct crossterm `Color`/`ContentStyle` adapter |
+| `owo-colors` | — | Zero-allocation terminal coloring |
+| `css` | — | CSS custom properties + classes generation |
+| `syntect` | — | Syntax highlighting theme generation |
+| `egui` | — | egui `Visuals`/`Color32` adapter |
 | `global-state` | — | Process-wide `current()`/`set_theme()` |
 | `discovery` | — | Load user themes from `~/.config/` |
 | `widgets` | — | Theme selector widget with live preview |
@@ -286,7 +298,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 ```bash
 cargo check                               # Fast type check
 cargo clippy --all-targets --all-features  # Pedantic lint gate
-cargo test --all-features                  # Full test suite (135 tests)
+cargo test --all-features                  # Full test suite (181 tests)
 cargo doc --all-features --open            # Generate docs
 cargo run --example theme-showcase         # Interactive TUI demo
 ```

@@ -6,18 +6,18 @@ export default defineConfig({
     plugins: [llmstxt()],
   },
   title: 'Opaline',
-  description: 'A token-based theme engine for Ratatui TUI applications',
+  description: 'A token-based theme engine for Rust applications',
   base: '/opaline/',
 
   head: [
     ['meta', { name: 'theme-color', content: '#e135ff' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:title', content: 'Opaline — Theme Engine for Ratatui' }],
+    ['meta', { property: 'og:title', content: 'Opaline — Theme Engine for Rust' }],
     [
       'meta',
       {
         property: 'og:description',
-        content: 'Token-based theme engine with 20 builtin themes, gradients, and deep Ratatui integration',
+        content: 'Token-based theme engine with 20 builtin themes, gradients, and adapters for ratatui, egui, crossterm, syntect, and more',
       },
     ],
   ],
@@ -58,6 +58,11 @@ export default defineConfig({
             { text: 'Gradients', link: '/guide/gradients' },
             { text: 'Ratatui Adapter', link: '/guide/ratatui' },
             { text: 'CLI Adapter', link: '/guide/cli' },
+            { text: 'Crossterm Adapter', link: '/guide/crossterm' },
+            { text: 'owo-colors Adapter', link: '/guide/owo-colors' },
+            { text: 'CSS Adapter', link: '/guide/css' },
+            { text: 'Syntect Adapter', link: '/guide/syntect' },
+            { text: 'egui Adapter', link: '/guide/egui' },
             { text: 'Color Manipulation', link: '/guide/color-manipulation' },
             { text: 'App-Level Derivation', link: '/guide/derivation' },
             { text: 'ThemeBuilder', link: '/guide/builder' },

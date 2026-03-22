@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Opaline
-  text: Theme Engine for Ratatui
-  tagline: Token-based themes with 20 builtins, gradients, and deep Ratatui integration
+  text: Theme Engine for Rust
+  tagline: Token-based themes with 20 builtins, gradients, and adapters for ratatui, egui, crossterm, syntect, and more
   actions:
     - theme: brand
       text: Get Started
@@ -24,8 +24,8 @@ features:
     title: Smooth Gradients
     details: Multi-stop color gradients with linear interpolation — perfect for progress bars, status indicators, and decorative elements
   - icon: "\u26A1"
-    title: Deep Ratatui Integration
-    details: "From impls, Styled trait, gradient spans — Opaline types slot directly into your Ratatui render pipeline"
+    title: Multi-Framework Adapters
+    details: "First-class adapters for ratatui, egui, crossterm, owo-colors, syntect, and CSS — one theme, every target"
   - icon: "\U0001F527"
     title: TOML-Driven
     details: Define themes in clean TOML files. Palette, tokens, styles, and gradients all declaratively configured

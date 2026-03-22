@@ -1,10 +1,12 @@
 //! # Opaline
 //!
-//! A token-based theme engine for [Ratatui](https://ratatui.rs) TUI applications.
+//! A token-based theme engine for Rust applications.
 //!
-//! Opaline gives any Ratatui app TOML-driven themes with a three-layer resolution
+//! Opaline gives any Rust app TOML-driven themes with a three-layer resolution
 //! pipeline: **palette** (raw hex colors) → **tokens** (semantic names) → **styles**
 //! (composed fg/bg + modifiers). Themes can also define multi-stop **gradients**.
+//!
+//! Adapters are available for ratatui, egui, crossterm, owo-colors, syntect, and CSS.
 //!
 //! ## Quick start
 //!
@@ -23,7 +25,7 @@
 //!
 //! | Feature | Default | Description |
 //! |---------|---------|-------------|
-//! | `builtin-themes` | yes | 13 embedded TOML themes via `include_str!` |
+//! | `builtin-themes` | yes | 20 embedded TOML themes via `include_str!` |
 //! | `gradients` | yes | Multi-stop gradient support |
 //! | `ratatui` | yes | `From` impls for `ratatui::style::{Color, Style}` |
 //! | `cli` | no | `colored` crate adapter for ANSI terminal output |
