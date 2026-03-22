@@ -1,10 +1,11 @@
 use std::collections::HashMap;
 
 use crate::color::OpalineColor;
+use crate::error::OpalineError;
 #[cfg(feature = "gradients")]
 use crate::gradient::Gradient;
 use crate::resolver::ResolvedTheme;
-use crate::schema::{ThemeMeta, ThemeVariant};
+use crate::schema::{StyleDef, ThemeFile, ThemeMeta, ThemeVariant};
 use crate::style::OpalineStyle;
 
 /// A fully resolved theme ready for use.
@@ -176,6 +177,88 @@ impl Theme {
     pub fn register_style(&mut self, name: impl Into<String>, style: OpalineStyle) {
         self.styles.insert(name.into(), style);
     }
+
+    // ── Export / serialization ────────────────────────────────────────
+
+    /// Convert to a [`ThemeFile`] for serialization.
+    ///
+    /// All resolved colors are emitted as hex strings. Palette references
+    /// are not reconstructed — the output is a fully flattened theme that
+    /// round-trips through `load_from_str()`.
+    pub fn to_theme_file(&self) -> ThemeFile {
+        let palette = self
+            .palette
+            .iter()
+            .map(|(k, v)| (k.clone(), v.to_hex()))
+            .collect();
+
+        let tokens = self
+            .tokens
+            .iter()
+            .map(|(k, v)| (k.clone(), v.to_hex()))
+            .collect();
+
+        let styles = self
+            .styles
+            .iter()
+            .map(|(k, v)| {
+                let def = StyleDef {
+                    fg: v.fg.map(OpalineColor::to_hex),
+                    bg: v.bg.map(OpalineColor::to_hex),
+                    bold: v.bold,
+                    dim: v.dim,
+                    italic: v.italic,
+                    underline: v.underline,
+                    slow_blink: v.slow_blink,
+                    rapid_blink: v.rapid_blink,
+                    reversed: v.reversed,
+                    hidden: v.hidden,
+                    crossed_out: v.crossed_out,
+                };
+                (k.clone(), def)
+            })
+            .collect();
+
+        #[cfg(feature = "gradients")]
+        let gradients = self
+            .gradients
+            .iter()
+            .map(|(k, g)| {
+                let stops = g.stops().iter().map(|c| c.to_hex()).collect();
+                (k.clone(), stops)
+            })
+            .collect();
+
+        #[cfg(not(feature = "gradients"))]
+        let gradients = HashMap::new();
+
+        ThemeFile {
+            meta: self.meta.clone(),
+            palette,
+            tokens,
+            styles,
+            gradients,
+        }
+    }
+
+    /// Serialize to a TOML string.
+    ///
+    /// Produces a valid `.toml` theme file that can be loaded with
+    /// [`load_from_str()`](crate::loader::load_from_str).
+    pub fn to_toml(&self) -> Result<String, OpalineError> {
+        let theme_file = self.to_theme_file();
+        toml::to_string_pretty(&theme_file).map_err(|source| OpalineError::Serialize { source })
+    }
+
+    /// Save to a TOML file on disk.
+    pub fn save_to_file(&self, path: impl AsRef<std::path::Path>) -> Result<(), OpalineError> {
+        let path = path.as_ref();
+        let toml_str = self.to_toml()?;
+        std::fs::write(path, toml_str).map_err(|source| OpalineError::Io {
+            path: path.to_path_buf(),
+            source,
+        })
+    }
 }
 
 // ── Builder ─────────────────────────────────────────────────────────
@@ -324,6 +407,21 @@ mod global {
     use super::Theme;
     use crate::error::OpalineError;
 
+    #[cfg(feature = "discovery")]
+    fn load_from_dirs(
+        name: &str,
+        dirs: Vec<std::path::PathBuf>,
+    ) -> Result<Option<Theme>, OpalineError> {
+        for dir in dirs {
+            let path = dir.join(format!("{name}.toml"));
+            if path.exists() {
+                return crate::loader::load_from_file(&path).map(Some);
+            }
+        }
+
+        Ok(None)
+    }
+
     static ACTIVE_THEME: LazyLock<RwLock<Arc<Theme>>> =
         LazyLock::new(|| RwLock::new(Arc::new(Theme::default())));
 
@@ -339,27 +437,19 @@ mod global {
 
     /// Load a theme by name and set it as the active global theme.
     ///
-    /// Searches builtins first, then discovery paths (if the `discovery`
-    /// feature is enabled).
+    /// Searches discovery paths first, then builtins. File-backed themes win
+    /// when ids collide.
     #[cfg(feature = "builtin-themes")]
     pub fn load_theme_by_name(name: &str) -> Result<(), OpalineError> {
-        // Check builtins first
-        if let Some(theme) = crate::builtins::load_by_name(name) {
+        #[cfg(feature = "discovery")]
+        if let Some(theme) = load_from_dirs(name, crate::discovery::theme_dirs())? {
             set_theme(theme);
             return Ok(());
         }
 
-        // Search discovery paths
-        #[cfg(feature = "discovery")]
-        {
-            for dir in crate::discovery::theme_dirs() {
-                let path = dir.join(format!("{name}.toml"));
-                if path.exists() {
-                    let theme = crate::loader::load_from_file(&path)?;
-                    set_theme(theme);
-                    return Ok(());
-                }
-            }
+        if let Some(theme) = crate::builtins::load_by_name(name) {
+            set_theme(theme);
+            return Ok(());
         }
 
         Err(OpalineError::ThemeNotFound {
@@ -377,25 +467,17 @@ mod global {
     where
         F: FnOnce(&mut Theme),
     {
-        // Check builtins first
-        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+        #[cfg(feature = "discovery")]
+        if let Some(mut theme) = load_from_dirs(name, crate::discovery::theme_dirs())? {
             derive(&mut theme);
             set_theme(theme);
             return Ok(());
         }
 
-        // Search discovery paths
-        #[cfg(feature = "discovery")]
-        {
-            for dir in crate::discovery::theme_dirs() {
-                let path = dir.join(format!("{name}.toml"));
-                if path.exists() {
-                    let mut theme = crate::loader::load_from_file(&path)?;
-                    derive(&mut theme);
-                    set_theme(theme);
-                    return Ok(());
-                }
-            }
+        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+            derive(&mut theme);
+            set_theme(theme);
+            return Ok(());
         }
 
         Err(OpalineError::ThemeNotFound {
@@ -409,20 +491,14 @@ mod global {
     /// `~/.config/<app_name>/themes/`.
     #[cfg(all(feature = "builtin-themes", feature = "discovery"))]
     pub fn load_theme_by_name_for_app(name: &str, app_name: &str) -> Result<(), OpalineError> {
-        // Check builtins first
-        if let Some(theme) = crate::builtins::load_by_name(name) {
+        if let Some(theme) = load_from_dirs(name, crate::discovery::app_theme_dirs(app_name))? {
             set_theme(theme);
             return Ok(());
         }
 
-        // Search app-specific discovery paths
-        for dir in crate::discovery::app_theme_dirs(app_name) {
-            let path = dir.join(format!("{name}.toml"));
-            if path.exists() {
-                let theme = crate::loader::load_from_file(&path)?;
-                set_theme(theme);
-                return Ok(());
-            }
+        if let Some(theme) = crate::builtins::load_by_name(name) {
+            set_theme(theme);
+            return Ok(());
         }
 
         Err(OpalineError::ThemeNotFound {
@@ -440,22 +516,16 @@ mod global {
     where
         F: FnOnce(&mut Theme),
     {
-        // Check builtins first
-        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+        if let Some(mut theme) = load_from_dirs(name, crate::discovery::app_theme_dirs(app_name))? {
             derive(&mut theme);
             set_theme(theme);
             return Ok(());
         }
 
-        // Search app-specific discovery paths
-        for dir in crate::discovery::app_theme_dirs(app_name) {
-            let path = dir.join(format!("{name}.toml"));
-            if path.exists() {
-                let mut theme = crate::loader::load_from_file(&path)?;
-                derive(&mut theme);
-                set_theme(theme);
-                return Ok(());
-            }
+        if let Some(mut theme) = crate::builtins::load_by_name(name) {
+            derive(&mut theme);
+            set_theme(theme);
+            return Ok(());
         }
 
         Err(OpalineError::ThemeNotFound {

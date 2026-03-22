@@ -8,31 +8,66 @@ use opaline::{OpalineColor, OpalineStyle, Theme};
 fn color_to_crossterm() {
     let c = OpalineColor::new(225, 53, 255);
     let ct: Color = c.into();
-    assert_eq!(ct, Color::Rgb { r: 225, g: 53, b: 255 });
+    assert_eq!(
+        ct,
+        Color::Rgb {
+            r: 225,
+            g: 53,
+            b: 255
+        }
+    );
 }
 
 #[test]
 fn color_ref_to_crossterm() {
     let c = OpalineColor::new(128, 255, 234);
     let ct: Color = (&c).into();
-    assert_eq!(ct, Color::Rgb { r: 128, g: 255, b: 234 });
+    assert_eq!(
+        ct,
+        Color::Rgb {
+            r: 128,
+            g: 255,
+            b: 234
+        }
+    );
 }
 
 #[test]
 fn style_fg_only() {
     let s = OpalineStyle::fg(OpalineColor::new(225, 53, 255));
     let ct: ContentStyle = s.into();
-    assert_eq!(ct.foreground_color, Some(Color::Rgb { r: 225, g: 53, b: 255 }));
+    assert_eq!(
+        ct.foreground_color,
+        Some(Color::Rgb {
+            r: 225,
+            g: 53,
+            b: 255
+        })
+    );
     assert_eq!(ct.background_color, None);
 }
 
 #[test]
 fn style_fg_and_bg() {
-    let s = OpalineStyle::fg(OpalineColor::new(225, 53, 255))
-        .with_bg(OpalineColor::new(18, 18, 24));
+    let s =
+        OpalineStyle::fg(OpalineColor::new(225, 53, 255)).with_bg(OpalineColor::new(18, 18, 24));
     let ct: ContentStyle = s.into();
-    assert_eq!(ct.foreground_color, Some(Color::Rgb { r: 225, g: 53, b: 255 }));
-    assert_eq!(ct.background_color, Some(Color::Rgb { r: 18, g: 18, b: 24 }));
+    assert_eq!(
+        ct.foreground_color,
+        Some(Color::Rgb {
+            r: 225,
+            g: 53,
+            b: 255
+        })
+    );
+    assert_eq!(
+        ct.background_color,
+        Some(Color::Rgb {
+            r: 18,
+            g: 18,
+            b: 24
+        })
+    );
 }
 
 #[test]
@@ -71,14 +106,24 @@ fn style_no_modifiers_empty() {
 fn style_ref_conversion() {
     let s = OpalineStyle::fg(OpalineColor::new(80, 250, 123)).bold();
     let ct: ContentStyle = (&s).into();
-    assert_eq!(ct.foreground_color, Some(Color::Rgb { r: 80, g: 250, b: 123 }));
+    assert_eq!(
+        ct.foreground_color,
+        Some(Color::Rgb {
+            r: 80,
+            g: 250,
+            b: 123
+        })
+    );
     assert!(ct.attributes.has(Attribute::Bold));
 }
 
 #[test]
 fn theme_crossterm_styled() {
     let theme = Theme::builder("Test")
-        .style("keyword", OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold())
+        .style(
+            "keyword",
+            OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold(),
+        )
         .build();
 
     let styled = theme.crossterm_styled("keyword", "fn");
@@ -106,6 +151,19 @@ mod gradient_tests {
         let gradient = Gradient::new(vec![OpalineColor::new(255, 0, 0)]);
         let styled = opaline::adapters::crossterm::gradient_styled("", &gradient);
         assert!(styled.is_empty());
+    }
+
+    #[test]
+    fn gradient_styled_unicode_grapheme_clusters() {
+        let gradient = Gradient::new(vec![
+            OpalineColor::new(255, 0, 0),
+            OpalineColor::new(0, 0, 255),
+        ]);
+
+        let styled = opaline::adapters::crossterm::gradient_styled("e\u{301}🙂", &gradient);
+        assert_eq!(styled.len(), 2);
+        assert_eq!(styled[0].content(), &"e\u{301}");
+        assert_eq!(styled[1].content(), &"🙂");
     }
 
     #[test]

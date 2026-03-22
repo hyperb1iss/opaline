@@ -125,7 +125,41 @@ pub fn generate_stylesheet(theme: &Theme) -> String {
 }
 
 /// Normalize a token/style name into a valid CSS identifier fragment.
-/// Dots and underscores become dashes.
+/// Dots and underscores become dashes, and the remaining unsafe characters
+/// are escaped so arbitrary runtime names still produce valid selectors.
 fn css_ident(name: &str) -> String {
-    name.replace(['.', '_'], "-")
+    let normalized = name.replace(['.', '_'], "-");
+    escape_css_ident_fragment(&normalized)
+}
+
+fn escape_css_ident_fragment(name: &str) -> String {
+    if name.is_empty() {
+        return "_".to_string();
+    }
+
+    let chars: Vec<char> = name.chars().collect();
+    let mut escaped = String::with_capacity(name.len());
+
+    for (idx, ch) in chars.iter().copied().enumerate() {
+        let next_is_digit = chars.get(idx + 1).is_some_and(char::is_ascii_digit);
+        let safe_ascii = ch.is_ascii_alphabetic() || ch == '_' || ch == '-';
+        let safe_digit = idx > 0 && ch.is_ascii_digit();
+        let needs_escape = !(safe_ascii || safe_digit)
+            || (idx == 0 && ch.is_ascii_digit())
+            || (idx == 0 && ch == '-' && next_is_digit);
+
+        if needs_escape {
+            push_css_escape(&mut escaped, ch);
+        } else {
+            escaped.push(ch);
+        }
+    }
+
+    escaped
+}
+
+fn push_css_escape(output: &mut String, ch: char) {
+    use std::fmt::Write as _;
+
+    write!(output, "\\{:x} ", u32::from(ch)).expect("write to string");
 }

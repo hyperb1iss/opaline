@@ -40,4 +40,10 @@ pub enum OpalineError {
 
     #[error("gradient must have at least one color stop")]
     EmptyGradient,
+
+    #[error("TOML serialization error: {source}")]
+    Serialize {
+        #[source]
+        source: toml::ser::Error,
+    },
 }
