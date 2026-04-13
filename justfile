@@ -1,4 +1,4 @@
-# Opaline — Development Tasks
+# Opaline: Development Tasks
 # Install just: cargo install just
 
 set dotenv-load := false
@@ -9,14 +9,16 @@ default:
 
 # ── Quality ───────────────────────────────────────────────────
 
-# Run format check + clippy
+# Run format check + clippy + prose lint
 check:
     cargo fmt --all --check
     cargo clippy --all-targets --all-features -- -D warnings
+    cd docs && pnpm exec prettier --check "**/*.md"
 
-# Format all Rust code
+# Format all Rust code and docs prose
 fmt:
     cargo fmt --all
+    cd docs && pnpm exec prettier --write "**/*.md"
 
 # Run tests with cargo-nextest
 test:

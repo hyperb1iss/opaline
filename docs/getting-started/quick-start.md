@@ -21,7 +21,7 @@ let theme = opaline::load_from_file("my-theme.toml").unwrap();
 
 ## Access Colors and Styles
 
-Themes provide **semantic access** — you ask for what something means, not what color it is:
+Themes provide **semantic access**: you ask for what something means, not what color it is.
 
 ```rust
 // Get a resolved color by token name
@@ -47,7 +47,7 @@ use ratatui::text::{Span, Line};
 
 let theme = Theme::default();
 
-// Create styled ratatui types directly — no trait import needed
+// Create styled ratatui types directly, no trait import needed
 let styled_span = theme.span("keyword", "fn");
 let styled_line = theme.line("keyword", "let x = 42;");
 
@@ -61,7 +61,7 @@ let color: ratatui::style::Color = theme.color("accent.primary").into();
 
 ## Use Gradients
 
-Gradients produce smooth color transitions — great for progress bars and decorative elements:
+Gradients produce smooth color transitions, great for progress bars and decorative elements:
 
 ```rust
 use opaline::{Theme, gradient_bar};
@@ -97,6 +97,6 @@ let theme = Theme::builder("My Custom Theme")
 
 ## Next Steps
 
-- [Theme System](../guide/themes) — Understand the resolution pipeline
-- [Token Reference](../reference/tokens) — All core semantic tokens
-- [Theme Gallery](../themes/) — Browse all 39 builtin themes
+- [Theme System](../guide/themes): Understand the resolution pipeline
+- [Token Reference](../reference/tokens): All core semantic tokens
+- [Theme Gallery](../themes/): Browse all 39 builtin themes

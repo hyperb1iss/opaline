@@ -119,15 +119,15 @@ For application-specific semantics like git status colors, diff colors, or view-
 
 The strict resolver catches issues at load time:
 
-- **Missing palette color** — A token references a color that doesn't exist
-- **Circular reference** — Tokens form a cycle (`a → b → a`)
-- **Invalid hex** — A palette value isn't a valid hex color
+- **Missing palette color**: a token references a color that doesn't exist
+- **Circular reference**: tokens form a cycle (`a → b → a`)
+- **Invalid hex**: a palette value isn't a valid hex color
 
 If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all required tokens, 13 required styles, and 5 required gradients.
 
 ## Tips
 
-- **Start from an existing theme** — Copy a builtin TOML and modify colors
-- **Use descriptive palette names** — `sumi_ink3` is better than `bg3` for readability
-- **Test with both light and dark terminals** — Set `variant` correctly
-- **Keep gradients harmonious** — Adjacent stops should blend smoothly
+- **Start from an existing theme.** Copy a builtin TOML and modify colors.
+- **Use descriptive palette names.** `sumi_ink3` is better than `bg3` for readability.
+- **Test with both light and dark terminals.** Set `variant` correctly.
+- **Keep gradients harmonious.** Adjacent stops should blend smoothly.

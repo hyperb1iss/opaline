@@ -1,10 +1,10 @@
 # Syntect Adapter
 
-The `syntect` feature bridges Opaline themes into the [syntect](https://crates.io/crates/syntect) syntax highlighting ecosystem — used by bat, delta, and many other tools.
+The `syntect` feature bridges Opaline themes into the [syntect](https://crates.io/crates/syntect) syntax highlighting ecosystem, used by bat, delta, and many other tools.
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["syntect"] }
+opaline = { version = "0.4", features = ["syntect"] }
 ```
 
 ## Color Conversion
@@ -35,11 +35,11 @@ let modifier: StyleModifier = style.into();
 
 Modifier mapping:
 
-| OpalineStyle | FontStyle |
-|-------------|-----------|
-| `bold` | `BOLD` |
-| `italic` | `ITALIC` |
-| `underline` | `UNDERLINE` |
+| OpalineStyle | FontStyle   |
+| ------------ | ----------- |
+| `bold`       | `BOLD`      |
+| `italic`     | `ITALIC`    |
+| `underline`  | `UNDERLINE` |
 
 ## Theme Generation
 
@@ -65,38 +65,38 @@ let mut h = HighlightLines::new(syntax, &syntect_theme);
 
 The adapter maps Opaline's generic core tokens to standard TextMate scopes:
 
-| Opaline Token | TextMate Scope |
-|--------------|----------------|
-| `code.keyword` | `keyword` |
-| `code.string` | `string` |
-| `code.comment` | `comment` |
-| `code.function` | `entity.name.function, support.function` |
-| `code.number` | `constant.numeric` |
-| `code.type` | `entity.name.type, support.type` |
-| `code.line_number` | `constant.numeric.line-number` |
-| `accent.primary` | `variable` |
-| `accent.secondary` | `storage.type, storage.modifier` |
-| `accent.tertiary` | `constant.other, variable.other.constant` |
-| `success` | `markup.inserted` |
-| `warning` | `markup.changed` |
-| `error` | `invalid, message.error` |
-| `info` | `string.other.link, support.constant` |
+| Opaline Token      | TextMate Scope                            |
+| ------------------ | ----------------------------------------- |
+| `code.keyword`     | `keyword`                                 |
+| `code.string`      | `string`                                  |
+| `code.comment`     | `comment`                                 |
+| `code.function`    | `entity.name.function, support.function`  |
+| `code.number`      | `constant.numeric`                        |
+| `code.type`        | `entity.name.type, support.type`          |
+| `code.line_number` | `constant.numeric.line-number`            |
+| `accent.primary`   | `variable`                                |
+| `accent.secondary` | `storage.type, storage.modifier`          |
+| `accent.tertiary`  | `constant.other, variable.other.constant` |
+| `success`          | `markup.inserted`                         |
+| `warning`          | `markup.changed`                          |
+| `error`            | `invalid, message.error`                  |
+| `info`             | `string.other.link, support.constant`     |
 
 ### ThemeSettings Mapping
 
 Editor-level settings are derived from semantic tokens:
 
-| Opaline Token | ThemeSettings Field |
-|--------------|-------------------|
-| `text.primary` | `foreground` |
-| `bg.base` | `background` |
-| `accent.primary` | `caret`, `accent` |
-| `bg.highlight` | `line_highlight` |
-| `bg.selection` | `selection` |
-| `bg.panel` | `gutter` |
-| `text.dim` | `gutter_foreground` |
-| `border.focused` | `active_guide` |
-| `border.unfocused` | `guide` |
+| Opaline Token      | ThemeSettings Field |
+| ------------------ | ------------------- |
+| `text.primary`     | `foreground`        |
+| `bg.base`          | `background`        |
+| `accent.primary`   | `caret`, `accent`   |
+| `bg.highlight`     | `line_highlight`    |
+| `bg.selection`     | `selection`         |
+| `bg.panel`         | `gutter`            |
+| `text.dim`         | `gutter_foreground` |
+| `border.focused`   | `active_guide`      |
+| `border.unfocused` | `guide`             |
 
 ### Style Modifiers
 

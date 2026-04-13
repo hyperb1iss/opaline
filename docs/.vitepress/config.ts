@@ -12,7 +12,7 @@ export default defineConfig({
   head: [
     ['meta', { name: 'theme-color', content: '#e135ff' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:title', content: 'Opaline — Theme Engine for Rust' }],
+    ['meta', { property: 'og:title', content: 'Opaline: Theme Engine for Rust' }],
     [
       'meta',
       {

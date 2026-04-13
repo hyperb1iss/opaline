@@ -1,10 +1,10 @@
 # Crossterm Adapter
 
-The `crossterm` feature enables direct terminal styling via [crossterm](https://crates.io/crates/crossterm) — ideal for apps that use crossterm without ratatui for raw terminal manipulation.
+The `crossterm` feature enables direct terminal styling via [crossterm](https://crates.io/crates/crossterm), ideal for apps that use crossterm without ratatui for raw terminal manipulation.
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["crossterm"] }
+opaline = { version = "0.4", features = ["crossterm"] }
 ```
 
 ## From Impls
@@ -65,9 +65,9 @@ if let Some(gradient) = theme.get_gradient("primary") {
 
 ## When to Use Crossterm vs Ratatui
 
-| Use Case | Adapter |
-|----------|---------|
-| Full TUI app with widgets | `ratatui` |
-| Raw terminal manipulation | `crossterm` |
-| Custom rendering loop | `crossterm` |
+| Use Case                              | Adapter     |
+| ------------------------------------- | ----------- |
+| Full TUI app with widgets             | `ratatui`   |
+| Raw terminal manipulation             | `crossterm` |
+| Custom rendering loop                 | `crossterm` |
 | Alternate screen apps without ratatui | `crossterm` |

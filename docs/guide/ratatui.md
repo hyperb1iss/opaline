@@ -25,7 +25,7 @@ let rat: Color = color.into();        // from value
 
 ## Theme Methods
 
-`Theme` has inherent methods for creating Ratatui text types — no trait import needed:
+`Theme` has inherent methods for creating Ratatui text types, no trait import needed:
 
 ```rust
 use opaline::Theme;
@@ -48,7 +48,7 @@ let grad: ratatui::text::Line = theme.gradient_text("aurora", "✦ Opaline");
 ```rust
 use ratatui::widgets::Block;
 
-// Works directly — no conversion needed
+// Works directly, no conversion needed
 Block::bordered()
     .style(theme.style("keyword"))
     .border_style(theme.style("focused_border"));
@@ -75,17 +75,17 @@ let rat_style: ratatui::style::Style = style.style();
 
 All 9 Opaline modifiers map to their Ratatui equivalents:
 
-| Opaline | Ratatui |
-|---------|---------|
-| `bold` | `Modifier::BOLD` |
-| `italic` | `Modifier::ITALIC` |
-| `underline` | `Modifier::UNDERLINED` |
-| `dim` | `Modifier::DIM` |
+| Opaline         | Ratatui                 |
+| --------------- | ----------------------- |
+| `bold`          | `Modifier::BOLD`        |
+| `italic`        | `Modifier::ITALIC`      |
+| `underline`     | `Modifier::UNDERLINED`  |
+| `dim`           | `Modifier::DIM`         |
 | `strikethrough` | `Modifier::CROSSED_OUT` |
-| `reversed` | `Modifier::REVERSED` |
-| `hidden` | `Modifier::HIDDEN` |
-| `rapid_blink` | `Modifier::RAPID_BLINK` |
-| `slow_blink` | `Modifier::SLOW_BLINK` |
+| `reversed`      | `Modifier::REVERSED`    |
+| `hidden`        | `Modifier::HIDDEN`      |
+| `rapid_blink`   | `Modifier::RAPID_BLINK` |
+| `slow_blink`    | `Modifier::SLOW_BLINK`  |
 
 ## Gradient Helpers
 
@@ -107,13 +107,13 @@ use opaline::{gradient_spans, gradient_text_line, gradient_bar};
 
 let gradient = theme.get_gradient("primary").unwrap();
 
-// Vec<Span> — each character colored along the gradient
+// Vec<Span>: each character colored along the gradient
 let spans = gradient_spans("Hello!", gradient);
 
-// Line — gradient-colored text
+// Line: gradient-colored text
 let line = gradient_text_line("Status: Online", gradient);
 
-// Line — repeated block characters for progress bars
+// Line: repeated block characters for progress bars
 let bar = gradient_bar(40, '█', gradient);
 ```
 
@@ -128,7 +128,7 @@ use ratatui::widgets::{Block, Borders, Paragraph};
 fn render(frame: &mut ratatui::Frame, theme: &Theme) {
     let area = frame.area();
 
-    // Themed block — OpalineStyle works via Into<Style>
+    // Themed block: OpalineStyle works via Into<Style>
     let block = Block::default()
         .borders(Borders::ALL)
         .border_style(theme.style("focused_border"))

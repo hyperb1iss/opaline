@@ -1,6 +1,6 @@
 # ThemeSelector Widget
 
-Opaline ships a ready-to-use theme picker widget for Ratatui apps. It provides a searchable, scrollable theme list with a live color preview pane — users see exactly how each theme looks before committing.
+Opaline ships a ready-to-use theme picker widget for Ratatui apps. It provides a searchable, scrollable theme list with a live color preview pane so users see exactly how each theme looks before committing.
 
 ## Feature Flag
 
@@ -8,7 +8,7 @@ The widget requires the `widgets` feature:
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["widgets"] }
+opaline = { version = "0.4", features = ["widgets"] }
 ```
 
 This enables `global-state` and `builtin-themes` automatically, and pulls in full `ratatui` (with crossterm) rather than just `ratatui-core`.
@@ -25,7 +25,7 @@ let mut state = ThemeSelectorState::with_current_selected();
 // 2. In your key handler
 match state.handle_key(key_event) {
     ThemeSelectorAction::Select(id) => {
-        // Theme already applied — just save the preference
+        // Theme already applied; just save the preference
         save_user_preference(&id);
         close_picker();
     }
@@ -46,13 +46,13 @@ frame.render_stateful_widget(ThemeSelector::new(), area, &mut state);
 
 Returned by `handle_key()`:
 
-| Variant | Meaning |
-|---------|---------|
-| `Navigate` | Cursor moved, live preview applied |
-| `Select(String)` | Enter pressed — contains the theme's kebab-case ID |
-| `Cancel` | Esc pressed — original theme restored |
-| `FilterChanged` | Filter text changed, list recomputed |
-| `Noop` | Key not handled by the selector |
+| Variant          | Meaning                                           |
+| ---------------- | ------------------------------------------------- |
+| `Navigate`       | Cursor moved, live preview applied                |
+| `Select(String)` | Enter pressed; contains the theme's kebab-case ID |
+| `Cancel`         | Esc pressed; original theme restored              |
+| `FilterChanged`  | Filter text changed, list recomputed              |
+| `Noop`           | Key not handled by the selector                   |
 
 ### `ThemeSelectorState`
 
@@ -71,9 +71,10 @@ let state = ThemeSelectorState::with_current_selected()
 ```
 
 **Methods:**
-- `handle_key(KeyEvent) -> ThemeSelectorAction` — process keyboard input
-- `selected_theme() -> Option<&ThemeInfo>` — currently highlighted theme's metadata
-- `filter() -> &str` — current filter text
+
+- `handle_key(KeyEvent) -> ThemeSelectorAction`: process keyboard input
+- `selected_theme() -> Option<&ThemeInfo>`: currently highlighted theme's metadata
+- `filter() -> &str`: current filter text
 
 ### `ThemeSelector`
 
@@ -109,25 +110,25 @@ The widget renders a two-pane layout:
 └─────────────────────────────┴───────────────────────────────┘
 ```
 
-- **Left pane (55%)** — filter input + scrollable theme list with dark/light section headers
-- **Right pane (45%)** — theme name, author, description, 6 color swatches, gradient bar
+- **Left pane (55%)**: filter input + scrollable theme list with dark/light section headers
+- **Right pane (45%)**: theme name, author, description, 6 color swatches, gradient bar
 
 ## Keyboard Controls
 
-| Key | Action |
-|-----|--------|
-| `↑` | Move cursor up |
-| `↓` | Move cursor down |
-| `Enter` | Confirm selection |
-| `Esc` | Cancel (restore original theme) |
-| Any character | Append to filter |
-| `Backspace` | Delete last filter character |
+| Key           | Action                          |
+| ------------- | ------------------------------- |
+| `↑`           | Move cursor up                  |
+| `↓`           | Move cursor down                |
+| `Enter`       | Confirm selection               |
+| `Esc`         | Cancel (restore original theme) |
+| Any character | Append to filter                |
+| `Backspace`   | Delete last filter character    |
 
 The filter accepts all printable characters, including lowercase `j` and `k`.
 
 ## Live Preview
 
-The widget applies each theme to the global state as you navigate — your entire app re-renders with the previewed theme in real-time. On cancel (`Esc`), the original theme is restored from a snapshot taken at construction time.
+The widget applies each theme to the global state as you navigate. Your entire app re-renders with the previewed theme in real-time. On cancel (`Esc`), the original theme is restored from a snapshot taken at construction time.
 
 ## With App Derivation
 
@@ -143,7 +144,7 @@ let state = ThemeSelectorState::with_current_selected()
     .with_derive(derive_tokens);
 ```
 
-Without this, live preview would show the raw theme without your computed tokens — potentially missing colors or incorrect styling.
+Without this, live preview would show the raw theme without your computed tokens, potentially missing colors or incorrect styling.
 
 ## Integration Example
 
@@ -162,7 +163,7 @@ impl App {
         if let Some(picker) = &mut self.theme_picker {
             match picker.handle_key(key) {
                 ThemeSelectorAction::Select(id) => {
-                    // Theme is already applied — persist the choice
+                    // Theme is already applied; persist the choice
                     self.save_theme_preference(&id);
                     self.theme_picker = None;
                 }

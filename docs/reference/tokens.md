@@ -126,6 +126,6 @@ fn all_builtins_have_required_tokens() {
 
 ## Adding Tokens to Your Theme
 
-If you're creating a custom theme, you don't need to satisfy the full contract — it's only enforced for builtins. However, following the contract ensures your theme works with any Opaline-powered app. Domain-specific semantics such as git status colors, diff colors, and mode indicators should be derived by the consuming app instead of being treated as core contract names.
+If you're creating a custom theme, you don't need to satisfy the full contract; it's only enforced for builtins. However, following the contract ensures your theme works with any Opaline-powered app. Domain-specific semantics such as git status colors, diff colors, and mode indicators should be derived by the consuming app instead of being treated as core contract names.
 
 Use the [custom themes template](../guide/custom-themes) as a starting point.

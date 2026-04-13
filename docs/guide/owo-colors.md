@@ -1,10 +1,10 @@
 # owo-colors Adapter
 
-The `owo-colors` feature enables zero-allocation terminal coloring via [owo-colors](https://crates.io/crates/owo-colors) — a modern, lightweight alternative to the `colored` crate.
+The `owo-colors` feature enables zero-allocation terminal coloring via [owo-colors](https://crates.io/crates/owo-colors), a modern, lightweight alternative to the `colored` crate.
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["owo-colors"] }
+opaline = { version = "0.4", features = ["owo-colors"] }
 ```
 
 ## Style Conversion
@@ -61,12 +61,12 @@ if let Some(gradient) = theme.get_gradient("aurora") {
 
 ## owo-colors vs colored
 
-| Feature | `owo-colors` | `colored` |
-|---------|-------------|-----------|
-| Allocation | Zero-alloc | Allocates `ColoredString` |
-| API style | Extension trait | Extension trait |
-| `no_std` | Supported | No |
-| Runtime styles | `Style` builder | Per-call methods |
-| Ecosystem | Modern, growing | Established, widely used |
+| Feature        | `owo-colors`    | `colored`                 |
+| -------------- | --------------- | ------------------------- |
+| Allocation     | Zero-alloc      | Allocates `ColoredString` |
+| API style      | Extension trait | Extension trait           |
+| `no_std`       | Supported       | No                        |
+| Runtime styles | `Style` builder | Per-call methods          |
+| Ecosystem      | Modern, growing | Established, widely used  |
 
-Both adapters can coexist — enable `cli` and `owo-colors` simultaneously if needed.
+Both adapters can coexist. Enable `cli` and `owo-colors` simultaneously if needed.

@@ -14,30 +14,43 @@ Opaline uses feature flags to keep the dependency tree lean. Enable only what yo
 
 ```toml
 [dependencies]
-# Default — builtins + gradients + ratatui adapter
-opaline = "0.2"
+# Default: builtins + gradients + ratatui adapter
+opaline = "0.4"
 
-# Minimal — just the core theme engine
-opaline = { version = "0.2", default-features = false }
+# Minimal: just the core theme engine
+opaline = { version = "0.4", default-features = false }
 
 # With CLI colored output
-opaline = { version = "0.2", features = ["cli"] }
+opaline = { version = "0.4", features = ["cli"] }
 
 # With global theme singleton
-opaline = { version = "0.2", features = ["global-state"] }
+opaline = { version = "0.4", features = ["global-state"] }
 
 # Everything
-opaline = { version = "0.2", features = ["builtin-themes", "gradients", "ratatui", "cli", "global-state", "discovery"] }
+opaline = { version = "0.4", features = [
+    "builtin-themes", "gradients", "ratatui",
+    "cli", "crossterm", "owo-colors", "css",
+    "syntect", "egui",
+    "global-state", "discovery", "widgets"
+] }
 ```
 
-| Feature | Default | Description |
-|---------|---------|-------------|
-| `builtin-themes` | yes | 39 embedded TOML themes via `include_str!` |
-| `gradients` | yes | Multi-stop gradient support |
-| `ratatui` | yes | `From` impls for `ratatui::style::{Color, Style}` |
-| `cli` | no | `colored` crate adapter for ANSI terminal output |
-| `global-state` | no | Process-wide `current()`/`set_theme()` singleton |
-| `discovery` | no | Load user themes from `~/.config/<app>/themes/` |
+| Feature          | Default | Description                                        |
+| ---------------- | ------- | -------------------------------------------------- |
+| `builtin-themes` | yes     | 39 embedded TOML themes via `include_str!`         |
+| `gradients`      | yes     | Multi-stop gradient support                        |
+| `ratatui`        | yes     | `From` impls for `ratatui::style::{Color, Style}`  |
+| `cli`            | no      | `colored` crate adapter for ANSI terminal output   |
+| `crossterm`      | no      | Direct crossterm `Color`/`ContentStyle` adapter    |
+| `owo-colors`     | no      | Zero-allocation terminal coloring via `owo-colors` |
+| `css`            | no      | CSS custom properties + classes generation         |
+| `syntect`        | no      | Syntax highlighting theme generation               |
+| `egui`           | no      | `Color32`/`Visuals` adapter for egui               |
+| `global-state`   | no      | Process-wide `current()`/`set_theme()` singleton   |
+| `discovery`      | no      | Load user themes from `~/.config/<app>/themes/`    |
+| `widgets`        | no      | Theme selector widget with live preview            |
+
+See [Feature Flags](../reference/features) for the full feature interaction matrix.
 
 ## Requirements
 

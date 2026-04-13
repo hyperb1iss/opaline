@@ -23,7 +23,7 @@ graph TD
 
 ### Layer 1: Palette
 
-Raw named colors. These are the building blocks — hex values with human-readable names:
+Raw named colors. These are the building blocks: hex values with human-readable names.
 
 ```toml
 [palette]
@@ -44,7 +44,7 @@ Semantic references that point to palette colors. This is where meaning lives:
 "bg.base" = "bg_dark"            # resolves to #121218
 ```
 
-Tokens can reference other tokens — the resolver handles transitive lookups with cycle detection.
+Tokens can reference other tokens. The resolver handles transitive lookups with cycle detection.
 
 ### Layer 3: Styles
 
@@ -104,7 +104,7 @@ let theme = Theme::default();
 
 ## Strict Resolution
 
-The resolver is intentionally strict. If a token references a palette color that doesn't exist, or a style references an undefined token, you get a clear error — not a silent fallback.
+The resolver is intentionally strict. If a token references a palette color that doesn't exist, or a style references an undefined token, you get a clear error, not a silent fallback.
 
 ```rust
 // This will error if "nonexistent" isn't in the palette

@@ -1,10 +1,10 @@
 # CSS Adapter
 
-The `css` feature generates CSS custom properties and classes from Opaline themes — bridging your themes into web frameworks like Leptos, Yew, Dioxus, and Tauri.
+The `css` feature generates CSS custom properties and classes from Opaline themes, bridging your themes into web frameworks like Leptos, Yew, Dioxus, and Tauri.
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["css"] }
+opaline = { version = "0.4", features = ["css"] }
 ```
 
 ## CSS Custom Properties
@@ -27,7 +27,12 @@ Output:
   --opaline-text-primary: #cdd6f4;
   /* ... 39 token variables */
   --opaline-gradient-primary: linear-gradient(to right, #e135ff, #80ffea);
-  --opaline-gradient-aurora: linear-gradient(to right, #e135ff, #80ffea, #ff6ac1);
+  --opaline-gradient-aurora: linear-gradient(
+    to right,
+    #e135ff,
+    #80ffea,
+    #ff6ac1
+  );
 }
 ```
 
@@ -63,16 +68,16 @@ Output:
 
 Style modifiers map to CSS properties:
 
-| OpalineStyle | CSS Property |
-|-------------|-------------|
-| `fg` | `color` |
-| `bg` | `background-color` |
-| `bold` | `font-weight: bold` |
-| `dim` | `opacity: 0.7` |
-| `italic` | `font-style: italic` |
-| `underline` | `text-decoration: underline` |
+| OpalineStyle  | CSS Property                    |
+| ------------- | ------------------------------- |
+| `fg`          | `color`                         |
+| `bg`          | `background-color`              |
+| `bold`        | `font-weight: bold`             |
+| `dim`         | `opacity: 0.7`                  |
+| `italic`      | `font-style: italic`            |
+| `underline`   | `text-decoration: underline`    |
 | `crossed_out` | `text-decoration: line-through` |
-| `hidden` | `visibility: hidden` |
+| `hidden`      | `visibility: hidden`            |
 
 ## Complete Stylesheet
 

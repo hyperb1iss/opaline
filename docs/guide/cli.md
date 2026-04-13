@@ -1,10 +1,10 @@
 # CLI Adapter
 
-The `cli` feature enables integration with the [`colored`](https://crates.io/crates/colored) crate for non-TUI terminal output — scripts, formatters, log output, and CLI tools.
+The `cli` feature enables integration with the [`colored`](https://crates.io/crates/colored) crate for non-TUI terminal output: scripts, formatters, log output, and CLI tools.
 
 ```toml
 [dependencies]
-opaline = { version = "0.2", features = ["cli"] }
+opaline = { version = "0.4", features = ["cli"] }
 ```
 
 ## ThemeCliExt
@@ -51,10 +51,10 @@ println!("{rainbow}");
 
 ## When to Use CLI vs Ratatui
 
-| Use Case | Adapter |
-|----------|---------|
+| Use Case                        | Adapter   |
+| ------------------------------- | --------- |
 | Full TUI app (alternate screen) | `ratatui` |
-| CLI tool output | `cli` |
-| Log formatting | `cli` |
-| Simple scripts | `cli` |
-| Interactive terminal UI | `ratatui` |
+| CLI tool output                 | `cli`     |
+| Log formatting                  | `cli`     |
+| Simple scripts                  | `cli`     |
+| Interactive terminal UI         | `ratatui` |

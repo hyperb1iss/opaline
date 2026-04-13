@@ -1,6 +1,6 @@
 # App-Level Derivation
 
-Most apps need tokens beyond what a generic theme provides — hover states, selection backgrounds, sidebar accents. Rather than requiring every theme author to define these, Opaline lets you **derive** app-specific tokens from the theme's existing palette.
+Most apps need tokens beyond what a generic theme provides: hover states, selection backgrounds, sidebar accents. Rather than requiring every theme author to define these, Opaline lets you **derive** app-specific tokens from the theme's existing palette.
 
 ## The Pattern
 
@@ -26,7 +26,7 @@ After this call, the theme is the active global theme with your derived tokens a
 
 ### Default Registration
 
-`register_default_token` and `register_default_style` use entry semantics — **TOML-defined values win**. This lets theme authors override your derivations when they want to:
+`register_default_token` and `register_default_style` use entry semantics: **TOML-defined values win**. This lets theme authors override your derivations when they want to:
 
 ```rust
 // Only inserted if the theme doesn't already define "sidebar.bg"
@@ -36,7 +36,7 @@ theme.register_default_token("sidebar.bg", primary.darken(0.85));
 theme.register_default_style("sidebar_item", OpalineStyle::fg(primary));
 ```
 
-This is the recommended approach — it respects theme author intent.
+This is the recommended approach because it respects theme author intent.
 
 ### Forced Registration
 
@@ -50,7 +50,7 @@ theme.register_token("sidebar.bg", primary.darken(0.85));
 theme.register_style("sidebar_item", OpalineStyle::fg(primary));
 ```
 
-Use this sparingly — only when your app requires a specific derived value regardless of theme authoring.
+Use this sparingly, only when your app requires a specific derived value regardless of theme authoring.
 
 ## Global State Functions
 

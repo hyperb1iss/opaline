@@ -166,7 +166,7 @@ Modules: `names::tokens` (26 required constants), `names::styles` (13 required c
 
 ## Ratatui Integration
 
-Requires `ratatui` feature (default). No trait import needed — methods are inherent on `Theme`.
+Requires `ratatui` feature (default). No trait import needed; methods are inherent on `Theme`.
 
 ### Theme Methods
 

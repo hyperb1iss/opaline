@@ -1,6 +1,6 @@
 # Tokens
 
-Tokens are the **semantic layer** between raw palette colors and composed styles. They give meaning to colors — `accent.primary` means "the main accent color" regardless of whether it's purple, blue, or green.
+Tokens are the **semantic layer** between raw palette colors and composed styles. They give meaning to colors: `accent.primary` means "the main accent color" regardless of whether it's purple, blue, or green.
 
 ## Token Namespaces
 
@@ -8,59 +8,59 @@ Opaline's core token contract defines 26 tokens across 6 namespaces:
 
 ### Text
 
-| Token | Purpose |
-|-------|---------|
-| `text.primary` | Main body text |
+| Token            | Purpose             |
+| ---------------- | ------------------- |
+| `text.primary`   | Main body text      |
 | `text.secondary` | Less prominent text |
-| `text.muted` | De-emphasized text |
-| `text.dim` | Very subtle text |
+| `text.muted`     | De-emphasized text  |
+| `text.dim`       | Very subtle text    |
 
 ### Background
 
-| Token | Purpose |
-|-------|---------|
-| `bg.base` | Main background |
-| `bg.panel` | Panel/sidebar background |
-| `bg.code` | Code block background |
+| Token          | Purpose                     |
+| -------------- | --------------------------- |
+| `bg.base`      | Main background             |
+| `bg.panel`     | Panel/sidebar background    |
+| `bg.code`      | Code block background       |
 | `bg.highlight` | Highlighted line background |
-| `bg.selection` | Selection background |
+| `bg.selection` | Selection background        |
 
 ### Accent
 
-| Token | Purpose |
-|-------|---------|
-| `accent.primary` | Main accent (keywords, active states) |
-| `accent.secondary` | Secondary accent (functions, links) |
-| `accent.tertiary` | Third accent (types, special elements) |
-| `accent.deep` | Deep/saturated accent for emphasis |
+| Token              | Purpose                                |
+| ------------------ | -------------------------------------- |
+| `accent.primary`   | Main accent (keywords, active states)  |
+| `accent.secondary` | Secondary accent (functions, links)    |
+| `accent.tertiary`  | Third accent (types, special elements) |
+| `accent.deep`      | Deep/saturated accent for emphasis     |
 
 ### Status
 
-| Token | Purpose |
-|-------|---------|
-| `success` | Success states |
-| `error` | Error states |
-| `warning` | Warning states |
-| `info` | Informational states |
+| Token     | Purpose              |
+| --------- | -------------------- |
+| `success` | Success states       |
+| `error`   | Error states         |
+| `warning` | Warning states       |
+| `info`    | Informational states |
 
 ### Border
 
-| Token | Purpose |
-|-------|---------|
-| `border.focused` | Focused panel border |
+| Token              | Purpose                |
+| ------------------ | ---------------------- |
+| `border.focused`   | Focused panel border   |
 | `border.unfocused` | Unfocused panel border |
 
 ### Code
 
-| Token | Purpose |
-|-------|---------|
-| `code.keyword` | Language keywords |
-| `code.function` | Function names |
-| `code.string` | String literals |
-| `code.number` | Numeric literals |
-| `code.comment` | Comments |
-| `code.type` | Type names |
-| `code.line_number` | Line numbers |
+| Token              | Purpose           |
+| ------------------ | ----------------- |
+| `code.keyword`     | Language keywords |
+| `code.function`    | Function names    |
+| `code.string`      | String literals   |
+| `code.number`      | Numeric literals  |
+| `code.comment`     | Comments          |
+| `code.type`        | Type names        |
+| `code.line_number` | Line numbers      |
 
 ## Accessing Tokens
 
@@ -70,7 +70,7 @@ let theme = opaline::Theme::default();
 // Get a resolved color (falls back to magenta if missing)
 let color = theme.color("accent.primary");
 
-// Strict lookup — None if missing
+// Strict lookup: None if missing
 let color = theme.try_color("accent.primary");
 
 // Check existence

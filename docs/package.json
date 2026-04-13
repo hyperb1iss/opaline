@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Opaline Documentation \u2014 Token-based theme engine for Ratatui",
+  "description": "Opaline Documentation: Token-based theme engine for Rust",
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",

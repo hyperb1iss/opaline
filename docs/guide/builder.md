@@ -63,18 +63,18 @@ assert!(theme.has_gradient("aurora"));
 
 All builder methods return `Self` for chaining:
 
-| Method | Description |
-|--------|-------------|
-| `Theme::builder(name)` | Start building with a theme name |
-| `.author(author)` | Set the theme author |
-| `.variant(variant)` | Set dark/light variant |
-| `.version(version)` | Set theme version string |
-| `.description(desc)` | Set theme description |
-| `.palette(name, color)` | Add a palette color |
-| `.token(name, color)` | Add a semantic token |
-| `.style(name, style)` | Add a composed style |
+| Method                      | Description                                   |
+| --------------------------- | --------------------------------------------- |
+| `Theme::builder(name)`      | Start building with a theme name              |
+| `.author(author)`           | Set the theme author                          |
+| `.variant(variant)`         | Set dark/light variant                        |
+| `.version(version)`         | Set theme version string                      |
+| `.description(desc)`        | Set theme description                         |
+| `.palette(name, color)`     | Add a palette color                           |
+| `.token(name, color)`       | Add a semantic token                          |
+| `.style(name, style)`       | Add a composed style                          |
 | `.gradient(name, gradient)` | Add a gradient (requires `gradients` feature) |
-| `.build()` | Consume the builder and produce a `Theme` |
+| `.build()`                  | Consume the builder and produce a `Theme`     |
 
 ## Testing Pattern
 

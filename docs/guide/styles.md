@@ -27,17 +27,17 @@ let fancy = OpalineStyle::new()
 
 Opaline supports all 9 terminal text modifiers:
 
-| Modifier | Method | TOML Key |
-|----------|--------|----------|
-| **Bold** | `.bold()` | `bold = true` |
-| **Italic** | `.italic()` | `italic = true` |
-| **Underline** | `.underline()` | `underline = true` |
-| **Dim** | `.dim()` | `dim = true` |
+| Modifier          | Method             | TOML Key               |
+| ----------------- | ------------------ | ---------------------- |
+| **Bold**          | `.bold()`          | `bold = true`          |
+| **Italic**        | `.italic()`        | `italic = true`        |
+| **Underline**     | `.underline()`     | `underline = true`     |
+| **Dim**           | `.dim()`           | `dim = true`           |
 | **Strikethrough** | `.strikethrough()` | `strikethrough = true` |
-| **Reversed** | `.reversed()` | `reversed = true` |
-| **Hidden** | `.hidden()` | `hidden = true` |
-| **Rapid Blink** | `.rapid_blink()` | `rapid_blink = true` |
-| **Slow Blink** | `.slow_blink()` | `slow_blink = true` |
+| **Reversed**      | `.reversed()`      | `reversed = true`      |
+| **Hidden**        | `.hidden()`        | `hidden = true`        |
+| **Rapid Blink**   | `.rapid_blink()`   | `rapid_blink = true`   |
+| **Slow Blink**    | `.slow_blink()`    | `slow_blink = true`    |
 
 ## Defining Styles in TOML
 
@@ -56,21 +56,21 @@ inline_code = { fg = "success", bg = "bg.code" }
 
 Every builtin theme must define these 13 styles:
 
-| Style | Purpose |
-|-------|---------|
-| `keyword` | Language keywords |
-| `line_number` | Code line numbers |
-| `selected` | Selected item |
-| `active_selected` | Active + selected item |
-| `focused_border` | Focused panel border |
+| Style              | Purpose                |
+| ------------------ | ---------------------- |
+| `keyword`          | Language keywords      |
+| `line_number`      | Code line numbers      |
+| `selected`         | Selected item          |
+| `active_selected`  | Active + selected item |
+| `focused_border`   | Focused panel border   |
 | `unfocused_border` | Unfocused panel border |
-| `success_style` | Success state |
-| `error_style` | Error state |
-| `warning_style` | Warning state |
-| `info_style` | Info state |
-| `dimmed` | Dimmed/subtle text |
-| `muted` | Muted text |
-| `inline_code` | Inline code snippets |
+| `success_style`    | Success state          |
+| `error_style`      | Error state            |
+| `warning_style`    | Warning state          |
+| `info_style`       | Info state             |
+| `dimmed`           | Dimmed/subtle text     |
+| `muted`            | Muted text             |
+| `inline_code`      | Inline code snippets   |
 
 Domain-specific styles such as git status colors, diff styles, timestamps, authors, and mode indicators should be derived by consuming apps rather than required by Opaline core.
 
@@ -97,7 +97,7 @@ let names = theme.style_names();
 
 ## Merging Styles
 
-Styles can be merged — the overlay's non-default fields override the base:
+Styles can be merged. The overlay's non-default fields override the base:
 
 ```rust
 let base = OpalineStyle::fg(OpalineColor::new(255, 255, 255));

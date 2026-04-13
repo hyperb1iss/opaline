@@ -34,7 +34,7 @@ let theme = opaline::Theme::default();
 let start = theme.gradient("primary", 0.0); // first stop color
 let end = theme.gradient("primary", 1.0);   // last stop color
 
-// Midpoint — interpolated
+// Midpoint (interpolated)
 let mid = theme.gradient("primary", 0.5);
 ```
 
@@ -58,13 +58,13 @@ assert_eq!(colors.len(), 10);
 
 Every builtin theme defines these 5 gradients:
 
-| Gradient | Purpose |
-|----------|---------|
-| `primary` | Main accent gradient (accent.primary → accent.secondary) |
-| `warm` | Warm tones gradient |
-| `success_gradient` | Success state gradient |
-| `error_gradient` | Error state gradient |
-| `aurora` | Multi-stop decorative gradient (5 stops) |
+| Gradient           | Purpose                                                  |
+| ------------------ | -------------------------------------------------------- |
+| `primary`          | Main accent gradient (accent.primary → accent.secondary) |
+| `warm`             | Warm tones gradient                                      |
+| `success_gradient` | Success state gradient                                   |
+| `error_gradient`   | Error state gradient                                     |
+| `aurora`           | Multi-stop decorative gradient (5 stops)                 |
 
 ## Ratatui Integration
 
@@ -72,7 +72,7 @@ With the `ratatui` feature, gradients become Ratatui spans directly.
 
 ### High-Level: Theme Methods
 
-The simplest way to render gradient text — no extra imports:
+The simplest way to render gradient text, no extra imports needed:
 
 ```rust
 let theme = opaline::Theme::default();
@@ -91,13 +91,13 @@ use opaline::{Theme, gradient_spans, gradient_text_line, gradient_bar};
 let theme = Theme::default();
 let gradient = theme.get_gradient("primary").unwrap();
 
-// Vec<Span> — each character colored along the gradient
+// Vec<Span>: each character colored along the gradient
 let spans = gradient_spans("Status: Online", gradient);
 
-// Line — gradient-colored text
+// Line: gradient-colored text
 let line = gradient_text_line("Loading...", gradient);
 
-// Line — repeated block characters for progress bars
+// Line: repeated block characters for progress bars
 let bar = gradient_bar(40, '█', gradient);
 ```
 

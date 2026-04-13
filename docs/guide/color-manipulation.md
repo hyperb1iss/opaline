@@ -1,6 +1,6 @@
 # Color Manipulation
 
-`OpalineColor` provides methods for deriving new colors from existing ones — darkening, lightening, and desaturating. These are especially useful for [app-level token derivation](./derivation.md), where you compute UI-specific colors from a theme's palette.
+`OpalineColor` provides methods for deriving new colors from existing ones: darkening, lightening, and desaturating. These are especially useful for [app-level token derivation](./derivation.md), where you compute UI-specific colors from a theme's palette.
 
 ## Methods
 
@@ -47,7 +47,7 @@ OpalineColor::BLACK  // OpalineColor { r: 0, g: 0, b: 0 }
 OpalineColor::WHITE  // OpalineColor { r: 255, g: 255, b: 255 }
 ```
 
-These are what `darken()` and `lighten()` mix toward internally — they all delegate to `lerp()`.
+These are what `darken()` and `lighten()` mix toward internally; they all delegate to `lerp()`.
 
 ## Chaining
 
