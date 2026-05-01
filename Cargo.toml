@@ -37,6 +37,7 @@ crossterm = ["dep:crossterm"]
 owo-colors = ["dep:owo-colors"]
 syntect = ["dep:syntect"]
 egui = ["dep:egui"]
+iced = ["dep:iced_core"]
 
 [dependencies]
 thiserror = "2.0"
@@ -53,6 +54,7 @@ colored = { version = "3", optional = true }
 owo-colors = { version = "4", optional = true }
 syntect = { version = "5", optional = true, default-features = false }
 egui = { version = "0.33", optional = true, default-features = false }
+iced_core = { version = "0.14", optional = true }
 
 [dev-dependencies]
 pretty_assertions = "1"

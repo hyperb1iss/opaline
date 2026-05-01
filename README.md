@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>A token-based theme engine for Rust applications</strong><br>
-  <sub>39 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; ratatui &middot; egui &middot; crossterm &middot; syntect &middot; CSS</sub>
+  <sub>39 builtin themes &middot; semantic tokens &middot; multi-stop gradients &middot; ratatui &middot; egui &middot; iced &middot; crossterm &middot; syntect &middot; CSS</sub>
 </p>
 
 <p align="center">
@@ -53,7 +53,7 @@
 
 Opaline is a **theme engine** that brings consistent, beautiful color to Rust applications. Instead of scattering hex codes across your codebase, you define themes as TOML files with a **palette → token → style → gradient** resolution pipeline. Switch themes at runtime with a single call — every widget updates instantly.
 
-Opaline ships adapters for **ratatui**, **egui**, **crossterm**, **owo-colors**, **syntect**, and **CSS** — one theme definition, every rendering target.
+Opaline ships adapters for **ratatui**, **egui**, **iced**, **crossterm**, **owo-colors**, **syntect**, and **CSS** — one theme definition, every rendering target.
 
 ```
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
@@ -70,6 +70,7 @@ Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme 
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
 | 🎮 **egui Integration** | `Color32` conversion, full `Visuals` generation from theme tokens |
+| 🪄 **iced Integration** | `Color` conversion plus `Palette`/`Custom` theme generation from theme tokens |
 | ⌨️ **Crossterm Adapter** | Direct `Color`/`ContentStyle` conversion with gradient rendering |
 | 🌈 **owo-colors Adapter** | Zero-allocation terminal coloring with `Style` conversion |
 | 🖌️ **Syntax Highlighting** | Generate [syntect](https://crates.io/crates/syntect) themes — powers bat, delta, and more |
@@ -269,6 +270,7 @@ The resolver validates everything at load time — circular references, missing 
 | `css` | — | CSS custom properties + classes generation |
 | `syntect` | — | Syntax highlighting theme generation |
 | `egui` | — | egui `Visuals`/`Color32` adapter |
+| `iced` | — | iced `Custom`/`Palette`/`Color` adapter |
 | `global-state` | — | Process-wide `current()`/`set_theme()` |
 | `discovery` | — | Load user themes from `~/.config/` |
 | `widgets` | — | Theme selector widget with live preview |
@@ -304,7 +306,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 ```bash
 cargo check                               # Fast type check
 cargo clippy --all-targets --all-features  # Pedantic lint gate
-cargo test --all-features                  # Full test suite (203 tests)
+cargo test --all-features                  # Full test suite (210 tests)
 cargo doc --all-features --open            # Generate docs
 cargo run --example theme-showcase         # Interactive TUI demo
 ```

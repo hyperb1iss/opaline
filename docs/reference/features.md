@@ -24,6 +24,7 @@ These must be explicitly enabled:
 | `css`          | CSS custom properties + classes generation from tokens/styles/gradients | None                                                                                              |
 | `syntect`      | Syntax highlighting theme generation: `Color`, `StyleModifier`, `Theme` | `syntect 5`                                                                                       |
 | `egui`         | Immediate-mode GUI adapter: `Color32`, `Visuals` from theme tokens      | `egui 0.33`                                                                                       |
+| `iced`         | iced GUI adapter: `Color`, `Palette`, `Custom` theme from theme tokens  | `iced_core 0.14`                                                                                  |
 | `global-state` | Process-wide theme singleton: `current()`, `set_theme()`                | `parking_lot 0.12`                                                                                |
 | `discovery`    | User theme directory scanning: `app_theme_dirs()`, `theme_dirs()`       | `dirs 6`                                                                                          |
 | `widgets`      | Theme selector widget with live preview                                 | `ratatui 0.30`, `crossterm 0.29`, `unicode-width 0.2` (enables `global-state` + `builtin-themes`) |
@@ -67,6 +68,10 @@ opaline = { version = "0.4", features = ["syntect"] }
 [dependencies]
 opaline = { version = "0.4", features = ["egui"] }
 
+# iced GUI theming
+[dependencies]
+opaline = { version = "0.4", features = ["iced"] }
+
 # Full TUI app with global state
 [dependencies]
 opaline = { version = "0.4", features = ["global-state"] }
@@ -84,7 +89,7 @@ opaline = { version = "0.4", features = ["widgets"] }
 opaline = { version = "0.4", features = [
     "builtin-themes", "gradients", "ratatui",
     "cli", "crossterm", "owo-colors", "css",
-    "syntect", "egui",
+    "syntect", "egui", "iced",
     "global-state", "discovery", "widgets"
 ] }
 ```

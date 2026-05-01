@@ -34,6 +34,7 @@ src/
     css.rs            # CSS custom properties + classes from tokens/styles/gradients
     syntect.rs        # Syntax highlighting: Theme/Color/StyleModifier generation
     egui.rs           # Immediate-mode GUI: Color32, Visuals from theme tokens
+    iced.rs           # iced GUI: Color, Palette, Custom theme from theme tokens
 build.rs              # Compile-time theme auto-discovery and codegen
 tests/
   color_tests.rs      # Hex parsing, lerp, Display, FromStr
@@ -49,6 +50,7 @@ tests/
   css_tests.rs        # CSS vars, classes, gradients, stylesheet
   syntect_tests.rs    # Color, StyleModifier, Theme generation
   egui_tests.rs       # Color32, Visuals, widget visuals, selection
+  iced_tests.rs       # Color, Palette mapping, Extended palette, Custom theme
 docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```
 
@@ -57,7 +59,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (203 tests)
+cargo test --all-features                 # Full test suite (210 tests)
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -76,6 +78,7 @@ cd docs && pnpm build                     # Build docs for deployment
 | `css` | no | CSS custom properties + classes generation |
 | `syntect` | no | Syntax highlighting theme generation |
 | `egui` | no | egui Visuals/Color32 adapter |
+| `iced` | no | iced Custom/Palette/Color adapter |
 | `global-state` | no | Process-wide current()/set_theme() |
 | `discovery` | no | Load user themes from ~/.config/ |
 | `widgets` | no | Theme selector widget with live preview |
