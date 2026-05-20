@@ -1,9 +1,9 @@
 //! egui adapter — apply Opaline themes to immediate-mode GUIs.
 //!
-//! Provides `From` conversions for [`Color32`](egui::Color32) and a
+//! Provides `From` conversions for [`Color32`] and a
 //! [`to_egui_visuals`] function that maps theme tokens onto egui's
-//! [`Visuals`](egui::Visuals), starting from the appropriate dark/light
-//! base and overriding all color properties.
+//! [`Visuals`], starting from the appropriate dark/light base and
+//! overriding all color properties.
 //!
 //! ```rust,ignore
 //! let theme = opaline::Theme::default();

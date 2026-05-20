@@ -33,7 +33,7 @@ Opaline supports all 9 terminal text modifiers:
 | **Italic**        | `.italic()`        | `italic = true`        |
 | **Underline**     | `.underline()`     | `underline = true`     |
 | **Dim**           | `.dim()`           | `dim = true`           |
-| **Strikethrough** | `.strikethrough()` | `strikethrough = true` |
+| **Crossed Out**   | `.crossed_out()`   | `crossed_out = true`   |
 | **Reversed**      | `.reversed()`      | `reversed = true`      |
 | **Hidden**        | `.hidden()`        | `hidden = true`        |
 | **Rapid Blink**   | `.rapid_blink()`   | `rapid_blink = true`   |

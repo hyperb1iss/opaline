@@ -91,7 +91,7 @@ Add opaline to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-opaline = "0.2"
+opaline = "0.4"
 ```
 
 Load a theme and start styling:

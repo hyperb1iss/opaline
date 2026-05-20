@@ -81,7 +81,7 @@ All 9 Opaline modifiers map to their Ratatui equivalents:
 | `italic`        | `Modifier::ITALIC`      |
 | `underline`     | `Modifier::UNDERLINED`  |
 | `dim`           | `Modifier::DIM`         |
-| `strikethrough` | `Modifier::CROSSED_OUT` |
+| `crossed_out`   | `Modifier::CROSSED_OUT` |
 | `reversed`      | `Modifier::REVERSED`    |
 | `hidden`        | `Modifier::HIDDEN`      |
 | `rapid_blink`   | `Modifier::RAPID_BLINK` |

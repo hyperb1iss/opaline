@@ -95,7 +95,7 @@ impl Styled for OpalineStyle {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 impl Theme {
-    /// Create a styled [`Span`](ratatui_core::text::Span) from a named style.
+    /// Create a styled [`Span`] from a named style.
     pub fn span<'a>(
         &self,
         style_name: &str,

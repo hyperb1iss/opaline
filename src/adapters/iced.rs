@@ -1,8 +1,7 @@
 //! iced adapter — apply Opaline themes to iced GUIs.
 //!
-//! Provides `From` conversions for [`Color`](iced_core::Color) and helpers
-//! that map theme tokens onto iced's [`Palette`](iced_core::theme::Palette)
-//! and [`Custom`](iced_core::theme::Custom) theme.
+//! Provides `From` conversions for [`Color`] and helpers that map theme
+//! tokens onto iced's [`Palette`] and [`Custom`] theme.
 //!
 //! ```rust,ignore
 //! use iced::Theme;

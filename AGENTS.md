@@ -43,7 +43,6 @@ tests/
   resolver_tests.rs   # Pipeline, cycle detection, strict error paths
   loader_tests.rs     # TOML loading, error paths
   builtins_tests.rs   # Theme validation, token/style/gradient contracts (39 themes)
-  export_tests.rs     # TOML export round-trip, save_to_file
   adapter_tests.rs    # Ratatui From impls, inherent methods, Styled trait, all modifiers
   crossterm_tests.rs  # Crossterm Color, ContentStyle, gradient helpers
   owo_colors_tests.rs # owo-colors Style, OwoThemeExt, gradient_string

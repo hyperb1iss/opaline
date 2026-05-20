@@ -20,8 +20,8 @@ let color = OpalineColor::from([225, 53, 255]);
 // Access
 let (r, g, b) = (color.r, color.g, color.b);
 
-// Interpolation
-let mid = OpalineColor::lerp(&start, &end, 0.5);
+// Interpolation (takes self by value)
+let mid = start.lerp(end, 0.5);
 
 // Display
 assert_eq!(format!("{color}"), "#e135ff");
@@ -51,7 +51,7 @@ let style = OpalineStyle::fg(color)
     .italic()
     .underline()
     .dim()
-    .strikethrough()
+    .crossed_out()
     .reversed()
     .hidden()
     .rapid_blink()

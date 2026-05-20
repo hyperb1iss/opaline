@@ -8,7 +8,7 @@ The easiest way to contribute — drop a `.toml` file in `src/builtins/`:
 
 1. Copy an existing theme as a starting point
 2. Fill in `[meta]`, `[palette]`, `[tokens]`, `[styles]`, `[gradients]`
-3. Run `cargo test --all-features` — the contract tests enforce 40+ tokens, 18 styles, 5 gradients
+3. Run `cargo test --all-features` — the contract tests enforce 26 tokens, 13 styles, 5 gradients
 4. Open a PR
 
 Use underscores in filenames (e.g., `my_theme.toml` becomes id `my-theme`). Themes are auto-discovered at compile time via `build.rs`.
