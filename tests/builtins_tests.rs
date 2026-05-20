@@ -3,6 +3,12 @@ use opaline::builtins;
 use opaline::schema::ThemeVariant;
 use pretty_assertions::assert_eq;
 use std::fs;
+
+#[cfg(all(
+    feature = "builtin-themes",
+    feature = "discovery",
+    feature = "global-state"
+))]
 use std::sync::{Mutex, MutexGuard, OnceLock};
 
 #[cfg(all(

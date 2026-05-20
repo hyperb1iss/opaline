@@ -186,7 +186,9 @@ impl OpalineStyle {
 
     /// Returns a `Modifier` bitfield of all active modifiers.
     ///
-    /// This is a convenience for building adapter conversions.
+    /// Bit layout matches `ratatui_core::style::Modifier`; used by the ratatui
+    /// adapter to build `Style` values in one shot.
+    #[cfg(feature = "ratatui")]
     pub(crate) fn modifier_bits(&self) -> u16 {
         let mut bits: u16 = 0;
         if self.bold {

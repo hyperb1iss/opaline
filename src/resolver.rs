@@ -88,7 +88,7 @@ fn resolve_token(
     }
 
     // Cycle detection — Vec preserves traversal order for readable error messages
-    if chain.contains(&name.to_string()) {
+    if chain.iter().any(|entry| entry == name) {
         chain.push(name.to_string()); // close the cycle in the output
         return Err(OpalineError::CircularReference {
             token: name.to_string(),
