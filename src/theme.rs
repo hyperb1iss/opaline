@@ -11,8 +11,8 @@ use crate::style::OpalineStyle;
 ///
 /// Contains resolved palette colors, semantic tokens, composed styles, and
 /// gradients. Access colors by token name with [`color()`](Self::color),
-/// styles by name with [`style()`](Self::style), and gradients with
-/// [`gradient()`](Self::gradient).
+/// styles by name with [`style()`](Self::style), and gradients via
+/// `gradient()` (requires the `gradients` feature).
 #[derive(Debug, Clone)]
 pub struct Theme {
     pub meta: ThemeMeta,

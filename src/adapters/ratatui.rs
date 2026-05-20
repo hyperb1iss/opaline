@@ -9,9 +9,7 @@
 use std::borrow::Cow;
 
 use ratatui_core::style::{Color, Modifier, Style, Styled};
-#[cfg(feature = "gradients")]
-use ratatui_core::text::Span;
-use ratatui_core::text::{Line, Text};
+use ratatui_core::text::{Line, Span, Text};
 #[cfg(feature = "gradients")]
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -96,12 +94,8 @@ impl Styled for OpalineStyle {
 
 impl Theme {
     /// Create a styled [`Span`] from a named style.
-    pub fn span<'a>(
-        &self,
-        style_name: &str,
-        content: impl Into<Cow<'a, str>>,
-    ) -> ratatui_core::text::Span<'a> {
-        ratatui_core::text::Span::styled(content, Style::from(self.style(style_name)))
+    pub fn span<'a>(&self, style_name: &str, content: impl Into<Cow<'a, str>>) -> Span<'a> {
+        Span::styled(content, Style::from(self.style(style_name)))
     }
 
     /// Create a styled [`Line`] from a named style.
