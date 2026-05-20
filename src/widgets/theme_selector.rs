@@ -696,7 +696,12 @@ fn render_gradient_bar(t: &Theme, x: u16, y: u16, w: u16, max_y: u16, buf: &mut 
 }
 
 /// Simple word-wrap for preview descriptions.
-fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
+///
+/// Splits on whitespace and uses `unicode_width::UnicodeWidthStr` so display
+/// width drives wrapping rather than byte length. Overlong words pass through
+/// unbroken — callers handle truncation if needed.
+#[doc(hidden)]
+pub fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
     if max_width == 0 {
         return vec![];
     }
@@ -725,33 +730,4 @@ fn wrap_text(text: &str, max_width: usize) -> Vec<String> {
     }
 
     lines
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn wrap_text_basic() {
-        let result = wrap_text("hello world foo", 12);
-        assert_eq!(result, vec!["hello world", "foo"]);
-    }
-
-    #[test]
-    fn wrap_text_empty() {
-        let result = wrap_text("", 20);
-        assert!(result.is_empty());
-    }
-
-    #[test]
-    fn wrap_text_single_long_word() {
-        let result = wrap_text("superlongword", 5);
-        assert_eq!(result, vec!["superlongword"]);
-    }
-
-    #[test]
-    fn wrap_text_uses_display_width() {
-        let result = wrap_text("é é", 3);
-        assert_eq!(result, vec!["é é"]);
-    }
 }

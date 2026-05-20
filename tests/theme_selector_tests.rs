@@ -4,6 +4,7 @@ use std::sync::{Mutex, MutexGuard, OnceLock};
 
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 
+use opaline::widgets::wrap_text;
 use opaline::{Theme, ThemeSelectorAction, ThemeSelectorState, current, set_theme};
 
 fn global_lock() -> MutexGuard<'static, ()> {
@@ -54,4 +55,30 @@ fn esc_restores_original_theme_snapshot() {
     assert_eq!(current().meta.name, "Original Snapshot");
 
     set_theme((*previous).clone());
+}
+
+// ── wrap_text unit tests ────────────────────────────────────────────────
+
+#[test]
+fn wrap_text_splits_at_word_boundary() {
+    let result = wrap_text("hello world foo", 12);
+    assert_eq!(result, vec!["hello world", "foo"]);
+}
+
+#[test]
+fn wrap_text_returns_empty_for_blank_input() {
+    let result = wrap_text("", 20);
+    assert!(result.is_empty());
+}
+
+#[test]
+fn wrap_text_passes_overlong_word_through_unbroken() {
+    let result = wrap_text("superlongword", 5);
+    assert_eq!(result, vec!["superlongword"]);
+}
+
+#[test]
+fn wrap_text_uses_display_width_not_byte_length() {
+    let result = wrap_text("é é", 3);
+    assert_eq!(result, vec!["é é"]);
 }
