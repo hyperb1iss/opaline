@@ -83,13 +83,13 @@ pub fn to_egui_visuals(theme: &Theme) -> Visuals {
     v.hyperlink_color = accent;
     v.warn_fg_color = theme.color("warning").into();
     v.error_fg_color = theme.color("error").into();
-    v.window_stroke = Stroke::new(1.0, border_unfocused);
+    v.window_stroke = Stroke::new(1.0_f32, border_unfocused);
 
     // ── Selection ────────────────────────────────────────────────────────
 
     v.selection = Selection {
         bg_fill: bg_selection,
-        stroke: Stroke::new(1.0, accent),
+        stroke: Stroke::new(1.0_f32, accent),
     };
 
     // ── Widgets ──────────────────────────────────────────────────────────
@@ -98,36 +98,36 @@ pub fn to_egui_visuals(theme: &Theme) -> Visuals {
         noninteractive: WidgetVisuals {
             bg_fill: bg_base,
             weak_bg_fill: bg_base,
-            bg_stroke: Stroke::new(1.0, border_unfocused),
-            fg_stroke: Stroke::new(1.0, text_muted),
+            bg_stroke: Stroke::new(1.0_f32, border_unfocused),
+            fg_stroke: Stroke::new(1.0_f32, text_muted),
             ..v.widgets.noninteractive
         },
         inactive: WidgetVisuals {
             bg_fill: bg_panel,
             weak_bg_fill: bg_panel,
-            bg_stroke: Stroke::new(1.0, border_unfocused),
-            fg_stroke: Stroke::new(1.0, text_secondary),
+            bg_stroke: Stroke::new(1.0_f32, border_unfocused),
+            fg_stroke: Stroke::new(1.0_f32, text_secondary),
             ..v.widgets.inactive
         },
         hovered: WidgetVisuals {
             bg_fill: bg_highlight,
             weak_bg_fill: bg_highlight,
-            bg_stroke: Stroke::new(1.0, border_focused),
-            fg_stroke: Stroke::new(1.5, accent),
+            bg_stroke: Stroke::new(1.0_f32, border_focused),
+            fg_stroke: Stroke::new(1.5_f32, accent),
             ..v.widgets.hovered
         },
         active: WidgetVisuals {
             bg_fill: bg_selection,
             weak_bg_fill: bg_selection,
-            bg_stroke: Stroke::new(1.0, accent),
-            fg_stroke: Stroke::new(2.0, accent),
+            bg_stroke: Stroke::new(1.0_f32, accent),
+            fg_stroke: Stroke::new(2.0_f32, accent),
             ..v.widgets.active
         },
         open: WidgetVisuals {
             bg_fill: bg_highlight,
             weak_bg_fill: bg_highlight,
-            bg_stroke: Stroke::new(1.0, accent_secondary),
-            fg_stroke: Stroke::new(1.0, text_primary),
+            bg_stroke: Stroke::new(1.0_f32, accent_secondary),
+            fg_stroke: Stroke::new(1.0_f32, text_primary),
             ..v.widgets.open
         },
     };
