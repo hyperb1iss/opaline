@@ -2,10 +2,13 @@
 
 use std::sync::{Mutex, MutexGuard, OnceLock};
 
-use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
+use crossterm::event::{KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
+use ratatui::buffer::Buffer;
+use ratatui::layout::Rect;
+use ratatui::widgets::StatefulWidget;
 
 use opaline::widgets::wrap_text;
-use opaline::{Theme, ThemeSelectorAction, ThemeSelectorState, current, set_theme};
+use opaline::{Theme, ThemeSelector, ThemeSelectorAction, ThemeSelectorState, current, set_theme};
 
 fn global_lock() -> MutexGuard<'static, ()> {
     static LOCK: OnceLock<Mutex<()>> = OnceLock::new();
@@ -81,4 +84,96 @@ fn wrap_text_passes_overlong_word_through_unbroken() {
 fn wrap_text_uses_display_width_not_byte_length() {
     let result = wrap_text("é é", 3);
     assert_eq!(result, vec!["é é"]);
+}
+
+#[test]
+fn release_events_are_ignored() {
+    let _guard = global_lock();
+    let previous = current();
+
+    let mut state = ThemeSelectorState::new();
+    let release = KeyEvent::new_with_kind(
+        KeyCode::Char('a'),
+        KeyModifiers::NONE,
+        KeyEventKind::Release,
+    );
+
+    assert_eq!(state.handle_key(release), ThemeSelectorAction::Noop);
+    assert_eq!(state.filter(), "");
+
+    set_theme((*previous).clone());
+}
+
+#[test]
+fn control_chords_do_not_enter_the_filter() {
+    let _guard = global_lock();
+    let previous = current();
+
+    let mut state = ThemeSelectorState::new();
+
+    assert_eq!(
+        state.handle_key(KeyEvent::new(KeyCode::Char('c'), KeyModifiers::CONTROL)),
+        ThemeSelectorAction::Noop
+    );
+    assert_eq!(
+        state.handle_key(KeyEvent::new(KeyCode::Char('w'), KeyModifiers::ALT)),
+        ThemeSelectorAction::Noop
+    );
+    assert_eq!(state.filter(), "");
+
+    // Shift is just an uppercase character, which is still search input.
+    assert_eq!(
+        state.handle_key(KeyEvent::new(KeyCode::Char('N'), KeyModifiers::SHIFT)),
+        ThemeSelectorAction::FilterChanged
+    );
+    assert_eq!(state.filter(), "N");
+
+    set_theme((*previous).clone());
+}
+
+#[test]
+fn enter_without_navigation_applies_the_reported_theme() {
+    let _guard = global_lock();
+    let previous = current();
+
+    set_theme(opaline::load_by_name("nord").expect("nord loads"));
+    let mut state = ThemeSelectorState::new();
+    let expected = state.selected_theme().expect("list is not empty").clone();
+
+    let action = state.handle_key(KeyEvent::new(KeyCode::Enter, KeyModifiers::NONE));
+
+    assert_eq!(action, ThemeSelectorAction::Select(expected.name.clone()));
+    assert_eq!(current().meta.name, expected.display_name);
+
+    set_theme((*previous).clone());
+}
+
+#[test]
+fn scrolled_list_shows_the_heading_for_the_visible_section() {
+    let _guard = global_lock();
+    let previous = current();
+
+    let mut state = ThemeSelectorState::new();
+    for _ in 0..100 {
+        state.handle_key(KeyEvent::new(KeyCode::Down, KeyModifiers::NONE));
+    }
+
+    let area = Rect::new(0, 0, 80, 12);
+    let mut buf = Buffer::empty(area);
+    ThemeSelector::new().render(area, &mut buf, &mut state);
+
+    let rows: Vec<String> = (0..area.height)
+        .map(|y| (0..area.width).map(|x| buf[(x, y)].symbol()).collect())
+        .collect();
+
+    assert!(
+        rows.iter().any(|row| row.contains("Light Themes")),
+        "expected the light heading in {rows:#?}"
+    );
+    assert!(
+        !rows.iter().any(|row| row.contains("Dark Themes")),
+        "dark heading should not be visible in {rows:#?}"
+    );
+
+    set_theme((*previous).clone());
 }

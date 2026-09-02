@@ -24,7 +24,7 @@
 
 use std::sync::Arc;
 
-use crossterm::event::{KeyCode, KeyEvent};
+use crossterm::event::{KeyCode, KeyEvent, KeyEventKind, KeyModifiers};
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Layout, Rect};
 use ratatui::style::{Color, Modifier, Style};
@@ -156,6 +156,12 @@ impl ThemeSelectorState {
 
     /// Handle a key event. Returns the action taken.
     pub fn handle_key(&mut self, key: KeyEvent) -> ThemeSelectorAction {
+        // Terminals that report key-up (Windows, the kitty protocol) would
+        // otherwise fire every action twice.
+        if key.kind == KeyEventKind::Release {
+            return ThemeSelectorAction::Noop;
+        }
+
         match key.code {
             KeyCode::Up => {
                 if self.filtered_indices.is_empty() {
@@ -188,7 +194,9 @@ impl ThemeSelectorState {
             KeyCode::Enter => {
                 if let Some(&idx) = self.filtered_indices.get(self.cursor) {
                     let id = self.themes[idx].name.clone();
-                    // Theme is already applied as preview — just confirm
+                    // Enter may be the first key pressed, so make the global
+                    // theme match the id we hand back.
+                    self.apply_preview();
                     ThemeSelectorAction::Select(id)
                 } else {
                     ThemeSelectorAction::Noop
@@ -200,6 +208,13 @@ impl ThemeSelectorState {
                 ThemeSelectorAction::Cancel
             }
             KeyCode::Char(c) => {
+                // Chords like Ctrl+C belong to the host app, not the filter.
+                if key
+                    .modifiers
+                    .intersects(KeyModifiers::CONTROL | KeyModifiers::ALT | KeyModifiers::SUPER)
+                {
+                    return ThemeSelectorAction::Noop;
+                }
                 self.filter.push(c);
                 self.recompute_filter();
                 self.apply_preview();
@@ -443,31 +458,31 @@ fn render_theme_entries(
             break;
         }
 
-        let info = &state.themes[theme_idx];
-
-        // Section header on variant boundary
-        if last_variant != Some(info.variant) {
-            if (items_rendered >= state.scroll || last_variant.is_none()) && y < max_y {
-                let header_text = match info.variant {
-                    ThemeVariant::Dark => " Dark Themes",
-                    ThemeVariant::Light => " Light Themes",
-                };
-                let header = Line::from(Span::styled(
-                    header_text,
-                    Style::default()
-                        .fg(text_muted)
-                        .add_modifier(Modifier::ITALIC),
-                ));
-                header.render(Rect::new(list_area.x, y, list_area.width, 1), buf);
-                y += 1;
-            }
-            last_variant = Some(info.variant);
-        }
-
         // Skip items before scroll window
         if items_rendered < state.scroll {
             items_rendered += 1;
             continue;
+        }
+
+        let info = &state.themes[theme_idx];
+
+        // Section header on variant boundary. Only visible items feed
+        // `last_variant`, so the first row of the window always carries the
+        // heading for its own section rather than the list's first section.
+        if last_variant != Some(info.variant) {
+            let header_text = match info.variant {
+                ThemeVariant::Dark => " Dark Themes",
+                ThemeVariant::Light => " Light Themes",
+            };
+            let header = Line::from(Span::styled(
+                header_text,
+                Style::default()
+                    .fg(text_muted)
+                    .add_modifier(Modifier::ITALIC),
+            ));
+            header.render(Rect::new(list_area.x, y, list_area.width, 1), buf);
+            y += 1;
+            last_variant = Some(info.variant);
         }
 
         if y >= max_y {
