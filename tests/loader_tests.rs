@@ -55,6 +55,15 @@ fn loaded_theme_resolves_gradients() {
 }
 
 #[test]
+fn non_ascii_palette_hex_returns_invalid_color_error() {
+    // A user theme file must never crash the loader: this 7-byte value
+    // used to panic inside hex parsing at a char boundary.
+    let toml = "[meta]\nname = \"Bad\"\n[palette]\nbad = \"#a\u{e9}000\"\n";
+    let err = loader::load_from_str(toml, None).expect_err("non-ascii hex is rejected");
+    assert!(matches!(err, OpalineError::InvalidColor { ref token, .. } if token == "bad"));
+}
+
+#[test]
 fn missing_token_returns_fallback() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
     assert_eq!(theme.color("nonexistent"), OpalineColor::FALLBACK);
