@@ -47,11 +47,21 @@ fn loaded_theme_resolves_styles() {
     assert_eq!(style, OpalineStyle::fg(OpalineColor::new(255, 0, 0)).bold());
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn loaded_theme_resolves_gradients() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
     assert_eq!(theme.gradient("primary", 0.0), OpalineColor::new(255, 0, 0));
     assert_eq!(theme.gradient("primary", 1.0), OpalineColor::new(0, 0, 255));
+}
+
+#[test]
+fn non_ascii_palette_hex_returns_invalid_color_error() {
+    // A user theme file must never crash the loader: this 7-byte value
+    // used to panic inside hex parsing at a char boundary.
+    let toml = "[meta]\nname = \"Bad\"\n[palette]\nbad = \"#a\u{e9}000\"\n";
+    let err = loader::load_from_str(toml, None).expect_err("non-ascii hex is rejected");
+    assert!(matches!(err, OpalineError::InvalidColor { ref token, .. } if token == "bad"));
 }
 
 #[test]
@@ -66,6 +76,7 @@ fn missing_style_returns_default() {
     assert_eq!(theme.style("nonexistent"), OpalineStyle::default());
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn missing_gradient_returns_fallback() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
@@ -86,6 +97,7 @@ fn has_style_checks() {
     assert!(!theme.has_style("nonexistent"));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn has_gradient_checks() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
@@ -121,6 +133,7 @@ fn theme_style_names() {
     assert!(names.contains(&"keyword"));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn theme_gradient_names() {
     let theme = loader::load_from_str(MINIMAL_TOML, None).expect("valid TOML");
@@ -140,6 +153,7 @@ variant = "light"
     assert!(!theme.is_dark());
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn empty_gradient_array_returns_error() {
     let toml = r#"

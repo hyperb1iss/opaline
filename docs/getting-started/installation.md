@@ -30,7 +30,7 @@ opaline = { version = "0.4", features = ["global-state"] }
 opaline = { version = "0.4", features = [
     "builtin-themes", "gradients", "ratatui",
     "cli", "crossterm", "owo-colors", "css",
-    "syntect", "egui",
+    "syntect", "egui", "iced",
     "global-state", "discovery", "widgets"
 ] }
 ```
@@ -46,6 +46,7 @@ opaline = { version = "0.4", features = [
 | `css`            | no      | CSS custom properties + classes generation         |
 | `syntect`        | no      | Syntax highlighting theme generation               |
 | `egui`           | no      | `Color32`/`Visuals` adapter for egui               |
+| `iced`           | no      | `Color`/`Palette`/`Custom` adapter for iced        |
 | `global-state`   | no      | Process-wide `current()`/`set_theme()` singleton   |
 | `discovery`      | no      | Load user themes from `~/.config/<app>/themes/`    |
 | `widgets`        | no      | Theme selector widget with live preview            |

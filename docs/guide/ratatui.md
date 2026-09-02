@@ -63,9 +63,8 @@ let bg = Style::default().bg(theme.color("bg.base").into());
 `OpalineStyle` implements Ratatui's `Styled` trait:
 
 ```rust
-use opaline::OpalineStyle;
-use ratatui::style::Stylize;
-use ratatui::text::Span;
+use opaline::{OpalineColor, OpalineStyle};
+use ratatui::style::Styled;
 
 let style = OpalineStyle::fg(OpalineColor::new(225, 53, 255)).bold();
 let rat_style: ratatui::style::Style = style.style();

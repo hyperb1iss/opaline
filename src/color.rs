@@ -48,6 +48,11 @@ impl OpalineColor {
     /// Parse a hex color string like `#rrggbb`.
     pub fn from_hex(hex: &str) -> Result<Self, ColorParseError> {
         let hex = hex.trim();
+        // The byte-index slices below are only valid on ASCII input; a
+        // multibyte character would otherwise panic at a char boundary.
+        if !hex.is_ascii() {
+            return Err(ColorParseError::InvalidHex(hex.to_string()));
+        }
         if hex.len() != 7 || !hex.starts_with('#') {
             return Err(ColorParseError::InvalidLength(hex.len()));
         }

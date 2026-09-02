@@ -6,7 +6,8 @@
 //! pipeline: **palette** (raw hex colors) → **tokens** (semantic names) → **styles**
 //! (composed fg/bg + modifiers). Themes can also define multi-stop **gradients**.
 //!
-//! Adapters are available for ratatui, egui, crossterm, owo-colors, syntect, and CSS.
+//! Adapters are available for ratatui, egui, iced, crossterm, owo-colors, syntect,
+//! the `colored` crate, and CSS.
 //!
 //! ## Quick start
 //!
@@ -29,8 +30,15 @@
 //! | `gradients` | yes | Multi-stop gradient support |
 //! | `ratatui` | yes | `From` impls for `ratatui::style::{Color, Style}` |
 //! | `cli` | no | `colored` crate adapter for ANSI terminal output |
+//! | `crossterm` | no | Direct crossterm `Color`/`ContentStyle` adapter |
+//! | `owo-colors` | no | owo-colors zero-allocation terminal adapter |
+//! | `css` | no | CSS custom properties + classes generation |
+//! | `syntect` | no | Syntax highlighting theme generation |
+//! | `egui` | no | egui `Visuals`/`Color32` adapter |
+//! | `iced` | no | iced `Custom`/`Palette`/`Color` adapter |
 //! | `global-state` | no | Process-wide `current()`/`set_theme()` singleton |
 //! | `discovery` | no | Load user themes from `~/.config/<app>/themes/` |
+//! | `widgets` | no | Theme selector widget with live preview |
 
 pub mod color;
 pub mod error;

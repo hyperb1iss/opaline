@@ -50,6 +50,8 @@ tests/
   syntect_tests.rs    # Color, StyleModifier, Theme generation
   egui_tests.rs       # Color32, Visuals, widget visuals, selection
   iced_tests.rs       # Color, Palette mapping, Extended palette, Custom theme
+  theme_tests.rs      # register_default_token / register_default_style semantics
+  theme_selector_tests.rs # Widget key handling, filter, Esc restore
 docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```
 
@@ -58,7 +60,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (210 tests)
+cargo test --all-features                 # Full test suite
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
@@ -84,7 +86,7 @@ cd docs && pnpm build                     # Build docs for deployment
 
 ## Key Types
 
-- `OpalineColor` — RGB color with hex, tuple, array, u32 conversions + lerp
+- `OpalineColor` — RGB color with hex, tuple, array, u32 conversions + lerp + darken/lighten/desaturate
 - `OpalineStyle` — Composed style (fg, bg, 9 modifiers) with builder pattern, `#[non_exhaustive]`
 - `Gradient` — Multi-stop color interpolation (new() panics, try_new() returns Result)
 - `Theme` — Fully resolved theme with `color()`, `style()`, `gradient()` + strict `try_*` variants; ratatui `span()`, `line()`, `text()`, `gradient_text()` (no trait import needed)
@@ -117,11 +119,11 @@ Solarized (Dark, Light), One (Dark, Light)
 
 ## Token Contract
 
-Every builtin theme must define 26 core semantic tokens across these namespaces:
+Every builtin theme must define 28 core semantic tokens across these namespaces:
 `text.*`, `bg.*`, `accent.*`, `success/error/warning/info`,
 `border.*`, `code.*`
 
-Plus 13 required styles, 5 required gradients — enforced by contract tests.
+Plus 14 required styles, 5 required gradients — enforced by contract tests.
 
 App-specific semantics (git status, diff, mode indicators) are derived
 by consuming apps via `register_default_token()`, not baked into the core.

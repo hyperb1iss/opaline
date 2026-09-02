@@ -116,7 +116,7 @@ Circular references are also detected:
 
 ```rust
 // "a" = "b", "b" = "a"
-// → OpalineError::CircularReference { chain: ["a", "b", "a"] }
+// → OpalineError::CircularReference { token: "a", chain: ["a", "b", "a"] }
 ```
 
 ## Variant Helpers

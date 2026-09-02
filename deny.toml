@@ -9,6 +9,10 @@ all-features = true
 ignore = [
     # time 0.3.45 stack exhaustion — transitive dep from ratatui, fix requires MSRV > 1.85
     "RUSTSEC-2026-0009",
+    # ttf-parser unmaintained notice — only reachable with the `egui` feature via
+    # egui 0.33 → epaint → ab_glyph → owned_ttf_parser. Drops out once egui ships
+    # a release that no longer depends on it.
+    "RUSTSEC-2026-0192",
 ]
 
 # ── License compliance ────────────────────────────────────────

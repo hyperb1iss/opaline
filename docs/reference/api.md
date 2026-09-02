@@ -162,7 +162,7 @@ theme.style(styles::KEYWORD)            // OpalineStyle
 theme.has_gradient(gradients::AURORA)    // bool
 ```
 
-Modules: `names::tokens` (26 required constants), `names::styles` (13 required constants), `names::gradients` (5 constants).
+Modules: `names::tokens` (28 required constants), `names::styles` (14 required constants), `names::gradients` (5 constants).
 
 ## Ratatui Integration
 
@@ -242,7 +242,7 @@ let rainbow = gradient_string("text", grad); // String
 
 ## Global State
 
-Requires `global-state` feature.
+Requires the `global-state` feature. The `load_theme_by_name*` functions also require `builtin-themes`.
 
 ```rust
 use opaline::{current, load_theme, load_theme_by_name, set_theme, Theme};

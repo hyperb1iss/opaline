@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/docsrs/opaline?style=for-the-badge&logo=docs.rs&logoColor=white&color=80ffea" alt="docs.rs">
   </a>
   <a href="https://github.com/hyperb1iss/opaline/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/hyperb1iss/opaline/ci.yml?style=for-the-badge&logo=github-actions&logoColor=white&color=4C566A" alt="CI">
+    <img src="https://img.shields.io/github/actions/workflow/status/hyperb1iss/opaline/cicd.yml?style=for-the-badge&logo=github-actions&logoColor=white&color=4C566A" alt="CI">
   </a>
   <a href="#-builtin-themes">
     <img src="https://img.shields.io/badge/Themes-39_Built--in-ff6ac1?style=for-the-badge&logo=palette&logoColor=white" alt="39 Themes">
@@ -59,14 +59,14 @@ Opaline ships adapters for **ratatui**, **egui**, **iced**, **crossterm**, **owo
 TOML file → ThemeFile (serde) → Resolver (palette → tokens → styles → gradients) → Theme
 ```
 
-Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme families, all enforced by a strict contract test suite that validates 26 core semantic tokens, 13 required styles, and 5 gradients per theme.
+Opaline ships with **39 professionally crafted themes** spanning 17 colorscheme families, all enforced by a strict contract test suite that validates 28 core semantic tokens, 14 required styles, and 5 gradients per theme.
 
 ## ✦ Features
 
 | Feature | Description |
 | --- | --- |
 | 🎨 **39 Builtin Themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Dracula, Nord, Rose Pine, Gruvbox, Solarized, Tokyo Night, Kanagawa, Everforest, One Dark/Light |
-| 🔗 **Semantic Tokens** | 26 core tokens across generic `text.*`, `bg.*`, `accent.*`, `border.*`, and `code.*` namespaces |
+| 🔗 **Semantic Tokens** | 28 core tokens across generic `text.*`, `bg.*`, `accent.*`, `border.*`, and `code.*` namespaces |
 | 🌊 **Multi-Stop Gradients** | Smooth color interpolation with `gradient_bar()`, `gradient_text_line()`, and `gradient_spans()` |
 | 🖥️ **Deep Ratatui Integration** | `From` impls, `Styled` trait, inherent `span()`, `line()`, `text()`, `gradient_text()` on `Theme` |
 | 🎮 **egui Integration** | `Color32` conversion, full `Visuals` generation from theme tokens |
@@ -148,7 +148,7 @@ Browse all 39 themes, see every style and gradient rendered in real-time.
 | **Solarized** | Dark, Light | Precision colors for machines and people |
 | **One** | Dark, Light | Atom's iconic syntax palette |
 
-Every theme is contract-tested: 26 core semantic tokens, 13 required styles, 5 required gradients.
+Every theme is contract-tested: 28 core semantic tokens, 14 required styles, 5 required gradients.
 
 ## 🔮 Usage
 
@@ -244,11 +244,11 @@ purple = "#bb9af7"
 "bg.base" = "bg"
 "bg.selection" = "bg"
 "accent.primary" = "blue"
-# ... 26 required core tokens across text.*, bg.*, accent.*, border.*, code.*, etc.
+# ... 28 required core tokens across text.*, bg.*, accent.*, border.*, code.*, etc.
 
 [styles]
 keyword = { fg = "accent.primary", bold = true }
-# ... 13 required core styles
+# ... 14 required core styles
 
 [gradients]
 primary = ["blue", "purple"]
@@ -306,7 +306,7 @@ TOML → ThemeFile (serde) → Resolver → Theme
 ```bash
 cargo check                               # Fast type check
 cargo clippy --all-targets --all-features  # Pedantic lint gate
-cargo test --all-features                  # Full test suite (210 tests)
+cargo test --all-features                  # Full test suite
 cargo doc --all-features --open            # Generate docs
 cargo run --example theme-showcase         # Interactive TUI demo
 ```

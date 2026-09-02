@@ -232,23 +232,27 @@ fn render_styles(frame: &mut Frame, app: &App, area: Rect) {
 }
 
 fn render_style_samples(frame: &mut Frame, app: &App, area: Rect) {
+    let loaded = format!(
+        "\u{2139} {} themes loaded",
+        opaline::builtins::BUILTIN_COUNT
+    );
+    // Every name here is part of the theme contract, so each row renders
+    // with real colors in all builtin themes.
     let samples: &[(&str, &str)] = &[
         ("keyword", "fn main()"),
-        ("file_path", "src/lib.rs"),
-        ("commit_hash", "a1b2c3d"),
+        ("line_number", "  42 \u{2502}"),
+        ("cursor_line", "line under the cursor"),
+        ("selected", "selected item"),
+        ("active_selected", "active + selected item"),
+        ("focused_border", "\u{2503} focused panel"),
+        ("unfocused_border", "\u{2503} unfocused panel"),
         ("success_style", "\u{2713} Tests passed"),
         ("error_style", "\u{2717} Build failed"),
         ("warning_style", "\u{26a0} Deprecated"),
-        ("info_style", "\u{2139} 20 themes loaded"),
+        ("info_style", loaded.as_str()),
         ("dimmed", "subtle hint text"),
         ("muted", "secondary content"),
         ("inline_code", " let x = 42 "),
-        ("diff_added", "+ added line"),
-        ("diff_removed", "- removed line"),
-        ("git_staged", "\u{25cf} staged"),
-        ("git_modified", "\u{25cf} modified"),
-        ("author", "hyperb1iss"),
-        ("timestamp", "2024-01-15 09:30"),
     ];
 
     let label_style = Style::default().fg(app.theme.color("text.secondary").into());

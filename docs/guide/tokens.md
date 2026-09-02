@@ -4,7 +4,7 @@ Tokens are the **semantic layer** between raw palette colors and composed styles
 
 ## Token Namespaces
 
-Opaline's core token contract defines 26 tokens across 6 namespaces:
+Opaline's core token contract defines 28 tokens across 6 namespaces:
 
 ### Text
 
@@ -17,13 +17,17 @@ Opaline's core token contract defines 26 tokens across 6 namespaces:
 
 ### Background
 
-| Token          | Purpose                     |
-| -------------- | --------------------------- |
-| `bg.base`      | Main background             |
-| `bg.panel`     | Panel/sidebar background    |
-| `bg.code`      | Code block background       |
-| `bg.highlight` | Highlighted line background |
-| `bg.selection` | Selection background        |
+| Token          | Purpose                                                    |
+| -------------- | ---------------------------------------------------------- |
+| `bg.base`      | Main canvas: the color an app paints the whole screen with |
+| `bg.highlight` | Highlighted or hovered line background                     |
+| `bg.panel`     | Sidebars, secondary panes, status areas                    |
+| `bg.code`      | Code block background                                      |
+| `bg.elevated`  | Raised surfaces: popups, modals, dropdowns                 |
+| `bg.active`    | Active or pressed element background                       |
+| `bg.selection` | Selection background                                       |
+
+The `bg.*` tokens form a layering ladder. `bg.base` is the surface everything else sits on, and `bg.highlight`, `bg.elevated`, and `bg.active` step progressively toward the text color so each layer reads as closer to the viewer. `bg.panel` is one step away from `bg.base` in whichever direction the source palette prefers: SilkCircuit and Rose Pine raise panels slightly lighter, while Catppuccin and Kanagawa recess them slightly darker, matching how those palettes treat sidebars upstream.
 
 ### Accent
 
@@ -67,7 +71,7 @@ Opaline's core token contract defines 26 tokens across 6 namespaces:
 ```rust
 let theme = opaline::Theme::default();
 
-// Get a resolved color (falls back to magenta if missing)
+// Get a resolved color (falls back to neutral gray if missing)
 let color = theme.color("accent.primary");
 
 // Strict lookup: None if missing
@@ -95,7 +99,7 @@ let kw = theme.style(styles::KEYWORD);
 let has_aurora = theme.has_gradient(gradients::AURORA);
 ```
 
-All 26 required tokens, 13 required styles, and 5 required gradients have corresponding constants.
+All 28 required tokens, 14 required styles, and 5 required gradients have corresponding constants.
 
 ## App-Specific Tokens
 

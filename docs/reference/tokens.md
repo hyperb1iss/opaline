@@ -2,7 +2,7 @@
 
 Every builtin theme must define a minimum set of semantic tokens, styles, and gradients. This contract ensures that consuming applications can rely on these names existing in any theme.
 
-## Required Tokens (26)
+## Required Tokens (28)
 
 These tokens must be present in every builtin theme:
 
@@ -15,13 +15,15 @@ text.muted
 text.dim
 ```
 
-### Background (5)
+### Background (7)
 
 ```
 bg.base
 bg.panel
 bg.code
 bg.highlight
+bg.elevated
+bg.active
 bg.selection
 ```
 
@@ -62,11 +64,12 @@ code.type
 code.line_number
 ```
 
-## Required Styles (13)
+## Required Styles (14)
 
 ```
 keyword
 line_number
+cursor_line
 selected
 active_selected
 focused_border

@@ -1,3 +1,5 @@
+#![cfg(feature = "gradients")]
+
 use opaline::{Gradient, OpalineColor};
 use pretty_assertions::assert_eq;
 

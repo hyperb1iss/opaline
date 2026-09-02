@@ -22,16 +22,18 @@ Output:
 
 ```css
 :root {
-  --opaline-accent-primary: #cba6f7;
-  --opaline-bg-base: #1e1e2e;
-  --opaline-text-primary: #cdd6f4;
-  /* ... 39 token variables */
+  --opaline-accent-primary: #e135ff;
+  --opaline-bg-base: #121218;
+  --opaline-text-primary: #f8f8f2;
+  /* ... 28 token variables */
   --opaline-gradient-primary: linear-gradient(to right, #e135ff, #80ffea);
   --opaline-gradient-aurora: linear-gradient(
     to right,
     #e135ff,
-    #80ffea,
-    #ff6ac1
+    #f31bff,
+    #ff00ff,
+    #bf80f4,
+    #80ffea
   );
 }
 ```
@@ -53,16 +55,17 @@ Output:
 
 ```css
 .opaline-keyword {
-  color: #cba6f7;
+  color: #e135ff;
   font-weight: bold;
 }
 
 .opaline-error-style {
-  color: #f38ba8;
+  color: #ff6363;
 }
 
-.opaline-diff-added {
-  color: #a6e3a1;
+.opaline-inline-code {
+  color: #50fa7b;
+  background-color: #1e1e28;
 }
 ```
 
@@ -78,6 +81,8 @@ Style modifiers map to CSS properties:
 | `underline`   | `text-decoration: underline`    |
 | `crossed_out` | `text-decoration: line-through` |
 | `hidden`      | `visibility: hidden`            |
+
+`reversed`, `slow_blink`, and `rapid_blink` have no CSS equivalent and are skipped.
 
 ## Complete Stylesheet
 

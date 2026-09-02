@@ -27,7 +27,7 @@ These must be explicitly enabled:
 | `iced`         | iced GUI adapter: `Color`, `Palette`, `Custom` theme from theme tokens  | `iced_core 0.14`                                                                                  |
 | `global-state` | Process-wide theme singleton: `current()`, `set_theme()`                | `parking_lot 0.12`                                                                                |
 | `discovery`    | User theme directory scanning: `app_theme_dirs()`, `theme_dirs()`       | `dirs 6`                                                                                          |
-| `widgets`      | Theme selector widget with live preview                                 | `ratatui 0.30`, `crossterm 0.29`, `unicode-width 0.2` (enables `global-state` + `builtin-themes`) |
+| `widgets`      | Theme selector widget with live preview                                 | `ratatui 0.30`, `crossterm 0.29`, `unicode-width 0.2` (enables `ratatui`, `global-state`, and `builtin-themes`) |
 
 ## Configuration Examples
 

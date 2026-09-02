@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Opaline
   text: Theme Engine for Rust
-  tagline: Token-based themes with 39 builtins, gradients, and adapters for ratatui, egui, crossterm, syntect, and more
+  tagline: Token-based themes with 39 builtins, gradients, and adapters for ratatui, egui, iced, crossterm, syntect, and more
   actions:
     - theme: brand
       text: Get Started
@@ -25,7 +25,7 @@ features:
     details: Multi-stop color gradients with linear interpolation. Perfect for progress bars, status indicators, and decorative elements.
   - icon: "\u26A1"
     title: Multi-Framework Adapters
-    details: "First-class adapters for ratatui, egui, crossterm, owo-colors, syntect, and CSS. One theme, every target."
+    details: "First-class adapters for ratatui, egui, iced, crossterm, owo-colors, syntect, and CSS. One theme, every target."
   - icon: "\U0001F527"
     title: TOML-Driven
     details: Define themes in clean TOML files. Palette, tokens, styles, and gradients all declaratively configured.

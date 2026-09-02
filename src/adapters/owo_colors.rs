@@ -54,8 +54,11 @@ fn build_owo_style(s: &OpalineStyle) -> Style {
     if s.underline {
         style = style.underline();
     }
-    if s.slow_blink || s.rapid_blink {
+    if s.slow_blink {
         style = style.blink();
+    }
+    if s.rapid_blink {
+        style = style.blink_fast();
     }
     if s.reversed {
         style = style.reversed();

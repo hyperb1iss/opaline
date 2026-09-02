@@ -34,6 +34,26 @@ fn from_hex_white() {
 }
 
 #[test]
+fn from_hex_non_ascii_returns_error_instead_of_panicking() {
+    // 7 bytes but only 6 chars: byte-index slicing would land mid-char.
+    let err = OpalineColor::from_hex("#a\u{e9}000").expect_err("non-ascii is rejected");
+    assert!(matches!(err, ColorParseError::InvalidHex(_)));
+
+    // Non-ASCII at every position, including ones that keep the byte length at 7.
+    for input in [
+        "#\u{e9}\u{e9}000",
+        "#00\u{e9}00",
+        "#0000\u{e9}",
+        "\u{ff03}ff0000",
+    ] {
+        assert!(
+            OpalineColor::from_hex(input).is_err(),
+            "{input:?} should not parse"
+        );
+    }
+}
+
+#[test]
 fn from_hex_trims_whitespace() {
     let c = OpalineColor::from_hex("  #ff0000  ").expect("valid hex with whitespace");
     assert_eq!(c, OpalineColor::new(255, 0, 0));
