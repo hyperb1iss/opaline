@@ -240,6 +240,27 @@ fn all_builtins_have_required_gradients() {
     }
 }
 
+// ── Upstream fidelity ────────────────────────────────────────────────────
+
+/// Catppuccin defines `base` as the main background and `mantle` as the
+/// secondary-pane color. Every flavor must map the contract the same way
+/// so an app painted with `bg.base` matches a Catppuccin terminal.
+#[test]
+fn catppuccin_flavors_map_base_to_main_background() {
+    let expected = [
+        ("catppuccin-mocha", "#1e1e2e", "#181825", "#11111b"),
+        ("catppuccin-macchiato", "#24273a", "#1e2030", "#181926"),
+        ("catppuccin-frappe", "#303446", "#292c3c", "#232634"),
+        ("catppuccin-latte", "#eff1f5", "#e6e9ef", "#dce0e8"),
+    ];
+    for (id, base, mantle, crust) in expected {
+        let theme = builtins::load_by_name(id).expect("loads");
+        assert_eq!(theme.color("bg.base").to_hex(), base, "{id} bg.base");
+        assert_eq!(theme.color("bg.panel").to_hex(), mantle, "{id} bg.panel");
+        assert_eq!(theme.color("bg.code").to_hex(), crust, "{id} bg.code");
+    }
+}
+
 // ── Variant correctness ──────────────────────────────────────────────────
 
 #[test]
