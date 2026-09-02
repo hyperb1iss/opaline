@@ -50,6 +50,8 @@ tests/
   syntect_tests.rs    # Color, StyleModifier, Theme generation
   egui_tests.rs       # Color32, Visuals, widget visuals, selection
   iced_tests.rs       # Color, Palette mapping, Extended palette, Custom theme
+  theme_tests.rs      # register_default_token / register_default_style semantics
+  theme_selector_tests.rs # Widget key handling, filter, Esc restore
 docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```
 
@@ -84,7 +86,7 @@ cd docs && pnpm build                     # Build docs for deployment
 
 ## Key Types
 
-- `OpalineColor` — RGB color with hex, tuple, array, u32 conversions + lerp
+- `OpalineColor` — RGB color with hex, tuple, array, u32 conversions + lerp + darken/lighten/desaturate
 - `OpalineStyle` — Composed style (fg, bg, 9 modifiers) with builder pattern, `#[non_exhaustive]`
 - `Gradient` — Multi-stop color interpolation (new() panics, try_new() returns Result)
 - `Theme` — Fully resolved theme with `color()`, `style()`, `gradient()` + strict `try_*` variants; ratatui `span()`, `line()`, `text()`, `gradient_text()` (no trait import needed)

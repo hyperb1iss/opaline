@@ -3,7 +3,7 @@
 //! Provides `From` conversions for [`Color32`] and a
 //! [`to_egui_visuals`] function that maps theme tokens onto egui's
 //! [`Visuals`], starting from the appropriate dark/light base and
-//! overriding all color properties.
+//! overriding the main color properties.
 //!
 //! ```rust,ignore
 //! let theme = opaline::Theme::default();
@@ -40,8 +40,9 @@ impl From<&OpalineColor> for Color32 {
 /// Convert an Opaline [`Theme`] to egui [`Visuals`].
 ///
 /// Starts from [`Visuals::dark()`] or [`Visuals::light()`] based on the
-/// theme variant, then overrides all color-related fields from theme tokens.
-/// Non-color fields (corner radii, shadows, expansion) retain their defaults.
+/// theme variant, then overrides the main color fields from theme tokens.
+/// Text cursor, shadow, and text-edit colors keep egui's defaults, as do
+/// non-color fields (corner radii, shadows, expansion).
 pub fn to_egui_visuals(theme: &Theme) -> Visuals {
     let mut v = if theme.is_dark() {
         Visuals::dark()

@@ -34,7 +34,7 @@ let visuals = to_egui_visuals(&theme);
 ctx.set_visuals(visuals);
 ```
 
-The function starts from `Visuals::dark()` or `Visuals::light()` based on the theme variant, then overrides all color properties. Non-color properties (corner radii, shadows, spacing) retain their sensible defaults.
+The function starts from `Visuals::dark()` or `Visuals::light()` based on the theme variant, then overrides the main color properties. Text cursor, shadow, and text-edit colors keep egui's defaults, as do non-color properties (corner radii, shadows, spacing).
 
 ### Token → Visuals Mapping
 
@@ -45,7 +45,8 @@ The function starts from `Visuals::dark()` or `Visuals::light()` based on the th
 | `bg.highlight`     | `faint_bg_color`, `widgets.hovered.bg_fill`                        |
 | `bg.code`          | `code_bg_color`                                                    |
 | `bg.selection`     | `selection.bg_fill`, `widgets.active.bg_fill`                      |
-| `text.primary`     | `override_text_color`                                              |
+| `text.primary`     | `widgets.open.fg_stroke`                                           |
+| `bg.base` ±0.5     | `extreme_bg_color` (darkened for dark themes, lightened for light)  |
 | `text.secondary`   | `widgets.inactive.fg_stroke`                                       |
 | `text.muted`       | `widgets.noninteractive.fg_stroke`                                 |
 | `accent.primary`   | `hyperlink_color`, `selection.stroke`, `widgets.hovered.fg_stroke` |

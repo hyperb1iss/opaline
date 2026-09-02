@@ -17,7 +17,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:description',
-        content: 'Token-based theme engine with 39 builtin themes, gradients, and adapters for ratatui, egui, crossterm, syntect, and more',
+        content: 'Token-based theme engine with 39 builtin themes, gradients, and adapters for ratatui, egui, iced, crossterm, syntect, and more',
       },
     ],
   ],
@@ -63,6 +63,7 @@ export default defineConfig({
             { text: 'CSS Adapter', link: '/guide/css' },
             { text: 'Syntect Adapter', link: '/guide/syntect' },
             { text: 'egui Adapter', link: '/guide/egui' },
+            { text: 'iced Adapter', link: '/guide/iced' },
             { text: 'Color Manipulation', link: '/guide/color-manipulation' },
             { text: 'App-Level Derivation', link: '/guide/derivation' },
             { text: 'ThemeBuilder', link: '/guide/builder' },

@@ -17,6 +17,7 @@ use opaline::OpalineError;
 | `InvalidColor`      | Hex string isn't a valid color         | `"#xyz"`, `"not-a-color"`            |
 | `UnresolvedToken`   | Token references unknown palette/token | `"accent.primary" = "nonexistent"`   |
 | `CircularReference` | Tokens form a cycle                    | `a → b → c → a`                      |
+| `ThemeNotFound`     | Name-based loading finds no theme      | `load_theme_by_name("nope")`         |
 | `EmptyGradient`     | Gradient has no stops                  | `gradient = []`                      |
 
 ### Handling
@@ -36,7 +37,7 @@ match opaline::load_from_file("theme.toml") {
     Err(OpalineError::UnresolvedToken { token, reference }) => {
         eprintln!("Token '{token}' references unknown '{reference}'");
     }
-    Err(OpalineError::CircularReference { chain }) => {
+    Err(OpalineError::CircularReference { chain, .. }) => {
         eprintln!("Circular: {}", chain.join(" → "));
     }
     Err(e) => eprintln!("Other: {e}"),
@@ -56,9 +57,9 @@ This means a theme that loads successfully is guaranteed to have all its referen
 ::: tip
 For fallback-safe access at runtime, use the non-strict methods:
 
-- `theme.color("token")` returns a magenta fallback on miss
+- `theme.color("token")` returns a neutral gray fallback on miss
 - `theme.style("name")` returns the default style on miss
-- `theme.gradient("name", t)` returns a magenta fallback on miss
+- `theme.gradient("name", t)` returns a neutral gray fallback on miss
 
 For strict access that returns `Option`:
 

@@ -7,7 +7,7 @@
 //! let theme = Theme::default();
 //! let css = opaline::adapters::css::generate_stylesheet(&theme);
 //! // :root {
-//! //   --opaline-accent-primary: #cba6f7;
+//! //   --opaline-accent-primary: #e135ff;
 //! //   ...
 //! // }
 //! ```
@@ -17,7 +17,7 @@ use crate::theme::Theme;
 /// Generate CSS custom properties from all theme tokens.
 ///
 /// Token names are prefixed with `--opaline-` and dots/underscores become dashes:
-/// `accent.primary` → `--opaline-accent-primary: #cba6f7;`
+/// `accent.primary` → `--opaline-accent-primary: #e135ff;`
 ///
 /// When the `gradients` feature is enabled, gradient stops are emitted as
 /// `linear-gradient(to right, ...)` values.
@@ -58,7 +58,10 @@ pub fn generate_css_vars(theme: &Theme) -> String {
 /// Generate CSS classes from all theme styles.
 ///
 /// Style names are prefixed with `.opaline-` and underscores become dashes:
-/// `keyword` → `.opaline-keyword { color: #cba6f7; font-weight: bold; }`
+/// `keyword` → `.opaline-keyword { color: #e135ff; font-weight: bold; }`
+///
+/// Modifiers with no CSS equivalent (`reversed`, `slow_blink`, `rapid_blink`)
+/// are skipped.
 pub fn generate_css_classes(theme: &Theme) -> String {
     let mut blocks = Vec::new();
 

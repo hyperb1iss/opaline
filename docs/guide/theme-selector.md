@@ -11,7 +11,7 @@ The widget requires the `widgets` feature:
 opaline = { version = "0.4", features = ["widgets"] }
 ```
 
-This enables `global-state` and `builtin-themes` automatically, and pulls in full `ratatui` (with crossterm) rather than just `ratatui-core`.
+This enables `global-state`, `builtin-themes`, and the `ratatui` adapter automatically, and pulls in full `ratatui` (with crossterm) rather than just `ratatui-core`.
 It also makes file-backed themes shadow builtin ids during discovery and live preview, so a local `dracula.toml` will win over the shipped `dracula` theme.
 
 ## Quick Start

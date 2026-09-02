@@ -1,6 +1,6 @@
 # Introduction
 
-Opaline is a **token-based theme engine** for Rust applications. It gives your app a complete theming system: raw hex colors resolve to semantic tokens, which compose into styles, all driven by TOML configuration. While Opaline ships with first-class ratatui support, adapters for egui, crossterm, owo-colors, syntect, and CSS make it work across terminal, GUI, and web targets.
+Opaline is a **token-based theme engine** for Rust applications. It gives your app a complete theming system: raw hex colors resolve to semantic tokens, which compose into styles, all driven by TOML configuration. While Opaline ships with first-class ratatui support, adapters for egui, iced, crossterm, owo-colors, syntect, and CSS make it work across terminal, GUI, and web targets.
 
 ## Why Opaline?
 
@@ -55,7 +55,7 @@ This separation means palette swaps propagate through the entire theme automatic
 | **39 builtin themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Rose Pine, Everforest, Tokyo Night, Kanagawa, Dracula, Nord, Gruvbox, Solarized, One |
 | **Token system**      | 28 core semantic tokens across generic namespaces                                                                                                                      |
 | **Gradients**         | Multi-stop color interpolation with `at(t)` and `generate(n)`                                                                                                          |
-| **7 adapters**        | ratatui, egui, crossterm, owo-colors, syntect, CSS, colored                                                                                                            |
+| **8 adapters**        | ratatui, egui, iced, crossterm, owo-colors, syntect, CSS, colored                                                                                                           |
 | **ThemeBuilder**      | Programmatic theme construction without TOML                                                                                                                           |
 | **Strict resolver**   | Cycle detection, unresolvable reference errors                                                                                                                         |
 | **Zero unsafe**       | `unsafe_code = "forbid"`, no exceptions                                                                                                                                |

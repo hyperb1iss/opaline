@@ -88,15 +88,17 @@ Editor-level settings are derived from semantic tokens:
 
 | Opaline Token      | ThemeSettings Field |
 | ------------------ | ------------------- |
-| `text.primary`     | `foreground`        |
-| `bg.base`          | `background`        |
-| `accent.primary`   | `caret`, `accent`   |
-| `bg.highlight`     | `line_highlight`    |
-| `bg.selection`     | `selection`         |
-| `bg.panel`         | `gutter`            |
-| `text.dim`         | `gutter_foreground` |
-| `border.focused`   | `active_guide`      |
-| `border.unfocused` | `guide`             |
+| `text.primary`     | `foreground`, `selection_foreground` |
+| `bg.base`          | `background`                         |
+| `accent.primary`   | `caret`, `accent`                    |
+| `accent.secondary` | `brackets_foreground`                |
+| `bg.highlight`     | `line_highlight`                     |
+| `bg.selection`     | `selection`                          |
+| `bg.panel`         | `gutter`                             |
+| `text.dim`         | `gutter_foreground`                  |
+| `warning`          | `find_highlight`                     |
+| `border.focused`   | `active_guide`                       |
+| `border.unfocused` | `guide`                              |
 
 ### Style Modifiers
 

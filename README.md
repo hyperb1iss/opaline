@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/docsrs/opaline?style=for-the-badge&logo=docs.rs&logoColor=white&color=80ffea" alt="docs.rs">
   </a>
   <a href="https://github.com/hyperb1iss/opaline/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/hyperb1iss/opaline/ci.yml?style=for-the-badge&logo=github-actions&logoColor=white&color=4C566A" alt="CI">
+    <img src="https://img.shields.io/github/actions/workflow/status/hyperb1iss/opaline/cicd.yml?style=for-the-badge&logo=github-actions&logoColor=white&color=4C566A" alt="CI">
   </a>
   <a href="#-builtin-themes">
     <img src="https://img.shields.io/badge/Themes-39_Built--in-ff6ac1?style=for-the-badge&logo=palette&logoColor=white" alt="39 Themes">

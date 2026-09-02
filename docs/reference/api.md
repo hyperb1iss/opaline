@@ -242,7 +242,7 @@ let rainbow = gradient_string("text", grad); // String
 
 ## Global State
 
-Requires `global-state` feature.
+Requires the `global-state` feature. The `load_theme_by_name*` functions also require `builtin-themes`.
 
 ```rust
 use opaline::{current, load_theme, load_theme_by_name, set_theme, Theme};

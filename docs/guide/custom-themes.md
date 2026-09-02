@@ -90,8 +90,8 @@ aurora = ["accent", "secondary", "green", "blue", "accent"]
 ## Loading Custom Themes
 
 ```rust
-// From a file
-let theme = opaline::load_from_file("~/.config/myapp/themes/custom.toml")?;
+// From a file (paths are used as given; expand `~` yourself first)
+let theme = opaline::load_from_file("themes/custom.toml")?;
 
 // From a string (e.g., embedded or fetched)
 let toml_str = std::fs::read_to_string("theme.toml")?;
