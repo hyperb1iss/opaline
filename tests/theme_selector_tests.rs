@@ -177,3 +177,40 @@ fn scrolled_list_shows_the_heading_for_the_visible_section() {
 
     set_theme((*previous).clone());
 }
+
+#[test]
+fn section_heading_is_never_the_last_list_row() {
+    let _guard = global_lock();
+    let previous = current();
+
+    let dark_count = opaline::list_available_themes()
+        .iter()
+        .filter(|info| info.variant == opaline::ThemeVariant::Dark)
+        .count();
+    let dark_count = u16::try_from(dark_count).expect("fits in u16");
+
+    // Sweep heights around the point where the light section's heading
+    // lands on the final visible row. Whatever the chrome costs, one of
+    // these heights hits it, and a heading with nothing beneath it is the
+    // defect under test.
+    for height in (dark_count + 2)..=(dark_count + 14) {
+        let mut state = ThemeSelectorState::new();
+        let area = Rect::new(0, 0, 80, height);
+        let mut buf = Buffer::empty(area);
+        ThemeSelector::new().render(area, &mut buf, &mut state);
+
+        let rows: Vec<String> = (0..area.height)
+            .map(|y| (0..area.width).map(|x| buf[(x, y)].symbol()).collect())
+            .collect();
+
+        if let Some(i) = rows.iter().position(|row| row.contains("Light Themes")) {
+            let below = rows.get(i + 1).map_or("", String::as_str);
+            assert!(
+                below.contains('\u{2600}'),
+                "height {height}: light heading at row {i} has no light entry beneath it:\n{rows:#?}"
+            );
+        }
+    }
+
+    set_theme((*previous).clone());
+}

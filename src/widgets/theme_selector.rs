@@ -470,6 +470,10 @@ fn render_theme_entries(
         // `last_variant`, so the first row of the window always carries the
         // heading for its own section rather than the list's first section.
         if last_variant != Some(info.variant) {
+            // A heading with no room for its first item underneath is noise.
+            if y + 1 >= max_y {
+                break;
+            }
             let header_text = match info.variant {
                 ThemeVariant::Dark => " Dark Themes",
                 ThemeVariant::Light => " Light Themes",
