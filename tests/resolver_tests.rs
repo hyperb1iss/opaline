@@ -156,6 +156,7 @@ fn style_invalid_hex_returns_invalid_color() {
     assert!(matches!(err, OpalineError::InvalidColor { .. }));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn gradient_resolves_stops() {
     let mut tf = minimal_theme_file();
@@ -173,6 +174,7 @@ fn gradient_resolves_stops() {
     assert_eq!(grad.at(1.0), OpalineColor::new(0, 0, 255));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn gradient_invalid_hex_returns_invalid_color() {
     let mut tf = minimal_theme_file();
@@ -185,6 +187,7 @@ fn gradient_invalid_hex_returns_invalid_color() {
     assert!(matches!(err, OpalineError::InvalidColor { .. }));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn empty_gradient_returns_error() {
     let mut tf = minimal_theme_file();
@@ -194,6 +197,7 @@ fn empty_gradient_returns_error() {
     assert!(matches!(err, OpalineError::EmptyGradient));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn gradient_with_unresolvable_stops_returns_error() {
     let mut tf = minimal_theme_file();

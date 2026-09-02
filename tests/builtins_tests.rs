@@ -1,3 +1,5 @@
+#![cfg(feature = "builtin-themes")]
+
 use opaline::OpalineColor;
 use opaline::builtins;
 use opaline::names::{gradients, styles, tokens};
@@ -53,6 +55,7 @@ fn silkcircuit_neon_keyword_style_is_bold_purple() {
     assert!(kw.bold);
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn silkcircuit_neon_has_gradients() {
     let theme = builtins::silkcircuit_neon();
@@ -61,6 +64,7 @@ fn silkcircuit_neon_has_gradients() {
     assert!(theme.has_gradient("aurora"));
 }
 
+#[cfg(feature = "gradients")]
 #[test]
 fn silkcircuit_neon_primary_gradient_endpoints() {
     let theme = builtins::silkcircuit_neon();
@@ -238,6 +242,7 @@ const REQUIRED_GRADIENTS: &[&str] = &[
     gradients::AURORA,
 ];
 
+#[cfg(feature = "gradients")]
 #[test]
 fn all_builtins_have_required_gradients() {
     for &(id, _) in builtins::builtin_names() {

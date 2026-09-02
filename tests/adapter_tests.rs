@@ -1,3 +1,5 @@
+#![cfg(all(feature = "ratatui", feature = "gradients"))]
+
 use opaline::{Gradient, OpalineColor, OpalineStyle};
 use ratatui_core::style::{Color, Modifier, Style, Styled};
 use ratatui_core::text::{Line, Span, Text};
