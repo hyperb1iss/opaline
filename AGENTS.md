@@ -60,7 +60,7 @@ docs/                 # VitePress documentation site (SilkCircuit OKLCH theme)
 ```bash
 cargo check                              # Fast type check
 cargo clippy --all-targets --all-features # Pedantic lint gate
-cargo test --all-features                 # Full test suite (210 tests)
+cargo test --all-features                 # Full test suite
 cargo doc --all-features --open           # Generate docs
 cd docs && pnpm dev                       # VitePress dev server
 cd docs && pnpm build                     # Build docs for deployment
