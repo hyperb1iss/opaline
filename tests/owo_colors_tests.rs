@@ -48,6 +48,23 @@ fn all_modifiers_applied() {
 }
 
 #[test]
+fn slow_and_rapid_blink_map_to_distinct_sgr_codes() {
+    let slow: owo_colors::Style = OpalineStyle::new().slow_blink().into();
+    let rapid: owo_colors::Style = OpalineStyle::new().rapid_blink().into();
+    let slow_out = format!("{}", "x".style(slow));
+    let rapid_out = format!("{}", "x".style(rapid));
+
+    assert!(
+        slow_out.contains("\x1b[5m"),
+        "slow blink is SGR 5: {slow_out:?}"
+    );
+    assert!(
+        rapid_out.contains("\x1b[6m"),
+        "rapid blink is SGR 6: {rapid_out:?}"
+    );
+}
+
+#[test]
 fn theme_owo_style() {
     let theme = Theme::builder("Test")
         .style(
