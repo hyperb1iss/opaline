@@ -1,5 +1,6 @@
 use opaline::OpalineColor;
 use opaline::builtins;
+use opaline::names::{gradients, styles, tokens};
 use opaline::schema::ThemeVariant;
 use pretty_assertions::assert_eq;
 use std::fs;
@@ -93,33 +94,42 @@ fn builtin_count_is_39() {
 // ── Token contract: every builtin has the required semantic tokens ────────
 
 const REQUIRED_TOKENS: &[&str] = &[
-    "text.primary",
-    "text.secondary",
-    "text.muted",
-    "text.dim",
-    "bg.base",
-    "bg.panel",
-    "bg.code",
-    "bg.highlight",
-    "bg.selection",
-    "accent.primary",
-    "accent.secondary",
-    "accent.tertiary",
-    "accent.deep",
-    "success",
-    "error",
-    "warning",
-    "info",
-    "border.focused",
-    "border.unfocused",
-    "code.keyword",
-    "code.function",
-    "code.string",
-    "code.number",
-    "code.comment",
-    "code.type",
-    "code.line_number",
+    tokens::TEXT_PRIMARY,
+    tokens::TEXT_SECONDARY,
+    tokens::TEXT_MUTED,
+    tokens::TEXT_DIM,
+    tokens::BG_BASE,
+    tokens::BG_PANEL,
+    tokens::BG_CODE,
+    tokens::BG_HIGHLIGHT,
+    tokens::BG_ELEVATED,
+    tokens::BG_ACTIVE,
+    tokens::BG_SELECTION,
+    tokens::ACCENT_PRIMARY,
+    tokens::ACCENT_SECONDARY,
+    tokens::ACCENT_TERTIARY,
+    tokens::ACCENT_DEEP,
+    tokens::SUCCESS,
+    tokens::ERROR,
+    tokens::WARNING,
+    tokens::INFO,
+    tokens::BORDER_FOCUSED,
+    tokens::BORDER_UNFOCUSED,
+    tokens::CODE_KEYWORD,
+    tokens::CODE_FUNCTION,
+    tokens::CODE_STRING,
+    tokens::CODE_NUMBER,
+    tokens::CODE_COMMENT,
+    tokens::CODE_TYPE,
+    tokens::CODE_LINE_NUMBER,
 ];
+
+#[test]
+fn contract_sizes_match_documentation() {
+    assert_eq!(REQUIRED_TOKENS.len(), 28);
+    assert_eq!(REQUIRED_STYLES.len(), 14);
+    assert_eq!(REQUIRED_GRADIENTS.len(), 5);
+}
 
 #[test]
 fn all_builtins_have_required_tokens() {
@@ -135,19 +145,20 @@ fn all_builtins_have_required_tokens() {
 }
 
 const REQUIRED_STYLES: &[&str] = &[
-    "keyword",
-    "line_number",
-    "selected",
-    "active_selected",
-    "focused_border",
-    "unfocused_border",
-    "success_style",
-    "error_style",
-    "warning_style",
-    "info_style",
-    "dimmed",
-    "muted",
-    "inline_code",
+    styles::KEYWORD,
+    styles::LINE_NUMBER,
+    styles::CURSOR_LINE,
+    styles::SELECTED,
+    styles::ACTIVE_SELECTED,
+    styles::FOCUSED_BORDER,
+    styles::UNFOCUSED_BORDER,
+    styles::SUCCESS_STYLE,
+    styles::ERROR_STYLE,
+    styles::WARNING_STYLE,
+    styles::INFO_STYLE,
+    styles::DIMMED,
+    styles::MUTED,
+    styles::INLINE_CODE,
 ];
 
 const FORBIDDEN_LEGACY_TOKENS: &[&str] = &[
@@ -220,11 +231,11 @@ fn builtins_do_not_embed_legacy_app_tokens_or_styles() {
 }
 
 const REQUIRED_GRADIENTS: &[&str] = &[
-    "primary",
-    "warm",
-    "success_gradient",
-    "error_gradient",
-    "aurora",
+    gradients::PRIMARY,
+    gradients::WARM,
+    gradients::SUCCESS_GRADIENT,
+    gradients::ERROR_GRADIENT,
+    gradients::AURORA,
 ];
 
 #[test]

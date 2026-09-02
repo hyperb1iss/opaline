@@ -38,6 +38,8 @@ orange = "#ffb86c"
 "bg.panel" = "bg"
 "bg.code" = "bg"
 "bg.highlight" = "bg"
+"bg.elevated" = "bg"
+"bg.active" = "bg"
 "bg.selection" = "bg"
 
 "accent.primary" = "accent"
@@ -64,6 +66,7 @@ info = "blue"
 [styles]
 keyword = { fg = "accent.primary", bold = true }
 line_number = { fg = "code.line_number" }
+cursor_line = { bg = "bg.highlight" }
 selected = { fg = "accent.secondary", bg = "bg.highlight" }
 active_selected = { fg = "accent.primary", bg = "bg.highlight", bold = true }
 focused_border = { fg = "border.focused" }
@@ -123,7 +126,7 @@ The strict resolver catches issues at load time:
 - **Circular reference**: tokens form a cycle (`a → b → a`)
 - **Invalid hex**: a palette value isn't a valid hex color
 
-If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all required tokens, 13 required styles, and 5 required gradients.
+If your theme loads without error, it's valid. For builtin-level quality, ensure it defines all 28 required tokens, 14 required styles, and 5 required gradients.
 
 ## Tips
 

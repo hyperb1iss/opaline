@@ -54,12 +54,13 @@ inline_code = { fg = "success", bg = "bg.code" }
 
 ## Required Styles
 
-Every builtin theme must define these 13 styles:
+Every builtin theme must define these 14 styles:
 
 | Style              | Purpose                |
 | ------------------ | ---------------------- |
 | `keyword`          | Language keywords      |
 | `line_number`      | Code line numbers      |
+| `cursor_line`      | Line under the cursor  |
 | `selected`         | Selected item          |
 | `active_selected`  | Active + selected item |
 | `focused_border`   | Focused panel border   |

@@ -53,7 +53,7 @@ This separation means palette swaps propagate through the entire theme automatic
 | Feature               | Description                                                                                                                                                            |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **39 builtin themes** | SilkCircuit, Catppuccin, GitHub, Monokai Pro, Ayu, Night Owl, Flexoki, Palenight, Rose Pine, Everforest, Tokyo Night, Kanagawa, Dracula, Nord, Gruvbox, Solarized, One |
-| **Token system**      | 26 core semantic tokens across generic namespaces                                                                                                                      |
+| **Token system**      | 28 core semantic tokens across generic namespaces                                                                                                                      |
 | **Gradients**         | Multi-stop color interpolation with `at(t)` and `generate(n)`                                                                                                          |
 | **7 adapters**        | ratatui, egui, crossterm, owo-colors, syntect, CSS, colored                                                                                                            |
 | **ThemeBuilder**      | Programmatic theme construction without TOML                                                                                                                           |

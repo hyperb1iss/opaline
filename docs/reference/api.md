@@ -162,7 +162,7 @@ theme.style(styles::KEYWORD)            // OpalineStyle
 theme.has_gradient(gradients::AURORA)    // bool
 ```
 
-Modules: `names::tokens` (26 required constants), `names::styles` (13 required constants), `names::gradients` (5 constants).
+Modules: `names::tokens` (28 required constants), `names::styles` (14 required constants), `names::gradients` (5 constants).
 
 ## Ratatui Integration
 

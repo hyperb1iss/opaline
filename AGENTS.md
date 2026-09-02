@@ -117,11 +117,11 @@ Solarized (Dark, Light), One (Dark, Light)
 
 ## Token Contract
 
-Every builtin theme must define 26 core semantic tokens across these namespaces:
+Every builtin theme must define 28 core semantic tokens across these namespaces:
 `text.*`, `bg.*`, `accent.*`, `success/error/warning/info`,
 `border.*`, `code.*`
 
-Plus 13 required styles, 5 required gradients — enforced by contract tests.
+Plus 14 required styles, 5 required gradients — enforced by contract tests.
 
 App-specific semantics (git status, diff, mode indicators) are derived
 by consuming apps via `register_default_token()`, not baked into the core.

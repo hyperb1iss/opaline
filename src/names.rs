@@ -11,7 +11,13 @@
 //! let kw = theme.style(styles::KEYWORD);
 //! ```
 
-/// Semantic color token names (26 required).
+/// Semantic color token names (28 required).
+///
+/// The `bg.*` family is a layering ladder. `BG_BASE` is the canvas an app
+/// paints first; `BG_PANEL` is for sidebars and secondary panes; the rest
+/// (`BG_HIGHLIGHT`, `BG_ELEVATED`, `BG_ACTIVE`, `BG_SELECTION`) step
+/// progressively toward the text color for hover, popups, and pressed
+/// states.
 pub mod tokens {
     pub const TEXT_PRIMARY: &str = "text.primary";
     pub const TEXT_SECONDARY: &str = "text.secondary";
@@ -22,6 +28,8 @@ pub mod tokens {
     pub const BG_PANEL: &str = "bg.panel";
     pub const BG_CODE: &str = "bg.code";
     pub const BG_HIGHLIGHT: &str = "bg.highlight";
+    pub const BG_ELEVATED: &str = "bg.elevated";
+    pub const BG_ACTIVE: &str = "bg.active";
     pub const BG_SELECTION: &str = "bg.selection";
 
     pub const ACCENT_PRIMARY: &str = "accent.primary";
@@ -45,10 +53,11 @@ pub mod tokens {
     pub const CODE_LINE_NUMBER: &str = "code.line_number";
 }
 
-/// Named style constants (13 required).
+/// Named style constants (14 required).
 pub mod styles {
     pub const KEYWORD: &str = "keyword";
     pub const LINE_NUMBER: &str = "line_number";
+    pub const CURSOR_LINE: &str = "cursor_line";
     pub const SELECTED: &str = "selected";
     pub const ACTIVE_SELECTED: &str = "active_selected";
     pub const FOCUSED_BORDER: &str = "focused_border";
